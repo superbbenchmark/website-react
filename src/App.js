@@ -10,9 +10,13 @@ import NavigationBar from "./NavigationBar";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: "#6ab7ff",
-      main: "#1e88e5",
-      dark: "#005cb2",
+      light: "#ffffff",
+      main: "#f5f5f5",
+      dark: "#c2c2c2",
+    },
+    text: {
+      primary: "#546e7a",
+      secondary: "#9e9e9e"
     }
   }
 })
