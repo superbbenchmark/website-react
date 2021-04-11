@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Drawer from "./Drawer";
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -109,7 +110,8 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       background: "rgba(255, 255, 255, 1)",
       boxShadow: "0px 3px 10px rgba(0, 0, 0, 0.1)"
-    }
+    },
+    cursor: "pointer",
   },
   brand: {
     fontWeight: "bold",
@@ -122,6 +124,21 @@ function NavigationBar(props) {
   const matches = useMediaQuery(theme.breakpoints.up('sm'));
   const classes = useStyles();
   let brandName = matches ? "SUPERB Benchmark" : "SUPERB"
+
+  let items = [
+    <a target="_blank" href="https://arxiv.org/" className={`${classes.link}`}>
+      <Typography color="textSecondary" variant="subtitle1">Paper</Typography>
+    </a>,
+    <a target="_blank" href="https://github.com/s3prl/s3prl" className={`${classes.link}`}>
+      <Typography color="textSecondary" variant="subtitle1">Code</Typography>
+    </a>,
+    <Link to="/tasks" className={`${classes.link}`}>
+      <Typography color="textSecondary" variant="subtitle1">Tasks</Typography>
+    </Link>,
+    <Link to="/leaderboard" className={`${classes.link}`}>
+      <Typography color="textSecondary" variant="subtitle1">Leaderboard</Typography>
+    </Link>,
+  ]
 
   return (
     <React.Fragment>
@@ -150,21 +167,20 @@ function NavigationBar(props) {
                   alignItems="center"
                 >
                   <Hidden smDown>
-                    <a target="_blank" href="https://arxiv.org/" className={`${classes.link} ${classes.tool} ${classes.button}`}>
-                      <Typography color="textSecondary" variant="subtitle1">Paper</Typography>
-                    </a>
-                    <a target="_blank" href="https://github.com/s3prl/s3prl" className={`${classes.link} ${classes.tool} ${classes.button}`}>
-                      <Typography color="textSecondary" variant="subtitle1">Code</Typography>
-                    </a>
-                    <Link to="/tasks" className={`${classes.link} ${classes.tool} ${classes.button}`}>
-                      <Typography color="textSecondary" variant="subtitle1">Tasks</Typography>
-                    </Link>
-                    <Link to="/leaderboard" className={`${classes.link} ${classes.tool} ${classes.button}`}>
-                      <Typography color="textSecondary" variant="subtitle1">Leaderboard</Typography>
-                    </Link>
+                    {
+                      items.map((item) => (
+                        <div className={`${classes.tool} ${classes.button}`}>
+                          {item}
+                        </div>
+                      ))
+                    }
                   </Hidden>
                   <Hidden mdUp>
-                    <Typography className={classes.tool} variant="subtitle1">drawers</Typography>
+                    <Drawer items={items}>
+                      <Typography className={`${classes.tool} ${classes.button}`} color="textSecondary" variant="subtitle1">
+                        MENU
+                      </Typography>
+                    </Drawer>
                   </Hidden>
                 </Grid>
               </Grid>
