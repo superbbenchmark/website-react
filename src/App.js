@@ -8,6 +8,8 @@ import {
 import NavigationBar from "./NavigationBar";
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Box from '@material-ui/core/Box';
 
 
 const theme = createMuiTheme({
@@ -25,16 +27,20 @@ const theme = createMuiTheme({
 })
 
 const useStyles = makeStyles((theme) => ({
-  logoSpacing: {
+  logo: {
     margin: theme.spacing(8, 'auto', 4),
   },
-  basicSpacing: {
-    margin: theme.spacing(1, 'auto')
+  sublogo: {
+    margin: theme.spacing(2, 'auto')
   },
+  description: {
+    margin: theme.spacing(1, 'auto')
+  }
 }));
 
 function App() {
   const classes = useStyles();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
     <div className="App">
@@ -43,20 +49,24 @@ function App() {
           <NavigationBar />
           <Switch>
             <Route path="/" exact>
-              <div className={classes.logoSpacing}>
-                <Typography variant="h2" color="textPrimary" className={classes.basicSpacing}>
+              <Box margin={theme.spacing(8, 'auto', 1)}>
+                <Typography variant="h2" color="textPrimary">
                   <strong>SUPERB</strong>
                 </Typography>
-                <Typography variant="h4" color="textPrimary" className={classes.basicSpacing}>
+              </Box>
+              <Box margin={theme.spacing(1, 'auto', 4)}>
+                <Typography variant={matches ? "h4" : "h5"} color="textPrimary">
                   <strong>S</strong>peech processing <strong>U</strong>niversal <strong>PER</strong>formance <strong>B</strong>enchmark
                 </Typography>
-              </div>
-              <Typography variant="h6" color="textSecondary" className={classes.basicSpacing}>
-                This is the official website for the challenge SUPERB.
-                We are working on the challenge rules, scripts for getting started and submitting results, and leaderboard.
-                We will provide more information in mid April.
-                Stay tuned!
-              </Typography>
+              </Box>
+              <Box>
+                <Typography variant="h6" color="textSecondary">
+                  This is the official website for the challenge SUPERB.
+                  We are working on the challenge rules, scripts for getting started and submitting results, and leaderboard.
+                  We will provide more information in mid April.
+                  Stay tuned!
+                </Typography>
+              </Box>
             </Route>
             <Route path="/users">
               <p>test 2</p>
