@@ -134,7 +134,7 @@ function NavigationBar(props) {
     ["Paper", "https://arxiv.org/"],
     ["Code", "https://github.com/s3prl/s3prl"],
     ["Tasks", "/tasks"],
-    ["Leaderboard", "/leaderboard"],
+    ["Leaderboards", "/leaderboards"],
   ].map(([text, link]) => [
     <Typography color="textSecondary" variant="overline">{text}</Typography>,
     link

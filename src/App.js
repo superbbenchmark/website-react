@@ -10,7 +10,7 @@ import Box from "@material-ui/core/Box";
 import NavigationBar from "./NavigationBar";
 import Landing from "./Landing";
 import Tasks from "./Tasks";
-import Leaderboard from "./Leaderboard";
+import Leaderboards from "./Leaderboards";
 
 
 const theme = createMuiTheme({
@@ -42,8 +42,8 @@ function App() {
             <Route path="/tasks">
               <Tasks />
             </Route>
-            <Route path="/leaderboard">
-              <Leaderboard />
+            <Route path="/leaderboards">
+              <Leaderboards />
             </Route>
           </Switch>
         </ThemeProvider>
