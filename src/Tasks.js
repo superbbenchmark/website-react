@@ -1,9 +1,8 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import { Box, Typography, Grid, Paper } from '@material-ui/core';
+import TimedGrow from './TimedGrow';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -115,6 +114,7 @@ const tasks = [
   ],
 ]
 
+
 function Tasks(props) {
   const classes = useStyles();
   const theme = useTheme();
@@ -126,20 +126,22 @@ function Tasks(props) {
         spacing={5}
       >
         {
-          tasks.map(([name, description]) => (
+          tasks.map(([name, description], index) => (
             <React.Fragment>
-              <Grid item xs={12} sm={6} md={4}>
-                <Paper elevation={3}>
-                  <Box padding={theme.spacing(3, 2)}>
-                    <Typography color="textPrimary" variant="h6" className={classes.taskName}>
-                      {`${name}`}
-                    </Typography>
-                    <Typography color="textSecondary" variant="body2" className={classes.taskDescription}>
-                      {description}
-                    </Typography>
-                  </Box>
-                </Paper>
-              </Grid>
+              <TimedGrow interval={100 * index}>
+                <Grid item xs={12} sm={6} md={4}>
+                  <Paper elevation={3}>
+                    <Box padding={theme.spacing(3, 2)}>
+                      <Typography color="textPrimary" variant="h6" className={classes.taskName}>
+                        {`${name}`}
+                      </Typography>
+                      <Typography color="textSecondary" variant="body2" className={classes.taskDescription}>
+                        {description}
+                      </Typography>
+                    </Box>
+                  </Paper>
+                </Grid>
+              </TimedGrow>
             </React.Fragment>
           ))
         }
