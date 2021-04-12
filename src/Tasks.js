@@ -5,6 +5,7 @@ import { Box, Typography, Grid, Paper, Divider, Button } from '@material-ui/core
 
 import TimedGrow from './TimedGrow';
 import AdaptiveLink from './AdaptiveLink';
+import { capitalizeFirstLetter } from './Utilies';
 
 
 const tasks = {
@@ -125,9 +126,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 
 function Tasks(props) {
