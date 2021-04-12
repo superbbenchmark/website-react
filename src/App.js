@@ -30,8 +30,10 @@ function App() {
           <NavigationBar />
           <Switch>
             <Route path="/" exact>
-              <h1>Speech processing Universal PERformance Benchmark</h1>
-              <Typography>
+              <Typography variant="h4" color="textPrimary">
+                <strong>S</strong>peech processing <strong>U</strong>niversal <strong>PER</strong>formance <strong>B</strong>enchmark
+              </Typography>
+              <Typography color="textSecondary">
                 This is the official website for the challenge SUPERB (Speech processing Universal PERformance Benchmark).
                 We are working on the challenge rules, scripts for getting started and submitting results, and leaderboard.
                 We will provide more information in mid April.
