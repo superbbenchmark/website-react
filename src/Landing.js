@@ -9,7 +9,7 @@ export default function Landing(props) {
   const theme = useTheme();
   return (
     <React.Fragment>
-      <Box margin={theme.spacing(8, 'auto', 1)}>
+      <Box margin={theme.spacing(4, 'auto', 1)}>
         <Typography variant="h2" color="textPrimary">
           <strong>SUPERB</strong>
         </Typography>
