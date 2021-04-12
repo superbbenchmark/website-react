@@ -110,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   brand: {
-    fontWeight: "bold",
+    fontWeight: "regular",
   }
 }));
 
