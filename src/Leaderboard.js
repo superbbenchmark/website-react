@@ -112,9 +112,16 @@ export default function Leaderboard(props) {
                                 justify="center"
                               >
                                 {
-                                  ["rules", "compare", "leaderboard"].map((buttonName) => (
+                                  [["rules", !rules], ["compare", !scores], ["leaderboard", !scores]].map(([buttonName, disabled]) => (
                                     <Grid item>
-                                      <Button size="small" variant="outlined" style={{color: color}} >{buttonName}</Button>
+                                      <Button
+                                        size="small"
+                                        variant="outlined"
+                                        disabled={disabled}
+                                        style={{ color: disabled ? theme.palette.primary : color }}
+                                      >
+                                        {buttonName}
+                                      </Button>
                                     </Grid>
                                   ))
                                 }
