@@ -118,6 +118,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
+function LiftingBarButton(props) {
+  const classes = useStyles();
+  return (
+    <div className={`${classes.tool} ${classes.button}`}>
+      {props.children}
+    </div>
+  )
+}
+
+
 function NavigationBar(props) {
   const { width } = props;
   const theme = useTheme();
@@ -154,9 +165,11 @@ function NavigationBar(props) {
                   justify="flex-start"
                   alignItems="center"
                 >
-                  <Link to="/" className={`${classes.link} ${classes.tool} ${classes.button}`}>
-                    <Typography color="textPrimary" className={`${classes.brand}`} variant="h6">{brandName}</Typography>
-                  </Link>
+                  <LiftingBarButton>
+                    <Link to="/" className={`${classes.link}`}>
+                      <Typography color="textPrimary" variant="h6" className={`${classes.brand}`}>{brandName}</Typography>
+                    </Link>
+                  </LiftingBarButton>
                 </Grid>
               </Grid>
               <Grid item xs={4} md={8}>
@@ -167,19 +180,17 @@ function NavigationBar(props) {
                   alignItems="center"
                 >
                   <Hidden smDown>
-                    {
-                      items.map((item) => (
-                        <div className={`${classes.tool} ${classes.button}`}>
-                          {item}
-                        </div>
-                      ))
-                    }
+                    {items.map((item) => (
+                      <LiftingBarButton>
+                        {item}
+                      </LiftingBarButton>
+                    ))}
                   </Hidden>
                   <Hidden mdUp>
                     <Drawer items={items}>
-                      <Typography className={`${classes.tool} ${classes.button}`} color="textSecondary" variant="subtitle1">
-                        MENU
-                      </Typography>
+                      <LiftingBarButton>
+                        <Typography color="textSecondary" variant="subtitle1">MENU</Typography>
+                      </LiftingBarButton>
                     </Drawer>
                   </Hidden>
                 </Grid>
