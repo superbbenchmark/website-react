@@ -1,9 +1,10 @@
 import React from 'react';
-import { HashLink } from 'react-router-hash-link';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 import { Box, Typography, Grid, Paper, Divider, Button } from '@material-ui/core';
+
 import TimedGrow from './TimedGrow';
+import AdaptiveLink from './AdaptiveLink';
 
 
 const tasks = {
@@ -153,11 +154,11 @@ function Tasks(props) {
           Object.keys(tasks).map((domain, index) => (
             <TimedGrow interval={100 * index}>
               <Grid item>
-                <HashLink to={`/tasks#${domain}`} className="unlink">
+                <AdaptiveLink link={`/tasks#${domain}`}>
                   <Button variant="outlined">
                     {capitalizeFirstLetter(domain)}
                   </Button>
-                </HashLink>
+                </AdaptiveLink>
               </Grid>
             </TimedGrow>
           ))
