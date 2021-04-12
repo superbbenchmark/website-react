@@ -137,19 +137,19 @@ function NavigationBar(props) {
   const matches = useMediaQuery(theme.breakpoints.up('sm'));
   let brandName = matches ? "SUPERB Benchmark" : "SUPERB"
 
-  let textVariant = "overline"
+  let buttonTextVariant = "overline"
   let items = [
     <a target="_blank" href="https://arxiv.org/" className={`${classes.link}`}>
-      <Typography color="textSecondary" variant={textVariant}>Paper</Typography>
+      <Typography color="textSecondary" variant={buttonTextVariant}>Paper</Typography>
     </a>,
     <a target="_blank" href="https://github.com/s3prl/s3prl" className={`${classes.link}`}>
-      <Typography color="textSecondary" variant={textVariant}>Code</Typography>
+      <Typography color="textSecondary" variant={buttonTextVariant}>Code</Typography>
     </a>,
     <Link to="/tasks" className={`${classes.link}`}>
-      <Typography color="textSecondary" variant={textVariant}>Tasks</Typography>
+      <Typography color="textSecondary" variant={buttonTextVariant}>Tasks</Typography>
     </Link>,
     <Link to="/leaderboard" className={`${classes.link}`}>
-      <Typography color="textSecondary" variant={textVariant}>Leaderboard</Typography>
+      <Typography color="textSecondary" variant={buttonTextVariant}>Leaderboard</Typography>
     </Link>,
   ]
 
@@ -191,7 +191,7 @@ function NavigationBar(props) {
                   <Hidden mdUp>
                     <Drawer items={items}>
                       <LiftingBarButton>
-                        <Typography color="textSecondary" variant="subtitle1">MENU</Typography>
+                        <Typography color="textSecondary" variant={buttonTextVariant}>MENU</Typography>
                       </LiftingBarButton>
                     </Drawer>
                   </Hidden>
