@@ -6,7 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 import NavigationBar from "./NavigationBar";
-import { Typography } from '@material-ui/core';
+import { Container, Typography } from '@material-ui/core';
 
 const theme = createMuiTheme({
   palette: {
@@ -33,7 +33,7 @@ function App() {
               <Typography variant="h4" color="textPrimary">
                 <strong>S</strong>peech processing <strong>U</strong>niversal <strong>PER</strong>formance <strong>B</strong>enchmark
               </Typography>
-              <Typography color="textSecondary">
+              <Typography variant="body1" color="textSecondary">
                 This is the official website for the challenge SUPERB (Speech processing Universal PERformance Benchmark).
                 We are working on the challenge rules, scripts for getting started and submitting results, and leaderboard.
                 We will provide more information in mid April.

@@ -131,23 +131,25 @@ function LiftingBarButton(props) {
 
 function NavigationBar(props) {
   const { width } = props;
+  const classes = useStyles();
+
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('sm'));
-  const classes = useStyles();
   let brandName = matches ? "SUPERB Benchmark" : "SUPERB"
 
+  let textVariant = "overline"
   let items = [
     <a target="_blank" href="https://arxiv.org/" className={`${classes.link}`}>
-      <Typography color="textSecondary" variant="subtitle1">Paper</Typography>
+      <Typography color="textSecondary" variant={textVariant}>Paper</Typography>
     </a>,
     <a target="_blank" href="https://github.com/s3prl/s3prl" className={`${classes.link}`}>
-      <Typography color="textSecondary" variant="subtitle1">Code</Typography>
+      <Typography color="textSecondary" variant={textVariant}>Code</Typography>
     </a>,
     <Link to="/tasks" className={`${classes.link}`}>
-      <Typography color="textSecondary" variant="subtitle1">Tasks</Typography>
+      <Typography color="textSecondary" variant={textVariant}>Tasks</Typography>
     </Link>,
     <Link to="/leaderboard" className={`${classes.link}`}>
-      <Typography color="textSecondary" variant="subtitle1">Leaderboard</Typography>
+      <Typography color="textSecondary" variant={textVariant}>Leaderboard</Typography>
     </Link>,
   ]
 
