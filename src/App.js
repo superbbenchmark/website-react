@@ -34,7 +34,7 @@ function App() {
       <Router>
         <ThemeProvider theme={theme}>
           <NavigationBar />
-          <Box height={theme.spacing(4)}></Box>
+          <Box height={theme.spacing(6)}></Box>
           <Switch>
             <Route path="/" exact>
               <Landing />
