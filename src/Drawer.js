@@ -9,6 +9,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import AdaptiveLink from './AdaptiveLink';
 
 const useStyles = makeStyles({
   list: {
@@ -48,14 +49,16 @@ export default function SwipeableTemporaryDrawer(props) {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {props.items.map((item) => (
+        {props.items.map(([content, link]) => (
           <div>
-            <ListItem button>
-              {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
-              <ListItemText>
-                {item}
-              </ListItemText>
-            </ListItem>
+            <AdaptiveLink link={link}>
+              <ListItem button>
+                {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
+                <ListItemText>
+                  {content}
+                </ListItemText>
+              </ListItem>
+            </AdaptiveLink>
             <Divider />
           </div>
         ))}

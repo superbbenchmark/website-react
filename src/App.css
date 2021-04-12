@@ -6,6 +6,11 @@
   margin-bottom: 50px;
 }
 
+.unlink {
+  color: inherit;
+  text-decoration: inherit;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

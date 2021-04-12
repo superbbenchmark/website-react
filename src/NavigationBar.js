@@ -13,10 +13,10 @@ import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import withWidth from '@material-ui/core/withWidth';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Drawer from "./Drawer";
+import AdaptiveLink from "./AdaptiveLink";
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -96,10 +96,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "5px",
     paddingBottom: "5px",
   },
-  link: {
-    color: "inherit",
-    textDecoration: "inherit",
-  },
   button: {
     paddingLeft: "12px",
     paddingRight: "12px",
@@ -132,26 +128,17 @@ function LiftingBarButton(props) {
 function NavigationBar(props) {
   const { width } = props;
   const classes = useStyles();
-
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('sm'));
-  let brandName = matches ? "SUPERB Benchmark" : "SUPERB"
 
-  let buttonTextVariant = "overline"
   let items = [
-    <a target="_blank" href="https://arxiv.org/" className={`${classes.link}`}>
-      <Typography color="textSecondary" variant={buttonTextVariant}>Paper</Typography>
-    </a>,
-    <a target="_blank" href="https://github.com/s3prl/s3prl" className={`${classes.link}`}>
-      <Typography color="textSecondary" variant={buttonTextVariant}>Code</Typography>
-    </a>,
-    <Link to="/tasks" className={`${classes.link}`}>
-      <Typography color="textSecondary" variant={buttonTextVariant}>Tasks</Typography>
-    </Link>,
-    <Link to="/leaderboard" className={`${classes.link}`}>
-      <Typography color="textSecondary" variant={buttonTextVariant}>Leaderboard</Typography>
-    </Link>,
-  ]
+    ["Paper", "https://arxiv.org/"],
+    ["Code", "https://github.com/s3prl/s3prl"],
+    ["Tasks", "/tasks"],
+    ["Leaderboard", "/leaderboard"],
+  ].map(([text, link]) => [
+    <Typography color="textSecondary" variant="overline">{text}</Typography>,
+    link
+  ])
 
   return (
     <React.Fragment>
@@ -167,11 +154,13 @@ function NavigationBar(props) {
                   justify="flex-start"
                   alignItems="center"
                 >
-                  <LiftingBarButton>
-                    <Link to="/" className={`${classes.link}`}>
-                      <Typography color="textPrimary" variant="h6" className={`${classes.brand}`}>{brandName}</Typography>
-                    </Link>
-                  </LiftingBarButton>
+                  <AdaptiveLink link="/">
+                    <LiftingBarButton>
+                      <Typography color="textPrimary" variant="h6" className={`${classes.brand}`}>
+                        {useMediaQuery(theme.breakpoints.up('sm')) ? "SUPERB Benchmark" : "SUPERB"}
+                      </Typography>
+                    </LiftingBarButton>
+                  </AdaptiveLink>
                 </Grid>
               </Grid>
               <Grid item xs={4} md={8}>
@@ -182,16 +171,18 @@ function NavigationBar(props) {
                   alignItems="center"
                 >
                   <Hidden smDown>
-                    {items.map((item) => (
-                      <LiftingBarButton>
-                        {item}
-                      </LiftingBarButton>
+                    {items.map(([content, link]) => (
+                      <AdaptiveLink link={link}>
+                        <LiftingBarButton>
+                          {content}
+                        </LiftingBarButton>
+                      </AdaptiveLink>
                     ))}
                   </Hidden>
                   <Hidden mdUp>
                     <Drawer items={items}>
                       <LiftingBarButton>
-                        <Typography color="textSecondary" variant={buttonTextVariant}>MENU</Typography>
+                        <Typography color="textSecondary" variant="overline">MENU</Typography>
                       </LiftingBarButton>
                     </Drawer>
                   </Hidden>
