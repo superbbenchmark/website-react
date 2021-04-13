@@ -6,29 +6,32 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 import { Box, Typography, Divider } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+
 import { capitalizeFirstLetter } from './Utilies';
 import Leaderboard from './Leaderboard';
 
 
-const useStyles = makeStyles((theme) => ({
-}));
-
-
 export default function Track(props) {
-  const classes = useStyles();
   const theme = useTheme();
   const match = useRouteMatch();
   const { urlTrack } = useParams();
-  const { Icon, color, rules, scores } = props.infos[urlTrack];
+  const { Icon, color, rules, submissions } = props.infos[urlTrack];
+
+  const trackTheme = createMuiTheme({
+    ...theme,
+  })
+  trackTheme.palette.primary.main = color;
+
   return (
-    <React.Fragment>
-      <Box margin={theme.spacing(4, "auto")}>
-        <Box margin={theme.spacing(2, "auto")}>
-          <Typography variant="h4" style={{color: color}}><strong>{capitalizeFirstLetter(urlTrack)}</strong> Track</Typography>
+    <ThemeProvider theme={trackTheme}>
+      <Box margin={trackTheme.spacing(4, "auto")}>
+        <Box margin={trackTheme.spacing(2, "auto")}>
+          <Typography variant="h4" color="primary"><strong>{capitalizeFirstLetter(urlTrack)}</strong> Track</Typography>
         </Box>
         <Divider />
       </Box>
       <Leaderboard submissions={submissions} />
-    </React.Fragment>
+    </ThemeProvider>
   )
 }

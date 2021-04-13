@@ -34,15 +34,15 @@ function TrackButton(props) {
   const theme = useTheme();
   const match = useRouteMatch()
   const { name, Icon, color, rules, submissions } = props;
-  const [ hover, setHover ] = React.useState(false);
+  const [hover, setHover] = React.useState(false);
   const TrackButtonCls = (!rules) && (!submissions) ? Box : AdaptiveLink;
 
   return (
     <TrackButtonCls link={`${match.url}/${name}`}>
       <Paper
         elevation={hover ? 6 : 2}
-        onMouseOver={() => {setHover((prev) => (!prev));}}
-        onMouseOut={() => {setHover((prev) => (!prev));}}
+        onMouseOver={() => { setHover((prev) => (!prev)); }}
+        onMouseOut={() => { setHover((prev) => (!prev)); }}
       >
         <Box padding={theme.spacing(3, 2)}>
           <Grid
@@ -100,21 +100,60 @@ export default function Leaderboards(props) {
       Icon: LockIcon,
       color: green[400],
       rules: "Universal Representation, some rule...",
-      submissions: {
-        "FBANK": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-        "PASE+": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-        "APC": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-        "VQ-APC": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-        "NPC": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-        "Mockingjay": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-        "TERA": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-        "modified CPC": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-        "wav2vec": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-        "vq-wav2vec": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-        "wav2vec 2.0": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-        "HuBERT Base": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-        "HuBERT Large": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
-      }
+      submissions: [
+        {
+          Method: "FBANK", Description: "classic feature", Parameters: 0, Stride: 10, Input: "waveform", Corpus: "-",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+        {
+          Method: "PASE+", Description: "multi-task", Parameters: 7.83e+6, Stride: 10, Input: "waveform", Corpus: "LS 50 hr",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+        {
+          Method: "APC", Description: "F-G", Parameters: 4.11e+6, Stride: 10, Input: "FBANK", Corpus: "LS 360 hr",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+        {
+          Method: "VQ-APC", Description: "F-G + VQ", Parameters: 4.63e+6, Stride: 10, Input: "FBANK", Corpus: "LS 360 hr",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+        {
+          Method: "NPC", Description: "M-G + VQ", Parameters: 19.38e+6, Stride: 10, Input: "FBANK", Corpus: "LS 360 hr",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+        {
+          Method: "Mockingjay", Description: "time M-G", Parameters: 85.12e+6, Stride: 10, Input: "FBANK", Corpus: "LS 360 hr",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+        {
+          Method: "TERA", Description: "time/freq M-G", Parameters: 21.33e+6, Stride: 10, Input: "FBANK", Corpus: "LS 960 hr",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+        {
+          Method: "modified CPC", Description: "F-C", Parameters: 1.84e+6, Stride: 10, Input: "waveform", Corpus: "LL 60k hr",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+        {
+          Method: "wav2vec", Description: "F-C", Parameters: 32.54e+6, Stride: 10, Input: "waveform", Corpus: "LS 960 hr",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+        {
+          Method: "vq-wav2vec", Description: "F-C + VQ", Parameters: 34.15e+6, Stride: 10, Input: "waveform", Corpus: "LS 960 hr",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+        {
+          Method: "wav2vec 2.0", Description: "M-C + VQ", Parameters: 95.04e+6, Stride: 20, Input: "waveform", Corpus: "LS 960 hr",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+        {
+          Method: "HuBERT Base", Description: "M-P + VQ", Parameters: 94.68e+6, Stride: 20, Input: "waveform", Corpus: "LS 960 hr",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+        {
+          Method: "HuBERT Large", Description: "M-P + VQ", Parameters: 316.61e+6, Stride: 20, Input: "waveform", Corpus: "LL 60k hr",
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+        },
+      ]
     },
     constrained: {
       Icon: LockOpenIcon,
