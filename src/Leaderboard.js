@@ -7,7 +7,7 @@ import { Typography, Box } from '@material-ui/core';
 
 function PlacedToolBar(props) {
   return (
-    <Box marginLeft="10px">
+    <Box margin="5px 10px">
       <GridToolbar {...props} style={{ fontWeight: "bold" }} />
     </Box>
   )
@@ -48,6 +48,7 @@ export default function BasicSortingGrid(props) {
         columns={columns}
         rows={rows}
         disableColumnMenu={true}
+        density="compact"
         components={{
           Toolbar: PlacedToolBar,
         }}
