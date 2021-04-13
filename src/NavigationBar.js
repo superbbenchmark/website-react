@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useHistory, useLocation } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -44,6 +45,9 @@ HideOnScroll.propTypes = {
 function ScrollTop(props) {
   const { children, window } = props;
   const classes = useStyles();
+  let history = useHistory();
+  let location = useLocation();
+
   // Note that you normally won't need to set the window ref as useScrollTrigger
   // will default to window.
   // This is only being set here because the demo is in an iframe.
@@ -58,6 +62,7 @@ function ScrollTop(props) {
 
     if (anchor) {
       anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      history.push(location.pathname);
     }
   };
 
