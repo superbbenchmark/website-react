@@ -33,7 +33,7 @@ export default function BasicSortingGrid(props) {
 
   const infoColumns = ["Method"]
   const scoreColumns = ["PR", "KS", "IC", "SID", "ER", "ASR", "ASR-LM", "QbE", "SF-F1", "SF-CER", "SV", "SD"]
-  const scoreSort = ["asc", "dsc", "dsc", "dsc", "dsc", "asc", "asc", "dsc", "dsc", "asc", "asc", "dsc"]
+  const scoreSort = ["asc", "dsc", "dsc", "dsc", "dsc", "asc", "asc", "dsc", "dsc", "asc", "asc", "asc"]
   let columns = Object.keys(submissions[0]).map((column) => {
     let scoreWidth = 81 + (column.length - 2) * 10;
     return {
