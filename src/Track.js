@@ -12,6 +12,21 @@ import { capitalizeFirstLetter } from './Utilies';
 import Leaderboard from './Leaderboard';
 
 
+function Subsection(props) {
+  const theme = useTheme();
+  const { children, sectionName } = props;
+  return (
+    <Box margin={theme.spacing(6, "auto")}>
+      <Box id={sectionName.toLowerCase()} position="relative" top={theme.spacing(-4)} visibility="hidden"></Box>
+      <Box margin={theme.spacing(2, "auto")}>
+        <Typography variant="h5" color="primary">{capitalizeFirstLetter(sectionName.toLowerCase())}</Typography>
+      </Box>
+      {children}
+    </Box>
+  )
+}
+
+
 export default function Track(props) {
   const theme = useTheme();
   const match = useRouteMatch();
@@ -25,13 +40,23 @@ export default function Track(props) {
 
   return (
     <ThemeProvider theme={trackTheme}>
-      <Box margin={trackTheme.spacing(4, "auto")}>
-        <Box margin={trackTheme.spacing(2, "auto")}>
-          <Typography variant="h4" color="primary"><strong>{capitalizeFirstLetter(urlTrack)}</strong> Track</Typography>
+      <Box margin={trackTheme.spacing(4, "auto", 8)}>
+        <Box margin={trackTheme.spacing(4, "auto")}>
+          <Box margin={trackTheme.spacing(2, "auto")}>
+            <Typography variant="h4" color="primary"><strong>{capitalizeFirstLetter(urlTrack)}</strong> Track</Typography>
+          </Box>
+          <Divider />
         </Box>
-        <Divider />
+        <Subsection sectionName="rules">
+          <Typography variant="body1" color="textSecondary">Some rules</Typography>
+        </Subsection>
+        <Subsection sectionName="leaderboard">
+          <Leaderboard submissions={submissions} />
+        </Subsection>
+        <Subsection sectionName="compare">
+          <Typography variant="body1" color="textSecondary">Some comparison table</Typography>
+        </Subsection>
       </Box>
-      <Leaderboard submissions={submissions} />
     </ThemeProvider>
   )
 }
