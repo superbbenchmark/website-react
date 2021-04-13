@@ -22,7 +22,7 @@ export default function AdaptiveLink(props) {
   const classes = useStyles();
 
   return (
-    <Box fontWeight={location.pathname === link ? "bold" : "inherit"} className={classes.navlink}>
+    <Box fontWeight={location.pathname.includes(link) ? "bold" : "inherit"} className={classes.navlink}>
       {
         link.includes("http") ?
           <a className="unlink" href={disabled ? null : link} target="_blank">
