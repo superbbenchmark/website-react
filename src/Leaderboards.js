@@ -40,7 +40,7 @@ function TrackButton(props) {
   return (
     <TrackButtonCls link={`${match.url}/${name}`}>
       <Paper
-        elevation={hover ? 8 : 2}
+        elevation={hover ? 6 : 2}
         onMouseOver={() => {setHover((prev) => (!prev));}}
         onMouseOut={() => {setHover((prev) => (!prev));}}
       >

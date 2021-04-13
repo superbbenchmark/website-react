@@ -8,13 +8,6 @@ import { useTheme } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles((theme) => ({
-  icon: {
-    fontSize: 64,
-  },
-  trackTitle: {
-    fontWeight: "bold",
-    margin: theme.spacing(0, "auto", 2),
-  }
 }));
 
 
