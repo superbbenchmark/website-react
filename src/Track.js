@@ -28,7 +28,7 @@ export default function Track(props) {
         </Box>
         <Divider />
       </Box>
-      <Leaderboard />
+      <Leaderboard submissions={submissions} />
     </React.Fragment>
   )
 }

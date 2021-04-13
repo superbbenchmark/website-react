@@ -33,9 +33,9 @@ function TrackButton(props) {
   const classes = useStyles();
   const theme = useTheme();
   const match = useRouteMatch()
-  const { name, Icon, color, rules, scores } = props;
+  const { name, Icon, color, rules, submissions } = props;
   const [ hover, setHover ] = React.useState(false);
-  const TrackButtonCls = (!rules) && (!scores) ? Box : AdaptiveLink;
+  const TrackButtonCls = (!rules) && (!submissions) ? Box : AdaptiveLink;
 
   return (
     <TrackButtonCls link={`${match.url}/${name}`}>
@@ -64,7 +64,7 @@ function TrackButton(props) {
                   justify="center"
                 >
                   {
-                    [["rules", !rules], ["compare", !scores], ["leaderboard", !scores]].map(([buttonName, disabled]) => (
+                    [["rules", !rules], ["compare", !submissions], ["leaderboard", !submissions]].map(([buttonName, disabled]) => (
                       <Grid item>
                         <AdaptiveLink link={`${match.url}/${name}#${buttonName}`} disabled={disabled}>
                           <Button
@@ -100,7 +100,7 @@ export default function Leaderboards(props) {
       Icon: LockIcon,
       color: green[400],
       rules: "Universal Representation, some rule...",
-      scores: {
+      submissions: {
         "FBANK": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
         "PASE+": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
         "APC": { PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3 },
@@ -120,13 +120,13 @@ export default function Leaderboards(props) {
       Icon: LockOpenIcon,
       color: yellow[700],
       rules: null,
-      scores: null,
+      submissions: null,
     },
     unconstrained: {
       Icon: AllInclusive,
       color: red[500],
       rules: null,
-      scores: null,
+      submissions: null,
     },
   }
 
