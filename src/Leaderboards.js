@@ -66,7 +66,7 @@ function TrackButton(props) {
                   {
                     [["rules", !rules], ["compare", !scores], ["leaderboard", !scores]].map(([buttonName, disabled]) => (
                       <Grid item>
-                        <AdaptiveLink link={`${match.url}/${name}#${buttonName}`}>
+                        <AdaptiveLink link={`${match.url}/${name}#${buttonName}`} disabled={disabled}>
                           <Button
                             size="small"
                             variant="outlined"

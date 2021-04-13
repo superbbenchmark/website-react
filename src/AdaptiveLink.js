@@ -1,10 +1,12 @@
-import { HashLink as Link } from 'react-router-hash-link';
+import React from 'react';
+import { HashLink } from 'react-router-hash-link';
 
 export default function AdaptiveLink(props) {
-    const { link, children } = props;
+    const { link, children, disabled } = props;
+    const Link = disabled ? React.Fragment : HashLink;
     return (
         link.includes("http") ?
-            <a className="unlink" href={link} target="_blank">
+            <a className="unlink" href={disabled ? null : link} target="_blank">
                 {children}
             </a>
             :
