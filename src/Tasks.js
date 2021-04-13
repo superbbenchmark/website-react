@@ -137,7 +137,7 @@ function Tasks(props) {
       <TimedGrow interval={0}>
         <Box margin={theme.spacing(4, "auto")}>
           <Box margin={theme.spacing(2, "auto")}>
-            <Typography color="textPrimary" variant="h4">{capitalizeFirstLetter("domains")}</Typography>
+            <Typography color="textPrimary" variant="h4">Tasks</Typography>
           </Box>
           <Divider />
         </Box>
