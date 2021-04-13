@@ -103,55 +103,55 @@ export default function Leaderboards(props) {
       submissions: [
         {
           Method: "FBANK", Description: "classic feature", Parameters: 0, Stride: 10, Input: "waveform", Corpus: "-",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
         {
           Method: "PASE+", Description: "multi-task", Parameters: 7.83e+6, Stride: 10, Input: "waveform", Corpus: "LS 50 hr",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
         {
           Method: "APC", Description: "F-G", Parameters: 4.11e+6, Stride: 10, Input: "FBANK", Corpus: "LS 360 hr",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
         {
           Method: "VQ-APC", Description: "F-G + VQ", Parameters: 4.63e+6, Stride: 10, Input: "FBANK", Corpus: "LS 360 hr",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
         {
           Method: "NPC", Description: "M-G + VQ", Parameters: 19.38e+6, Stride: 10, Input: "FBANK", Corpus: "LS 360 hr",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
         {
           Method: "Mockingjay", Description: "time M-G", Parameters: 85.12e+6, Stride: 10, Input: "FBANK", Corpus: "LS 360 hr",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
         {
           Method: "TERA", Description: "time/freq M-G", Parameters: 21.33e+6, Stride: 10, Input: "FBANK", Corpus: "LS 960 hr",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
         {
           Method: "modified CPC", Description: "F-C", Parameters: 1.84e+6, Stride: 10, Input: "waveform", Corpus: "LL 60k hr",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
         {
           Method: "wav2vec", Description: "F-C", Parameters: 32.54e+6, Stride: 10, Input: "waveform", Corpus: "LS 960 hr",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
         {
           Method: "vq-wav2vec", Description: "F-C + VQ", Parameters: 34.15e+6, Stride: 10, Input: "waveform", Corpus: "LS 960 hr",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
         {
           Method: "wav2vec 2.0", Description: "M-C + VQ", Parameters: 95.04e+6, Stride: 20, Input: "waveform", Corpus: "LS 960 hr",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
         {
           Method: "HuBERT Base", Description: "M-P + VQ", Parameters: 94.68e+6, Stride: 20, Input: "waveform", Corpus: "LS 960 hr",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
         {
           Method: "HuBERT Large", Description: "M-P + VQ", Parameters: 316.61e+6, Stride: 20, Input: "waveform", Corpus: "LL 60k hr",
-          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, ASR: 3, QbE: 3, SF: 3, SV: 3, SD: 3
+          PR: 3, KS: 3, IC: 3, SID: 3, ER: 3, "ASR": 3, "ASR-LM": 3, QbE: 3, "SF-F1": 3, "SF-CER": 3, SV: 3, SD: 3,
         },
       ]
     },

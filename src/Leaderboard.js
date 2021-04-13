@@ -1,16 +1,24 @@
 import * as React from 'react';
 import { useTheme } from '@material-ui/core/styles';
-import { DataGrid, GridToolbar } from '@material-ui/data-grid';
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridColumnsToolbarButton,
+  GridFilterToolbarButton,
+} from '@material-ui/data-grid';
 import { useDemoData } from '@material-ui/x-grid-data-generator';
 import { Typography, Box } from '@material-ui/core';
 
 
-function PlacedToolBar(props) {
+function CustomToolbar() {
   return (
     <Box margin="5px 10px">
-      <GridToolbar {...props} style={{ fontWeight: "bold" }} />
+      <GridToolbarContainer>
+        <GridColumnsToolbarButton />
+        <GridFilterToolbarButton />
+      </GridToolbarContainer>
     </Box>
-  )
+  );
 }
 
 
@@ -22,25 +30,20 @@ export default function BasicSortingGrid(props) {
       ...row
     }
   ));
-  let columns = Object.keys(submissions[0]).map((column) => ({
-    field: column,
-    type: typeof (submissions[0][column]),
-    hide: ![
-      "Method",
-      "Description",
-      "Parameters",
-      "PR",
-      "KS",
-      "IC",
-      "SID",
-      "ER",
-      "ASR",
-      "QbE",
-      "SF",
-      "SV",
-      "SD",
-    ].includes(column),
-  }))
+
+  const infoColumns = ["Method"]
+  const scoreColumns = ["PR", "KS", "IC", "SID", "ER", "ASR", "ASR-LM", "QbE", "SF-F1", "SF-CER", "SV", "SD"]
+  const scoreSort = ["asc", "dsc", "dsc", "dsc", "dsc", "asc", "asc", "dsc", "dsc", "asc", "asc", "dsc"]
+  let columns = Object.keys(submissions[0]).map((column) => {
+    let scoreWidth = 81 + (column.length - 2) * 10;
+    return {
+      field: column,
+      type: typeof (submissions[0][column]),
+      hide: !(infoColumns + scoreColumns).includes(column),
+      width: scoreColumns.includes(column) ? scoreWidth : 130,
+    }
+  })
+  let randomIndex = Math.floor(Math.random() * scoreColumns.length);
 
   return (
     <div style={{ height: 500, width: '100%' }}>
@@ -50,12 +53,12 @@ export default function BasicSortingGrid(props) {
         disableColumnMenu={true}
         density="compact"
         components={{
-          Toolbar: PlacedToolBar,
+          Toolbar: CustomToolbar,
         }}
         sortModel={[
           {
-            field: 'ASR',
-            sort: 'asc',
+            field: scoreColumns[randomIndex],
+            sort: scoreSort[randomIndex],
           },
         ]}
       />
