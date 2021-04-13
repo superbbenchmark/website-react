@@ -109,8 +109,8 @@ const useStyles = makeStyles((theme) => ({
     },
     cursor: "pointer",
   },
-  brand: {
-    fontWeight: "regular",
+  navlink: {
+    fontWeight: "inherit",
   }
 }));
 
@@ -136,7 +136,7 @@ function NavigationBar(props) {
     ["Tasks", "/tasks"],
     ["Leaderboards", "/leaderboards"],
   ].map(([text, link]) => [
-    <Typography color="textSecondary" variant="overline">{text}</Typography>,
+    <Typography color="textSecondary" variant="overline" className={classes.navlink}>{text}</Typography>,
     link
   ])
 
@@ -156,7 +156,7 @@ function NavigationBar(props) {
                 >
                   <AdaptiveLink link="/">
                     <LiftingBarButton>
-                      <Typography color="textPrimary" variant="h6" className={`${classes.brand}`}>
+                      <Typography color="textPrimary" variant="h6" className={`${classes.navlink}`}>
                         {useMediaQuery(theme.breakpoints.up('sm')) ? "SUPERB Benchmark" : "SUPERB"}
                       </Typography>
                     </LiftingBarButton>

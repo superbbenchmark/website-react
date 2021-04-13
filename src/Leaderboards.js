@@ -35,7 +35,7 @@ function TrackButton(props) {
   const match = useRouteMatch()
   const { name, Icon, color, rules, scores } = props;
   const [ hover, setHover ] = React.useState(false);
-  const TrackButtonCls = (!rules) && (!scores) ? React.Fragment : AdaptiveLink;
+  const TrackButtonCls = (!rules) && (!scores) ? Box : AdaptiveLink;
 
   return (
     <TrackButtonCls link={`${match.url}/${name}`}>
