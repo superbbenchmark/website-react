@@ -136,7 +136,7 @@ export default function Leaderboards(props) {
         <TimedGrow interval={0}>
           <Box margin={theme.spacing(4, "auto")}>
             <Box margin={theme.spacing(2, "auto")}>
-              <Typography color="textPrimary" variant="h4">Tracks</Typography>
+              <Typography color="textPrimary" variant="h4">Leaderboards</Typography>
             </Box>
             <Divider />
           </Box>
