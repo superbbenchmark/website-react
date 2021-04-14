@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
   },
   trackTitle: {
     fontWeight: "bold",
-    margin: theme.spacing(0, "auto", 2),
   }
 }));
 
@@ -33,22 +32,22 @@ function TrackButton(props) {
   const classes = useStyles();
   const theme = useTheme();
   const match = useRouteMatch()
-  const { name, Icon, color, rules, submissions } = props;
+  const { name, intro, Icon, color, rules, submissions } = props;
   const [hover, setHover] = React.useState(false);
-  const TrackButtonCls = (!rules) && (!submissions) ? Box : AdaptiveLink;
+  const trackOpen = (!rules) && (!submissions);
 
   return (
-    <TrackButtonCls link={`${match.url}/${name}`}>
+    <React.Fragment>
       <Paper
-        elevation={hover ? 6 : 2}
+        elevation={hover ? 7 : 2}
         onMouseOver={() => { setHover((prev) => (!prev)); }}
         onMouseOut={() => { setHover((prev) => (!prev)); }}
       >
-        <Box padding={theme.spacing(3, 2)}>
+        <Box padding={theme.spacing(4, 3)}>
           <Grid
             container
             direction="column"
-            spacing={2}
+            spacing={3}
             justify="center"
           >
             {
@@ -57,6 +56,9 @@ function TrackButton(props) {
                 <Typography color="textPrimary" variant="h5" className={classes.trackTitle}>
                   {capitalizeFirstLetter(name)}
                 </Typography>,
+                <Typography color="textSecondary" variant="body1">
+                  {intro}
+                </Typography>,
                 <Grid
                   container
                   direction="row"
@@ -64,11 +66,11 @@ function TrackButton(props) {
                   justify="center"
                 >
                   {
-                    [["rules", !rules], ["compare", !submissions], ["leaderboard", !submissions]].map(([buttonName, disabled]) => (
+                    [["enter", "", trackOpen]].map(([buttonName, urlPostfix, disabled]) => (
                       <Grid item>
-                        <AdaptiveLink link={`${match.url}/${name}#${buttonName}`} disabled={disabled}>
+                        <AdaptiveLink link={`${match.url}/${name}${urlPostfix}`} disabled={disabled}>
                           <Button
-                            size="small"
+                            size="medium"
                             variant="outlined"
                             disabled={disabled}
                             style={{ color: disabled ? theme.palette.primary : color }}
@@ -85,8 +87,18 @@ function TrackButton(props) {
           </Grid>
         </Box>
       </Paper>
-    </TrackButtonCls>
+    </React.Fragment>
   )
+}
+
+
+function Strong(props) {
+  const theme = useTheme();
+  return (
+    <Box component="span" fontWeight="bold" fontStyle="italic">
+      {props.children}
+    </Box>
+  );
 }
 
 
@@ -96,7 +108,12 @@ export default function Leaderboards(props) {
   const match = useRouteMatch();
 
   const tracks = {
-    fixed: {
+    "constrained": {
+      intro:
+        <span>
+          A fair comparison between <Strong>frozen representations</Strong> by enforcing the same downstream model in each task.
+          Only a few hyper-paramters for training are allowed to tuned.
+        </span>,
       Icon: LockIcon,
       color: green[400],
       rules: "Universal Representation, some rule...",
@@ -155,13 +172,19 @@ export default function Leaderboards(props) {
         },
       ]
     },
-    constrained: {
+    "less-constrained": {
+      intro:
+        <span>
+          A comparison between <Strong>frozen representations</Strong> with customized but limited-resource downstream models.
+          The details of downstream models are reported along with submission.
+        </span>,
       Icon: LockOpenIcon,
       color: yellow[700],
       rules: null,
       submissions: null,
     },
-    unconstrained: {
+    "unconstrained": {
+      intro: "Not yet open",
       Icon: AllInclusive,
       color: red[500],
       rules: null,
