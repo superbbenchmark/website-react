@@ -30,7 +30,7 @@ export default function Track(props) {
   const theme = useTheme();
   const match = useRouteMatch();
   const { urlTrack } = useParams();
-  const { Icon, color, rules, submissions } = props.infos[urlTrack];
+  const { Icon, intro, color, rules } = props.infos.filter((info) => (info.name == urlTrack))[0];
 
   const trackTheme = createMuiTheme({
     ...theme,

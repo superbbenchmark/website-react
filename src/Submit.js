@@ -14,82 +14,11 @@ import AllInclusive from '@material-ui/icons/AllInclusive';
 
 import Track from './components/Track';
 import TimedGrow from './components/TimedGrow';
-import AdaptiveLink from './components/AdaptiveLink';
-import { capitalizeFirstLetter } from './components/Utilies';
+import TrackCard from './components/TrackCard';
 
 
 const useStyles = makeStyles((theme) => ({
-  icon: {
-    fontSize: 64,
-  },
-  trackTitle: {
-    fontWeight: "bold",
-  }
 }));
-
-
-function TrackButton(props) {
-  const classes = useStyles();
-  const theme = useTheme();
-  const match = useRouteMatch()
-  const { name, intro, Icon, color, rules, submissions } = props;
-  const [hover, setHover] = React.useState(false);
-  const trackOpen = (!rules) && (!submissions);
-
-  return (
-    <React.Fragment>
-      <Paper
-        elevation={hover ? 7 : 2}
-        onMouseOver={() => { setHover((prev) => (!prev)); }}
-        onMouseOut={() => { setHover((prev) => (!prev)); }}
-      >
-        <Box padding={theme.spacing(4, 3)}>
-          <Grid
-            container
-            direction="column"
-            spacing={3}
-            justify="center"
-          >
-            {
-              [
-                <Icon style={{ fontSize: 64, color: color }} />,
-                <Typography color="textPrimary" variant="h5" className={classes.trackTitle}>
-                  {capitalizeFirstLetter(name)}
-                </Typography>,
-                <Typography color="textSecondary" variant="body1">
-                  {intro}
-                </Typography>,
-                <Grid
-                  container
-                  direction="row"
-                  spacing={2}
-                  justify="center"
-                >
-                  {
-                    [["enter", "", trackOpen]].map(([buttonName, urlPostfix, disabled]) => (
-                      <Grid item>
-                        <AdaptiveLink link={`${match.url}/${name}${urlPostfix}`} disabled={disabled}>
-                          <Button
-                            size="medium"
-                            variant="outlined"
-                            disabled={disabled}
-                            style={{ color: disabled ? theme.palette.primary : color }}
-                          >
-                            {buttonName}
-                          </Button>
-                        </AdaptiveLink>
-                      </Grid>
-                    ))
-                  }
-                </Grid>,
-              ].map((item) => <Grid item>{item}</Grid>)
-            }
-          </Grid>
-        </Box>
-      </Paper>
-    </React.Fragment>
-  )
-}
 
 
 function Strong(props) {
@@ -107,8 +36,9 @@ export default function Submit(props) {
   const theme = useTheme();
   const match = useRouteMatch();
 
-  const tracks = {
-    "constrained": {
+  const tracks = [
+    {
+      name: "constrained",
       intro:
         <span>
           A fair comparison between <Strong>frozen representations</Strong> by enforcing the same downstream model in each task.
@@ -118,7 +48,8 @@ export default function Submit(props) {
       color: green[400],
       rules: "Universal Representation, some rule...",
     },
-    "less-constrained": {
+    {
+      name: "less-constrained",
       intro:
         <span>
           A comparison between <Strong>frozen representations</Strong> with customized but limited-resource downstream models.
@@ -128,13 +59,14 @@ export default function Submit(props) {
       color: yellow[700],
       rules: null,
     },
-    "unconstrained": {
+    {
+      name: "unconstrained",
       intro: "Not yet open",
       Icon: AllInclusive,
       color: red[500],
       rules: null,
     },
-  }
+  ]
 
   return (
     <Switch>
@@ -154,12 +86,19 @@ export default function Submit(props) {
           justify="center"
         >
           {
-            Object.keys(tracks).map((track, index) => {
+            tracks.map((trackInfo, index) => {
+              const { name, intro, Icon, color, rules } = trackInfo;
               return (
                 <React.Fragment>
                   <TimedGrow interval={100 * (index + 1)}>
                     <Grid item xs={12} sm={6} md={4}>
-                      <TrackButton name={track} {...tracks[track]} />
+                      <TrackCard
+                        Icon={Icon}
+                        title={name}
+                        description={intro}
+                        color={color}
+                        disabled={!rules}
+                      />
                     </Grid>
                   </TimedGrow>
                 </React.Fragment>
