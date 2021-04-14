@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { useTheme } from '@material-ui/core/styles';
+import {
+  useTheme,
+  createMuiTheme,
+  ThemeProvider
+} from '@material-ui/core/styles';
 import {
   DataGrid,
   GridToolbarContainer,
@@ -9,21 +13,30 @@ import {
 import { useDemoData } from '@material-ui/x-grid-data-generator';
 import { Typography, Box } from '@material-ui/core';
 
+import { submissions } from './Data';
+
 
 function CustomToolbar() {
+  const theme = useTheme();
+  const toolbarTheme = createMuiTheme({
+    ...theme,
+  })
+  toolbarTheme.palette.primary.main = toolbarTheme.palette.text.secondary;
+
   return (
-    <Box margin="5px 10px">
-      <GridToolbarContainer>
-        <GridColumnsToolbarButton />
-        <GridFilterToolbarButton />
-      </GridToolbarContainer>
-    </Box>
+    <ThemeProvider theme={toolbarTheme}>
+      <Box margin="5px 10px">
+        <GridToolbarContainer>
+          <GridColumnsToolbarButton />
+          <GridFilterToolbarButton />
+        </GridToolbarContainer>
+      </Box>
+    </ThemeProvider>
   );
 }
 
 
 export default function BasicSortingGrid(props) {
-  const { submissions } = props;
   let rows = submissions.map((row, index) => (
     {
       id: index,

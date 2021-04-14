@@ -5,12 +5,13 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import Box from "@material-ui/core/Box";
+import { Box, Typography } from "@material-ui/core";
 
 import NavigationBar from "./NavigationBar";
 import Landing from "./Landing";
 import Tasks from "./Tasks";
 import Submit from "./Submit";
+import Leaderboard from "./Leaderboard";
 
 
 const theme = createMuiTheme({
@@ -44,6 +45,12 @@ function App() {
             </Route>
             <Route path="/submit">
               <Submit />
+            </Route>
+            <Route path="/compare">
+              <Typography>Compare</Typography>
+            </Route>
+            <Route path="/leaderboard">
+              <Leaderboard />
             </Route>
           </Switch>
         </ThemeProvider>

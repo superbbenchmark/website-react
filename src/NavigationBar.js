@@ -61,7 +61,7 @@ function ScrollTop(props) {
     const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor');
 
     if (anchor) {
-      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      anchor.scrollIntoView({ block: 'center' });
       history.push(location.pathname);
     }
   };
@@ -140,6 +140,8 @@ function NavigationBar(props) {
     ["Code", "https://github.com/s3prl/s3prl"],
     ["Tasks", "/tasks"],
     ["Submit", "/submit"],
+    ["Compare", "/compare"],
+    ["Leaderboard", "/leaderboard"],
   ].map(([text, link]) => [
     <Typography color="textSecondary" variant="overline" className={classes.navlink}>{text}</Typography>,
     link

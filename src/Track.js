@@ -9,7 +9,6 @@ import { Box, Typography, Divider } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import { capitalizeFirstLetter } from './Utilies';
-import Leaderboard from './Leaderboard';
 
 
 function Subsection(props) {
@@ -49,12 +48,6 @@ export default function Track(props) {
         </Box>
         <Subsection sectionName="rules">
           <Typography variant="body1" color="textSecondary">Some rules</Typography>
-        </Subsection>
-        <Subsection sectionName="leaderboard">
-          <Leaderboard submissions={submissions} />
-        </Subsection>
-        <Subsection sectionName="compare">
-          <Typography variant="body1" color="textSecondary">Some comparison table</Typography>
         </Subsection>
       </Box>
     </ThemeProvider>
