@@ -12,10 +12,10 @@ import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AllInclusive from '@material-ui/icons/AllInclusive';
 
-import Track from './Track';
-import TimedGrow from './TimedGrow';
-import AdaptiveLink from './AdaptiveLink';
-import { capitalizeFirstLetter } from './Utilies';
+import Track from './components/Track';
+import TimedGrow from './components/TimedGrow';
+import AdaptiveLink from './components/AdaptiveLink';
+import { capitalizeFirstLetter } from './components/Utilies';
 
 
 const useStyles = makeStyles((theme) => ({

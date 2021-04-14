@@ -7,11 +7,11 @@ import {
 } from "react-router-dom";
 import { Box, Typography } from "@material-ui/core";
 
-import NavigationBar from "./NavigationBar";
 import Landing from "./Landing";
 import Tasks from "./Tasks";
 import Submit from "./Submit";
 import Leaderboard from "./Leaderboard";
+import NavigationBar from "./components/NavigationBar";
 
 
 const theme = createMuiTheme({

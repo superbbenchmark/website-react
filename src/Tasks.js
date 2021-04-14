@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 import { Box, Typography, Grid, Paper, Divider, Button } from '@material-ui/core';
 
-import TimedGrow from './TimedGrow';
-import AdaptiveLink from './AdaptiveLink';
-import { capitalizeFirstLetter } from './Utilies';
+import TimedGrow from './components/TimedGrow';
+import AdaptiveLink from './components/AdaptiveLink';
+import { capitalizeFirstLetter } from './components/Utilies';
 
 
 const tasks = {

@@ -16,8 +16,10 @@ import withWidth from '@material-ui/core/withWidth';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 import Drawer from "./Drawer";
 import AdaptiveLink from "./AdaptiveLink";
+
 
 function HideOnScroll(props) {
   const { children, window } = props;
