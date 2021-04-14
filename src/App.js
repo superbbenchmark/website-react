@@ -35,7 +35,7 @@ function App() {
       <Router>
         <ThemeProvider theme={theme}>
           <NavigationBar />
-          <Box margin={theme.spacing(6, "auto")}></Box>
+          <Box margin={theme.spacing(4, "auto")}></Box>
           <Switch>
             <Route path="/" exact>
               <Landing />
