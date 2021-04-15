@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function TrackCard(props) {
+export default function FlowCard(props) {
   const classes = useStyles();
   const theme = useTheme();
   const match = useRouteMatch()
