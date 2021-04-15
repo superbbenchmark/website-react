@@ -22,7 +22,7 @@ export default function TrackButton(props) {
   const theme = useTheme();
   const classes = useStyles();
 
-  const leftRightPadding = "16px";
+  const leftRightPadding = theme.spacing(2);
   return (
     <Grid
       container
@@ -32,8 +32,8 @@ export default function TrackButton(props) {
       spacing={1}
     >
       <Grid item>
-        <Typography component="span" variant="body1" color="primary">
-          <strong>{capitalizeFirstLetter(name.toLowerCase())}</strong> track
+        <Typography variant="h6" color="primary">
+          {capitalizeFirstLetter(name.toLowerCase())}
         </Typography>
       </Grid>
       <Grid item>
@@ -59,7 +59,7 @@ export default function TrackButton(props) {
             </Grid>
             <Grid item>
               <AdaptiveLink disabled={!open} link={`${match.url}/${name}`}>
-                <Button size="small" disabled={!open} color="primary" style={{ paddingLeft: leftRightPadding, paddingRight: leftRightPadding }}>
+                <Button disabled={!open} color="primary" style={{ paddingLeft: leftRightPadding, paddingRight: leftRightPadding }}>
                   Submit
                 </Button>
               </AdaptiveLink>

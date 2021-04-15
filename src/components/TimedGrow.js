@@ -7,9 +7,12 @@ export default function TimedGrow(props) {
   const { children, interval } = props
 
   React.useEffect(() => {
-    setInterval(() => {
+    var timeout = setTimeout(() => {
       setChecked(true);
     }, interval);
+    return () => {
+      clearTimeout(timeout);
+    };
   });
 
   return (
@@ -25,4 +28,8 @@ export default function TimedGrow(props) {
       </Grow>
     </React.Fragment>
   )
+}
+
+TimedGrow.defaultProps = {
+  interval: 0,
 }

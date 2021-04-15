@@ -4,14 +4,13 @@ import {
   Route,
   useRouteMatch,
 } from "react-router-dom";
-import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme, fade } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
-import { Box, Grid, Button, Divider, Typography } from '@material-ui/core';
+import { Box, Grid, Button, Divider, Typography, Link } from '@material-ui/core';
 
 import { TitleSection, ContentSection } from './components/Sections';
 import PageTitle from './components/PageTitle';
 import TrackButton from './components/TrackButton';
-import TimedGrow from './components/TimedGrow';
 import SubmitForm from './components/SubmitForm';
 import AdaptiveLink from './components/AdaptiveLink';
 import { Strong, capitalizeFirstLetter } from './components/Utilies';
@@ -19,7 +18,27 @@ import { tracks } from './Data';
 
 
 const useStyles = makeStyles((theme) => ({
+  rules: {
+    display: "inline-block",
+    padding: "1px 6px",
+    marginTop: 1,
+    marginBottom: 1,
+    borderRadius: theme.shape.borderRadius,
+    border: `1px solid ${fade(theme.palette.text.secondary, 0.5)}`
+  }
 }));
+
+
+function DescriptionButton(props) {
+  const { name, link } = props;
+  return (
+    <AdaptiveLink link={link}>
+      <Button size="small" variant="outlined" component="span">
+        {name}
+      </Button>
+    </AdaptiveLink>
+  )
+}
 
 
 export default function Submit(props) {
@@ -31,18 +50,15 @@ export default function Submit(props) {
     <Switch>
       <Route path={`${match.path}`} exact>
         <TitleSection>
-          <TimedGrow interval={0}>
-            <div>
-              <PageTitle
-                title="Submit"
-                description={
-                  <span>
-                    Submissions are categorized into <Strong>three tracks</Strong> for different usages of the shared pretrained model.
+          <PageTitle
+            title="Submit"
+            description={
+              <span>
+                Submissions are categorized into <Strong>three tracks</Strong> for different usages of the shared pretrained model,
+                    and should follow the <DescriptionButton name="general rules" link={`${match.url}#general-rules`} /> and the track-specific rules.
                   </span>
-                }
-              />
-            </div>
-          </TimedGrow>
+            }
+          />
           <Grid
             container
             direction="row"
@@ -57,40 +73,56 @@ export default function Submit(props) {
 
                 return (
                   <Grid item>
-                    <TimedGrow interval={100 * index}>
-                      <ThemeProvider theme={trackTheme}>
-                        <TrackButton {...track} />
-                      </ThemeProvider>
-                    </TimedGrow>
+                    <ThemeProvider theme={trackTheme}>
+                      <TrackButton {...track} />
+                    </ThemeProvider>
                   </Grid>
                 )
               })
             }
           </Grid>
         </TitleSection>
-        {
-          tracks.map(({ color, name, intro, description }, index) => {
-            let trackTheme = createMuiTheme({ ...theme });
-            trackTheme.palette.primary.main = color;
-            trackTheme.palette.text.primary = color;
-            let startTime = 100 * tracks.length;
+        <ContentSection anchorKey="general-rules">
+          <PageTitle
+            title="General Rules"
+            description="The general rules applied to all tracks."
+          />
+          <Typography variant="body1" color="textSecondary">
+            Some general rules.
+          </Typography>
+        </ContentSection>
+        <ContentSection anchorKey="track-rules">
+          <PageTitle
+            title="Track Rules"
+            description="The track-specific rules for each of the tracks."
+          />
+          {
+            tracks.map(({ color, name, rules }, index) => {
+              let trackTheme = createMuiTheme({ ...theme });
+              trackTheme.palette.primary.main = color;
+              trackTheme.palette.text.primary = color;
 
-            return (
-              <ContentSection anchorKey={name}>
-                <TimedGrow interval={startTime + 100 * index}>
-                  <PageTitle
-                    title={
-                      <span style={{ color: color }}>
-                        <strong>{capitalizeFirstLetter(name.toLowerCase())}</strong> Track
-                      </span>
-                    }
-                    titleVariant="h5"
-                  />
-                </TimedGrow>
-              </ContentSection>
-            )
-          })
-        }
+              return (
+                <Box maxWidth={600} margin="auto">
+                  <ContentSection anchorKey={name}>
+                    <PageTitle
+                      title={
+                        <span style={{ color: color }}>
+                          {capitalizeFirstLetter(name.toLowerCase())}
+                        </span>
+                      }
+                      titleVariant="h5"
+                      divider={false}
+                    />
+                    <Typography variant="body1" color="textSecondary">
+                      {rules}
+                    </Typography>
+                  </ContentSection>
+                </Box>
+              )
+            })
+          }
+        </ContentSection>
       </Route>
       <Route path={`${match.path}/:urlTrack`}>
         <SubmitForm />

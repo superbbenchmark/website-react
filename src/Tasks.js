@@ -5,7 +5,6 @@ import { Box, Typography, Grid, Paper, Divider, Button } from '@material-ui/core
 
 import { TitleSection, ContentSection } from './components/Sections';
 import PageTitle from './components/PageTitle';
-import TimedGrow from './components/TimedGrow';
 import AdaptiveLink from './components/AdaptiveLink';
 import { capitalizeFirstLetter, Strong } from './components/Utilies';
 import { domains } from './Data';
@@ -26,19 +25,15 @@ function Tasks(props) {
   return (
     <React.Fragment>
       <TitleSection>
-        <TimedGrow interval={0}>
-          <div>
-            <PageTitle
-              title="Tasks"
-              description={
-                <span>
-                  General speech processing can be categorized into <Strong>discriminative</Strong> and <Strong>generative</Strong> tasks.
+        <PageTitle
+          title="Tasks"
+          description={
+            <span>
+              General speech processing can be categorized into <Strong>discriminative</Strong> and <Strong>generative</Strong> tasks.
                   The initial release of SUPERB focues on the former, where ten tasks are collected from <Strong>five domains</Strong>.
             </span>
-              }
-            />
-          </div>
-        </TimedGrow>
+          }
+        />
         <Grid
           container
           direction="row"
@@ -48,13 +43,11 @@ function Tasks(props) {
           {
             domains.map(({ name }, index) => (
               <Grid item>
-                <TimedGrow interval={100 * index}>
-                  <AdaptiveLink link={`/tasks#${name}`}>
-                    <Button variant="outlined">
-                      {capitalizeFirstLetter(name.toLowerCase())}
-                    </Button>
-                  </AdaptiveLink>
-                </TimedGrow>
+                <AdaptiveLink link={`/tasks#${name}`}>
+                  <Button variant="outlined">
+                    {capitalizeFirstLetter(name.toLowerCase())}
+                  </Button>
+                </AdaptiveLink>
               </Grid>
             ))
           }
@@ -62,17 +55,12 @@ function Tasks(props) {
       </TitleSection>
       {
         domains.map(({ name, description, tasks }, domainIndex) => {
-          var startTime = (domainIndex + 1) * 400;
           return (
             <ContentSection anchorKey={name}>
-              <TimedGrow interval={startTime}>
-                <div>
-                  <PageTitle
-                    title={capitalizeFirstLetter(name.toLowerCase())}
-                    description={description}
-                  />
-                </div>
-              </TimedGrow>
+              <PageTitle
+                title={capitalizeFirstLetter(name.toLowerCase())}
+                description={description}
+              />
               <Grid
                 container
                 spacing={5}
@@ -83,18 +71,16 @@ function Tasks(props) {
                     return (
                       <React.Fragment>
                         <Grid item xs={12} sm={6} md={4}>
-                          <TimedGrow interval={startTime + 100 * (inDomainIndex + 1)}>
-                            <Paper elevation={3}>
-                              <Box padding={theme.spacing(3, 2)}>
-                                <Typography color="textPrimary" variant="h6" className={classes.taskName}>
-                                  {`${name}`}
-                                </Typography>
-                                <Typography color="textSecondary" variant="body2">
-                                  {description}
-                                </Typography>
-                              </Box>
-                            </Paper>
-                          </TimedGrow>
+                          <Paper elevation={3}>
+                            <Box padding={theme.spacing(3, 2)}>
+                              <Typography color="textPrimary" variant="h6" className={classes.taskName}>
+                                {`${name}`}
+                              </Typography>
+                              <Typography color="textSecondary" variant="body2">
+                                {description}
+                              </Typography>
+                            </Box>
+                          </Paper>
                         </Grid>
                       </React.Fragment>
                     )
