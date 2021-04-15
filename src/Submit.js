@@ -37,7 +37,21 @@ export default function Submit(props) {
                 title="Submit"
                 description={
                   <span>
-                    Submissions are categorized into <Strong>three tracks</Strong> for different usages of the shared pretrained model.
+                    Submissions are categorized into <Strong>three tracks</Strong> for different usages of the shared pretrained model:
+                    {` `}
+                    {
+                      tracks.map(({ name, color }, index) => (
+                        <span>
+                          {index < tracks.length - 1 ? `` : ` and `}
+                          <Box component="span" color={color}>
+                            <Strong>
+                              {`${name}`}
+                            </Strong>
+                          </Box>
+                          {index < tracks.length - 1 ? `, ` : `.`}
+                        </span>
+                      ))
+                    }
                   </span>
                 }
               />
