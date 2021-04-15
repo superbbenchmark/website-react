@@ -1,11 +1,11 @@
 import './App.css';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
 import { Box, Typography } from "@material-ui/core";
+import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
 
 import Landing from "./Landing";
 import Tasks from "./Tasks";
@@ -29,7 +29,16 @@ const theme = createMuiTheme({
 })
 
 
+const useStyles = makeStyles((theme) => ({
+  narrowViewport: {
+    maxWidth: 900,
+    margin: "auto"
+  }
+}));
+
+
 function App() {
+  const classes = useStyles();
   return (
     <div className="App">
       <Router>
@@ -38,16 +47,24 @@ function App() {
           <Box margin={theme.spacing(4, "auto")}></Box>
           <Switch>
             <Route path="/" exact>
-              <Landing />
+              <div className={`${classes.narrowViewport}`}>
+                <Landing />
+              </div>
             </Route>
             <Route path="/tasks">
-              <Tasks />
+              <div className={`${classes.narrowViewport}`}>
+                <Tasks />
+              </div>
             </Route>
             <Route path="/submit">
-              <Submit />
+              <div className={`${classes.narrowViewport}`}>
+                <Submit />
+              </div>
             </Route>
             <Route path="/compare">
-              <Typography>Compare</Typography>
+              <div className={`${classes.narrowViewport}`}>
+                <Typography>Compare</Typography>
+              </div>
             </Route>
             <Route path="/leaderboard">
               <Leaderboard />

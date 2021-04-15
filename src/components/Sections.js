@@ -20,9 +20,7 @@ function TitleSection(props) {
   const theme = useTheme();
   
   return (
-    <Section margin={theme.spacing(4, "auto", 8)}>
-      {props.children}
-    </Section>
+    <Section margin={theme.spacing(4, "auto", 8)} {...props} />
   );
 };
 
@@ -31,9 +29,7 @@ function ContentSection(props) {
   const theme = useTheme();
   
   return (
-    <Section margin={theme.spacing(4, "auto", 8)}>
-      {props.children}
-    </Section>
+    <Section margin={theme.spacing(4, "auto", 8)} {...props} />
   );
 };
 

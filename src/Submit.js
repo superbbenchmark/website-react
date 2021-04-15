@@ -4,17 +4,17 @@ import {
   Route,
   useRouteMatch,
 } from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid, Button, Divider, Typography } from '@material-ui/core';
 
 import { TitleSection, ContentSection } from './components/Sections';
 import PageTitle from './components/PageTitle';
 import TrackButton from './components/TrackButton';
-import Track from './components/Track';
 import TimedGrow from './components/TimedGrow';
 import SubmitForm from './components/SubmitForm';
-import { Strong } from './components/Utilies';
+import AdaptiveLink from './components/AdaptiveLink';
+import { Strong, capitalizeFirstLetter } from './components/Utilies';
 import { tracks } from './Data';
 
 
@@ -37,21 +37,7 @@ export default function Submit(props) {
                 title="Submit"
                 description={
                   <span>
-                    Submissions are categorized into <Strong>three tracks</Strong> for different usages of the shared pretrained model:
-                    {` `}
-                    {
-                      tracks.map(({ name, color }, index) => (
-                        <span>
-                          {index < tracks.length - 1 ? `` : ` and `}
-                          <Box component="span" color={color}>
-                            <Strong>
-                              {`${name}`}
-                            </Strong>
-                          </Box>
-                          {index < tracks.length - 1 ? `, ` : `.`}
-                        </span>
-                      ))
-                    }
+                    Submissions are categorized into <Strong>three tracks</Strong> for different usages of the shared pretrained model.
                   </span>
                 }
               />
@@ -60,31 +46,51 @@ export default function Submit(props) {
           <Grid
             container
             direction="row"
-            spacing={5}
+            spacing={4}
             justify="center"
+            alignItems="center"
           >
             {
-              tracks.map((trackInfo, index) => {
-                const { name, intro, Icon, color, rules } = trackInfo;
+              tracks.map((track, index) => {
+                let trackTheme = createMuiTheme({ ...theme });
+                trackTheme.palette.primary.main = track.color;
+
                 return (
-                  <React.Fragment>
-                    <TimedGrow interval={100 * (index + 1)}>
-                      <Grid item xs={12} sm={6} md={4}>
-                        <TrackButton
-                          Icon={Icon}
-                          title={name}
-                          description={intro}
-                          color={color}
-                          disabled={!rules}
-                        />
-                      </Grid>
+                  <Grid item>
+                    <TimedGrow interval={100 * index}>
+                      <ThemeProvider theme={trackTheme}>
+                        <TrackButton {...track} />
+                      </ThemeProvider>
                     </TimedGrow>
-                  </React.Fragment>
+                  </Grid>
                 )
               })
             }
           </Grid>
         </TitleSection>
+        {
+          tracks.map(({ color, name, intro, description }, index) => {
+            let trackTheme = createMuiTheme({ ...theme });
+            trackTheme.palette.primary.main = color;
+            trackTheme.palette.text.primary = color;
+            let startTime = 100 * tracks.length;
+
+            return (
+              <ContentSection anchorKey={name}>
+                <TimedGrow interval={startTime + 100 * index}>
+                  <PageTitle
+                    title={
+                      <span style={{ color: color }}>
+                        <strong>{capitalizeFirstLetter(name.toLowerCase())}</strong> Track
+                      </span>
+                    }
+                    titleVariant="h5"
+                  />
+                </TimedGrow>
+              </ContentSection>
+            )
+          })
+        }
       </Route>
       <Route path={`${match.path}/:urlTrack`}>
         <SubmitForm />

@@ -1,80 +1,72 @@
-import React from "react";
-import { useRouteMatch } from "react-router-dom";
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Box, Typography, Grid, Paper, Button } from "@material-ui/core";
+import React from 'react';
+import { useRouteMatch } from 'react-router-dom';
+import { makeStyles, useTheme, fade } from '@material-ui/core/styles';
+import { Box, Grid, Button, Divider, Typography } from '@material-ui/core';
 
-import AdaptiveLink from "./AdaptiveLink";
+import AdaptiveLink from './AdaptiveLink';
 import { capitalizeFirstLetter } from './Utilies';
 
 
 const useStyles = makeStyles((theme) => ({
-  icon: {
-    fontSize: 64,
+  pseudoOutlinedPrimaryButton: {
+    backgroundColor: 'transparent',
+    border: `1px solid ${fade(theme.palette.primary.main, 0.5)}`,
+    borderRadius: theme.shape.borderRadius,
   },
-  title: {
-    fontWeight: "bold",
-  }
 }));
 
 
 export default function TrackButton(props) {
-  const classes = useStyles();
+  const { name, rules } = props;
+  const match = useRouteMatch();
   const theme = useTheme();
-  const match = useRouteMatch()
-  const { Icon, title, description, color, disabled } = props;
-  const [hover, setHover] = React.useState(false);
+  const classes = useStyles();
 
+  const leftRightPadding = theme.spacing(2);
   return (
-    <React.Fragment>
-      <Paper
-        elevation={hover ? 7 : 2}
-        onMouseOver={() => { setHover((prev) => (!prev)); }}
-        onMouseOut={() => { setHover((prev) => (!prev)); }}
-      >
-        <Box padding={theme.spacing(4, 3)}>
+    <Grid
+      container
+      direction="column"
+      justify="flex-start"
+      alignItems="center"
+      spacing={1}
+    >
+      <Grid item>
+        <Typography variant="h6" color="primary">
+          {capitalizeFirstLetter(name.toLowerCase())}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <div className={classes.pseudoOutlinedPrimaryButton}>
           <Grid
             container
-            direction="column"
-            spacing={3}
+            direction="row"
             justify="center"
+            alignItems="center"
+            spacing={0}
           >
-            {
-              [
-                <Icon style={{ fontSize: 64, color: color }} />,
-                <Typography color="textPrimary" variant="h5" className={classes.title}>
-                  {capitalizeFirstLetter(title)}
-                </Typography>,
-                <Typography color="textSecondary" variant="body1">
-                  {description}
-                </Typography>,
-                <Grid
-                  container
-                  direction="row"
-                  spacing={2}
-                  justify="center"
-                >
-                  {
-                    [["enter", ""]].map(([buttonName, urlPostfix]) => (
-                      <Grid item>
-                        <AdaptiveLink link={`${match.url}/${title}${urlPostfix}`} disabled={disabled}>
-                          <Button
-                            size="medium"
-                            variant="outlined"
-                            disabled={disabled}
-                            style={{ color: disabled ? theme.palette.primary : color }}
-                          >
-                            {buttonName}
-                          </Button>
-                        </AdaptiveLink>
-                      </Grid>
-                    ))
-                  }
-                </Grid>,
-              ].map((item) => <Grid item>{item}</Grid>)
-            }
+            <Grid item>
+              <AdaptiveLink disabled={!rules} link={`${match.url}#${name}`}>
+                <Button disabled={!rules} color="primary" style={{ paddingLeft: leftRightPadding, paddingRight: leftRightPadding }}>
+                  Rules
+                  </Button>
+              </AdaptiveLink>
+            </Grid>
+            <Grid item>
+              <Box height={28}>
+                <Divider orientation="vertical" />
+              </Box>
+            </Grid>
+            <Grid item>
+              <AdaptiveLink disabled={!rules} link={`${match.url}/${name}`}>
+                <Button disabled={!rules} color="primary" style={{ paddingLeft: leftRightPadding, paddingRight: leftRightPadding }}>
+                  Submit
+                  </Button>
+              </AdaptiveLink>
+            </Grid>
           </Grid>
-        </Box>
-      </Paper>
-    </React.Fragment>
-  )
-}
+        </div>
+      </Grid>
+    </Grid>
+  );
+};

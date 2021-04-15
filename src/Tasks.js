@@ -47,15 +47,15 @@ function Tasks(props) {
         >
           {
             domains.map(({ name }, index) => (
-              <TimedGrow interval={100 * index}>
-                <Grid item>
+              <Grid item>
+                <TimedGrow interval={100 * index}>
                   <AdaptiveLink link={`/tasks#${name}`}>
                     <Button variant="outlined">
                       {capitalizeFirstLetter(name.toLowerCase())}
                     </Button>
                   </AdaptiveLink>
-                </Grid>
-              </TimedGrow>
+                </TimedGrow>
+              </Grid>
             ))
           }
         </Grid>
@@ -64,8 +64,7 @@ function Tasks(props) {
         domains.map(({ name, description, tasks }, domainIndex) => {
           var startTime = (domainIndex + 1) * 400;
           return (
-            <ContentSection>
-              <Box id={name} position="relative" top={theme.spacing(-4)} visibility="hidden"></Box>
+            <ContentSection anchorKey={name}>
               <TimedGrow interval={startTime}>
                 <div>
                   <PageTitle
@@ -83,8 +82,8 @@ function Tasks(props) {
                   tasks.map(({ name, description }, inDomainIndex) => {
                     return (
                       <React.Fragment>
-                        <TimedGrow interval={startTime + 100 * (inDomainIndex + 1)}>
-                          <Grid item xs={12} sm={6} md={4}>
+                        <Grid item xs={12} sm={6} md={4}>
+                          <TimedGrow interval={startTime + 100 * (inDomainIndex + 1)}>
                             <Paper elevation={3}>
                               <Box padding={theme.spacing(3, 2)}>
                                 <Typography color="textPrimary" variant="h6" className={classes.taskName}>
@@ -95,8 +94,8 @@ function Tasks(props) {
                                 </Typography>
                               </Box>
                             </Paper>
-                          </Grid>
-                        </TimedGrow>
+                          </TimedGrow>
+                        </Grid>
                       </React.Fragment>
                     )
                   })
