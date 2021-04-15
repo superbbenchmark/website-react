@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 import { Box, Typography, Grid, Paper, Divider, Button } from '@material-ui/core';
 
+import { TitleSection, ContentSection } from './components/Sections';
 import PageTitle from './components/PageTitle';
 import TimedGrow from './components/TimedGrow';
 import AdaptiveLink from './components/AdaptiveLink';
@@ -24,44 +25,46 @@ function Tasks(props) {
 
   return (
     <React.Fragment>
-      <TimedGrow interval={0}>
-        <div>
-          <PageTitle
-            title="Tasks"
-            description={
-              <span>
-                General speech processing can be categorized into <Strong>discriminative</Strong> and <Strong>generative</Strong> tasks.
+      <TitleSection>
+        <TimedGrow interval={0}>
+          <div>
+            <PageTitle
+              title="Tasks"
+              description={
+                <span>
+                  General speech processing can be categorized into <Strong>discriminative</Strong> and <Strong>generative</Strong> tasks.
               The initial release of SUPERB focues on the former, where ten tasks are collected from five <Strong>domains</Strong>.
             </span>
-            }
-          />
-        </div>
-      </TimedGrow>
-      <Grid
-        container
-        direction="row"
-        spacing={2}
-        justify="center"
-      >
-        {
-          domains.map(({name}, index) => (
-            <TimedGrow interval={100 * index}>
-              <Grid item>
-                <AdaptiveLink link={`/tasks#${name}`}>
-                  <Button variant="outlined">
-                    {capitalizeFirstLetter(name.toLowerCase())}
-                  </Button>
-                </AdaptiveLink>
-              </Grid>
-            </TimedGrow>
-          ))
-        }
-      </Grid>
+              }
+            />
+          </div>
+        </TimedGrow>
+        <Grid
+          container
+          direction="row"
+          spacing={2}
+          justify="center"
+        >
+          {
+            domains.map(({ name }, index) => (
+              <TimedGrow interval={100 * index}>
+                <Grid item>
+                  <AdaptiveLink link={`/tasks#${name}`}>
+                    <Button variant="outlined">
+                      {capitalizeFirstLetter(name.toLowerCase())}
+                    </Button>
+                  </AdaptiveLink>
+                </Grid>
+              </TimedGrow>
+            ))
+          }
+        </Grid>
+      </TitleSection>
       {
         domains.map(({ name, description, tasks }, domainIndex) => {
           var startTime = (domainIndex + 1) * 400;
           return (
-            <Box margin={theme.spacing(6, "auto", 8)}>
+            <ContentSection>
               <Box id={name} position="relative" top={theme.spacing(-4)} visibility="hidden"></Box>
               <TimedGrow interval={startTime}>
                 <div>
@@ -77,7 +80,7 @@ function Tasks(props) {
                 justify="center"
               >
                 {
-                  tasks.map(({name, description}, inDomainIndex) => {
+                  tasks.map(({ name, description }, inDomainIndex) => {
                     return (
                       <React.Fragment>
                         <TimedGrow interval={startTime + 100 * (inDomainIndex + 1)}>
@@ -99,7 +102,7 @@ function Tasks(props) {
                   })
                 }
               </Grid>
-            </Box>
+            </ContentSection>
           )
         })
       }

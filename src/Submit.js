@@ -8,10 +8,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 import { Box, Grid } from '@material-ui/core';
 
+import { TitleSection, ContentSection } from './components/Sections';
 import PageTitle from './components/PageTitle';
+import TrackButton from './components/TrackButton';
 import Track from './components/Track';
 import TimedGrow from './components/TimedGrow';
-import TrackCard from './components/TrackCard';
+import SubmitForm from './components/SubmitForm';
 import { tracks } from './Data';
 
 
@@ -27,48 +29,50 @@ export default function Submit(props) {
   return (
     <Switch>
       <Route path={`${match.path}`} exact>
-        <TimedGrow interval={0}>
-          <div>
-            <PageTitle
-              title="Submit"
-              description={
-                <span>
-                  task
+        <TitleSection>
+          <TimedGrow interval={0}>
+            <div>
+              <PageTitle
+                title="Submit"
+                description={
+                  <span>
+                    task
               </span>
-              }
-            />
-          </div>
-        </TimedGrow>
-        <Grid
-          container
-          direction="row"
-          spacing={5}
-          justify="center"
-        >
-          {
-            tracks.map((trackInfo, index) => {
-              const { name, intro, Icon, color, rules } = trackInfo;
-              return (
-                <React.Fragment>
-                  <TimedGrow interval={100 * (index + 1)}>
-                    <Grid item xs={12} sm={6} md={4}>
-                      <TrackCard
-                        Icon={Icon}
-                        title={name}
-                        description={intro}
-                        color={color}
-                        disabled={!rules}
-                      />
-                    </Grid>
-                  </TimedGrow>
-                </React.Fragment>
-              )
-            })
-          }
-        </Grid>
+                }
+              />
+            </div>
+          </TimedGrow>
+          <Grid
+            container
+            direction="row"
+            spacing={5}
+            justify="center"
+          >
+            {
+              tracks.map((trackInfo, index) => {
+                const { name, intro, Icon, color, rules } = trackInfo;
+                return (
+                  <React.Fragment>
+                    <TimedGrow interval={100 * (index + 1)}>
+                      <Grid item xs={12} sm={6} md={4}>
+                        <TrackButton
+                          Icon={Icon}
+                          title={name}
+                          description={intro}
+                          color={color}
+                          disabled={!rules}
+                        />
+                      </Grid>
+                    </TimedGrow>
+                  </React.Fragment>
+                )
+              })
+            }
+          </Grid>
+        </TitleSection>
       </Route>
       <Route path={`${match.path}/:urlTrack`}>
-        <Track infos={tracks} />
+        <SubmitForm />
       </Route>
     </Switch>
   )
