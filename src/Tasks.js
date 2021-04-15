@@ -33,7 +33,7 @@ function Tasks(props) {
               description={
                 <span>
                   General speech processing can be categorized into <Strong>discriminative</Strong> and <Strong>generative</Strong> tasks.
-              The initial release of SUPERB focues on the former, where ten tasks are collected from five <Strong>domains</Strong>.
+                  The initial release of SUPERB focues on the former, where ten tasks are collected from <Strong>five domains</Strong>.
             </span>
               }
             />

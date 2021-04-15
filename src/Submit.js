@@ -14,6 +14,7 @@ import TrackButton from './components/TrackButton';
 import Track from './components/Track';
 import TimedGrow from './components/TimedGrow';
 import SubmitForm from './components/SubmitForm';
+import { Strong } from './components/Utilies';
 import { tracks } from './Data';
 
 
@@ -36,8 +37,8 @@ export default function Submit(props) {
                 title="Submit"
                 description={
                   <span>
-                    task
-              </span>
+                    Submissions are categorized into <Strong>three tracks</Strong> for different usages of the shared pretrained model.
+                  </span>
                 }
               />
             </div>
