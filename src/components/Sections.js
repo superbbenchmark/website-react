@@ -5,13 +5,12 @@ import { Box } from '@material-ui/core';
 
 function Section(props) {
   const theme = useTheme();
-  const anchorKey = props.anchorKey;
-  delete props.anchorKey;
+  const { anchorKey, ...remainedProps } = props;
 
   return (
     <React.Fragment>
       <Box id={anchorKey} position="relative" top={theme.spacing(-4)} visibility="hidden"></Box>
-      <Box {...props} />
+      <Box {...remainedProps} />
     </React.Fragment>
   );
 };
