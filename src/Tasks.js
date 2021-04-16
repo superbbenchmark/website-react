@@ -1,14 +1,19 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { useTheme } from '@material-ui/core/styles';
-import { Box, Typography, Grid, Paper, Divider, Button } from '@material-ui/core';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
+import {
+  Box,
+  Typography,
+  Grid,
+  Paper,
+  Button,
+} from "@material-ui/core";
 
-import { TitleSection, ContentSection } from './components/Sections';
-import PageTitle from './components/PageTitle';
-import AdaptiveLink from './components/AdaptiveLink';
-import { capitalizeFirstLetter, Strong } from './components/Utilies';
-import { domains } from './Data';
-
+import { TitleSection, ContentSection } from "./components/Sections";
+import PageTitle from "./components/PageTitle";
+import AdaptiveLink from "./components/AdaptiveLink";
+import { capitalizeFirstLetter, Strong } from "./components/Utilies";
+import { domains } from "./Data";
 
 const useStyles = makeStyles((theme) => ({
   taskName: {
@@ -16,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
 }));
-
 
 function Tasks(props) {
   const classes = useStyles();
@@ -29,70 +33,59 @@ function Tasks(props) {
           title="Tasks"
           description={
             <span>
-              General speech processing can be categorized into <Strong>discriminative</Strong> and <Strong>generative</Strong> tasks.
-                  The initial release of SUPERB focues on the former, where ten tasks are collected from <Strong>five domains</Strong>.
+              General speech processing can be categorized into{" "}
+              <Strong>discriminative</Strong> and <Strong>generative</Strong>{" "}
+              tasks. The initial release of SUPERB focues on the former, where
+              ten tasks are collected from <Strong>five domains</Strong>.
             </span>
           }
         />
-        <Grid
-          container
-          direction="row"
-          spacing={2}
-          justify="center"
-        >
-          {
-            domains.map(({ name }, index) => (
-              <Grid item>
-                <AdaptiveLink link={`/tasks#${name}`}>
-                  <Button variant="outlined">
-                    {capitalizeFirstLetter(name.toLowerCase())}
-                  </Button>
-                </AdaptiveLink>
-              </Grid>
-            ))
-          }
+        <Grid container direction="row" spacing={2} justify="center">
+          {domains.map(({ name }, index) => (
+            <Grid item>
+              <AdaptiveLink link={`/tasks#${name}`}>
+                <Button variant="outlined">
+                  {capitalizeFirstLetter(name.toLowerCase())}
+                </Button>
+              </AdaptiveLink>
+            </Grid>
+          ))}
         </Grid>
       </TitleSection>
-      {
-        domains.map(({ name, description, tasks }, domainIndex) => {
-          return (
-            <ContentSection anchorKey={name}>
-              <PageTitle
-                title={capitalizeFirstLetter(name.toLowerCase())}
-                description={description}
-              />
-              <Grid
-                container
-                spacing={5}
-                justify="center"
-              >
-                {
-                  tasks.map(({ name, description }, inDomainIndex) => {
-                    return (
-                      <React.Fragment>
-                        <Grid item xs={12} sm={6} md={4}>
-                          <Paper elevation={3}>
-                            <Box padding={theme.spacing(3, 2)}>
-                              <Typography color="textPrimary" variant="h6" className={classes.taskName}>
-                                {`${name}`}
-                              </Typography>
-                              <Typography color="textSecondary" variant="body2">
-                                {description}
-                              </Typography>
-                            </Box>
-                          </Paper>
-                        </Grid>
-                      </React.Fragment>
-                    )
-                  })
-                }
-              </Grid>
-            </ContentSection>
-          )
-        })
-      }
+      {domains.map(({ name, description, tasks }, domainIndex) => {
+        return (
+          <ContentSection anchorKey={name}>
+            <PageTitle
+              title={capitalizeFirstLetter(name.toLowerCase())}
+              description={description}
+            />
+            <Grid container spacing={5} justify="center">
+              {tasks.map(({ name, description }, inDomainIndex) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4}>
+                    <Paper elevation={3}>
+                      <Box padding={theme.spacing(3, 2)}>
+                        <Typography
+                          color="textPrimary"
+                          variant="h6"
+                          className={classes.taskName}
+                        >
+                          {`${name}`}
+                        </Typography>
+                        <Typography color="textSecondary" variant="body2">
+                          {description}
+                        </Typography>
+                      </Box>
+                    </Paper>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </ContentSection>
+        );
+      })}
     </React.Fragment>
-  )
+  );
 }
 
 export default Tasks;
