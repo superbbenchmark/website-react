@@ -5,13 +5,13 @@ import {
   Box,
   Typography,
   Grid,
-  Paper,
   Button,
 } from "@material-ui/core";
 
 import { TitleSection, ContentSection } from "./components/Sections";
 import PageTitle from "./components/PageTitle";
 import AdaptiveLink from "./components/AdaptiveLink";
+import { LiftedPaper } from "./components/LiftedOnHover";
 import { capitalizeFirstLetter, Strong } from "./components/Utilies";
 import { domains } from "./Data";
 
@@ -41,7 +41,7 @@ function Tasks(props) {
           }
         />
         <Grid container direction="row" spacing={2} justify="center">
-          {domains.map(({ name }, index) => (
+          {domains.map(({ name }) => (
             <Grid item>
               <AdaptiveLink link={`/tasks#${name}`}>
                 <Button variant="outlined">
@@ -52,7 +52,7 @@ function Tasks(props) {
           ))}
         </Grid>
       </TitleSection>
-      {domains.map(({ name, description, tasks }, domainIndex) => {
+      {domains.map(({ name, description, tasks }) => {
         return (
           <ContentSection anchorKey={name}>
             <PageTitle
@@ -60,10 +60,10 @@ function Tasks(props) {
               description={description}
             />
             <Grid container spacing={5} justify="center">
-              {tasks.map(({ name, description }, inDomainIndex) => {
+              {tasks.map(({ name, description }) => {
                 return (
                   <Grid item xs={12} sm={6} md={4}>
-                    <Paper elevation={3}>
+                    <LiftedPaper elevation={3}>
                       <Box padding={theme.spacing(3, 2)}>
                         <Typography
                           color="textPrimary"
@@ -76,7 +76,7 @@ function Tasks(props) {
                           {description}
                         </Typography>
                       </Box>
-                    </Paper>
+                    </LiftedPaper>
                   </Grid>
                 );
               })}
