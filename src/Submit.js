@@ -36,7 +36,7 @@ export default function Submit(props) {
                 <DescriptionButton
                   name="general rules"
                   link={`${match.url}#general-rules`}
-                />{" "}
+                />
                 and the track-specific rules.
               </span>
             }
@@ -66,7 +66,7 @@ export default function Submit(props) {
                         </strong>{" "}
                         track
                       </Typography>
-                      <Box marginTop="6px">
+                      <Box marginTop={`${theme.spacing(1)}px`}>
                         <MultiLinkButton
                           buttons={[
                             {

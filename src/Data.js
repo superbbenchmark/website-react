@@ -175,9 +175,9 @@ const tracks = [
     name: "unconstrained",
     rules: (
       <span>
-        A comparison between <Strong>frozen representations</Strong> with
-        customized but limited-resource downstream models. The details of
-        downstream models are reported along with submissions.
+        The track does not limit any approach for solving SUPERB tasks as long
+        as it in principle utilizes only <Strong>a single shared model</Strong>{" "}
+        with limited task-specific parameters.
       </span>
     ),
     submit: false,
