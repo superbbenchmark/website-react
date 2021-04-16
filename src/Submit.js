@@ -4,27 +4,15 @@ import {
   makeStyles,
   ThemeProvider,
   createMuiTheme,
-  fade,
 } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
-import {
-  Box,
-  Grid,
-  Button,
-  Divider,
-  Typography,
-  Link,
-} from "@material-ui/core";
+import { Box, Grid, Typography } from "@material-ui/core";
 
-import { TitleSection, ContentSection } from "./components/Sections";
 import PageTitle from "./components/PageTitle";
-import MultiLinkButton from "./components/MultiLinkButton";
 import SubmitForm from "./components/SubmitForm";
-import {
-  DescriptionButton,
-  Strong,
-  capitalizeFirstLetter,
-} from "./components/Utilies";
+import { TitleSection, ContentSection } from "./components/Sections";
+import { DescriptionButton, MultiLinkButton } from "./components/Buttons";
+import { Strong, capitalizeFirstLetter } from "./components/Utilies";
 import { tracks } from "./Data";
 
 const useStyles = makeStyles((theme) => ({}));
