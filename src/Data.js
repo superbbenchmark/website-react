@@ -139,30 +139,30 @@ const domains = [
 const tracks = [
   {
     name: "constrained",
-    open: true,
     rules:
       <span>
         A fair comparison between <Strong>frozen representations</Strong> by enforcing the same downstream model in each task.
         Only a few hyper-paramters for training are allowed to tuned.
       </span>,
+    submit: true,
     Icon: LockIcon,
     color: red[300],
   },
   {
     name: "less-constrained",
-    open: false,
     rules:
       <span>
         A comparison between <Strong>frozen representations</Strong> with customized but limited-resource downstream models.
         The details of downstream models are reported along with submissions.
       </span>,
+    submit: false,
     Icon: LockOpenIcon,
     color: yellow[700],
   },
   {
     name: "unconstrained",
-    open: false,
     rules: "Not yet open",
+    submit: false,
     Icon: AllInclusive,
     color: green[300],
   },

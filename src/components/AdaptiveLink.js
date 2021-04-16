@@ -13,8 +13,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function AdaptiveLink(props) {
-  const { link, children, disabled } = props;
-  const Link = disabled ? Box : HashLink;
+  const { link, children } = props;
+  const Link = link ? HashLink : Box;
   const location = useLocation();
   const theme = useTheme();
   const classes = useStyles();
@@ -22,12 +22,12 @@ export default function AdaptiveLink(props) {
   return (
     <Box component="span" fontWeight={location.pathname.includes(link) ? "bold" : "inherit"}>
       {
-        link.includes("http") ?
-          <a className="unlink" href={disabled ? null : link} target="_blank">
+        (link ? link : "").includes("http") ?
+          <a className="unlink" href={link ? link : ""} target="_blank">
             {children}
           </a>
           :
-          <Link className="unlink" to={link}>
+          <Link className="unlink" to={link ? link : ""}>
             {children}
           </Link>
       }

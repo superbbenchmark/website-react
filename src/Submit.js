@@ -10,7 +10,7 @@ import { Box, Grid, Button, Divider, Typography, Link } from '@material-ui/core'
 
 import { TitleSection, ContentSection } from './components/Sections';
 import PageTitle from './components/PageTitle';
-import TrackButton from './components/TrackButton';
+import MultiLinkButton from './components/MultiLinkButton';
 import SubmitForm from './components/SubmitForm';
 import AdaptiveLink from './components/AdaptiveLink';
 import { Strong, capitalizeFirstLetter } from './components/Utilies';
@@ -67,14 +67,30 @@ export default function Submit(props) {
             alignItems="center"
           >
             {
-              tracks.map((track, index) => {
+              tracks.map(({name, rules, submit, color}, index) => {
                 let trackTheme = createMuiTheme({ ...theme });
-                trackTheme.palette.primary.main = track.color;
+                trackTheme.palette.primary.main = color;
 
                 return (
                   <Grid item>
                     <ThemeProvider theme={trackTheme}>
-                      <TrackButton {...track} />
+                      <div>
+                        <Typography component="span" variant="body1" color="primary">
+                          <strong>{capitalizeFirstLetter(name.toLowerCase())}</strong> track
+                        </Typography>
+                        <Box marginTop="6px">
+                          <MultiLinkButton buttons={[
+                            {
+                              name: 'rules',
+                              link: rules ? `${match.url}#${name}` : null,
+                            },
+                            {
+                              name: 'submit',
+                              link: submit ? `${match.url}/${name}`: null,
+                            }
+                          ]}/>
+                        </Box>
+                      </div>
                     </ThemeProvider>
                   </Grid>
                 )

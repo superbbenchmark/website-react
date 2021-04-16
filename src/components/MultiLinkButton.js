@@ -1,10 +1,8 @@
 import React from 'react';
-import { useRouteMatch } from 'react-router-dom';
-import { makeStyles, useTheme, fade } from '@material-ui/core/styles';
-import { Box, Grid, Button, Divider, Typography } from '@material-ui/core';
+import { makeStyles, fade } from '@material-ui/core/styles';
+import { Box, Grid, Button, Divider } from '@material-ui/core';
 
 import AdaptiveLink from './AdaptiveLink';
-import { capitalizeFirstLetter } from './Utilies';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -12,61 +10,64 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'transparent',
     border: `1px solid ${fade(theme.palette.primary.main, 0.5)}`,
     borderRadius: theme.shape.borderRadius,
+    display: 'inline-block',
   },
+  innerButton: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+  }
 }));
 
 
-export default function TrackButton(props) {
-  const { name, open } = props;
-  const match = useRouteMatch();
-  const theme = useTheme();
+export default function MultiLinkButton(props) {
+  const { buttons } = props;
   const classes = useStyles();
 
-  const leftRightPadding = theme.spacing(2);
   return (
-    <Grid
-      container
-      direction="column"
-      justify="flex-start"
-      alignItems="center"
-      spacing={1}
-    >
-      <Grid item>
-        <Typography variant="h6" color="primary">
-          {capitalizeFirstLetter(name.toLowerCase())}
-        </Typography>
-      </Grid>
-      <Grid item>
-        <div className={classes.pseudoOutlinedPrimaryButton}>
-          <Grid
-            container
-            direction="row"
-            justify="center"
-            alignItems="center"
-            spacing={0}
-          >
-            <Grid item>
-              <AdaptiveLink disabled={false} link={`${match.url}#${name}`}>
-                <Button disabled={false} color="primary" style={{ paddingLeft: leftRightPadding, paddingRight: leftRightPadding }}>
-                  Rules
+    <div className={classes.pseudoOutlinedPrimaryButton}>
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={0}
+      >
+        {
+          buttons.map(({ name, link }, index) => (
+            <React.Fragment>
+              <Grid item>
+                <AdaptiveLink link={link}>
+                  <Button disabled={!link} color="primary" className={classes.innerButton}>
+                    {name}
                   </Button>
-              </AdaptiveLink>
-            </Grid>
-            <Grid item>
-              <Box height={28}>
-                <Divider orientation="vertical" />
-              </Box>
-            </Grid>
-            <Grid item>
-              <AdaptiveLink disabled={!open} link={`${match.url}/${name}`}>
-                <Button disabled={!open} color="primary" style={{ paddingLeft: leftRightPadding, paddingRight: leftRightPadding }}>
-                  Submit
-                </Button>
-              </AdaptiveLink>
-            </Grid>
-          </Grid>
-        </div>
+                </AdaptiveLink>
+              </Grid>
+              {
+                index < buttons.length - 1 &&
+                <Grid item>
+                  <Box height={28}>
+                    <Divider orientation="vertical" />
+                  </Box>
+                </Grid>
+              }
+            </React.Fragment>
+          ))
+        }
       </Grid>
-    </Grid>
+    </div>
   );
+};
+
+MultiLinkButton.defaultProps = {
+  buttons: [
+    {
+      name: 'rules',
+      link: '/submit#rules'
+    },
+    {
+      name: 'submit',
+      link: '/submit#submit'
+    },
+
+  ]
 };
