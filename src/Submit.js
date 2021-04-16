@@ -20,31 +20,14 @@ import { TitleSection, ContentSection } from "./components/Sections";
 import PageTitle from "./components/PageTitle";
 import MultiLinkButton from "./components/MultiLinkButton";
 import SubmitForm from "./components/SubmitForm";
-import AdaptiveLink from "./components/AdaptiveLink";
-import { Strong, capitalizeFirstLetter } from "./components/Utilies";
+import {
+  DescriptionButton,
+  Strong,
+  capitalizeFirstLetter,
+} from "./components/Utilies";
 import { tracks } from "./Data";
 
-const useStyles = makeStyles((theme) => ({
-  rules: {
-    display: "inline-block",
-    padding: "1px 6px",
-    marginTop: 1,
-    marginBottom: 1,
-    borderRadius: theme.shape.borderRadius,
-    border: `1px solid ${fade(theme.palette.text.secondary, 0.5)}`,
-  },
-}));
-
-function DescriptionButton(props) {
-  const { name, link } = props;
-  return (
-    <AdaptiveLink link={link}>
-      <Button size="small" variant="outlined" component="span">
-        {name}
-      </Button>
-    </AdaptiveLink>
-  );
-}
+const useStyles = makeStyles((theme) => ({}));
 
 export default function Submit(props) {
   const classes = useStyles();
