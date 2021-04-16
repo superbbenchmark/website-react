@@ -1,19 +1,16 @@
 import React from "react";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
-import {
-  makeStyles,
-  ThemeProvider,
-  createMuiTheme,
-} from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
-import { Box, Grid, Typography } from "@material-ui/core";
+import { Box, Button, Grid, Typography } from "@material-ui/core";
 
-import PageTitle from "./components/PageTitle";
+import { Title } from "./components/Titles";
 import SubmitForm from "./components/SubmitForm";
-import { TitleSection, ContentSection } from "./components/Sections";
+import { Section } from "./components/Sections";
 import { DescriptionButton, MultiLinkButton } from "./components/Buttons";
 import { Strong, capitalizeFirstLetter } from "./components/Utilies";
 import { tracks } from "./Data";
+import AdaptiveLink from "./components/AdaptiveLink";
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -25,8 +22,8 @@ export default function Submit(props) {
   return (
     <Switch>
       <Route path={`${match.path}`} exact>
-        <TitleSection>
-          <PageTitle
+        <Section>
+          <Title
             title="Submit"
             description={
               <span>
@@ -48,10 +45,7 @@ export default function Submit(props) {
             justify="center"
             alignItems="center"
           >
-            {tracks.map(({ name, rules, submit, color }, index) => {
-              let trackTheme = createMuiTheme({ ...theme });
-              trackTheme.palette.primary.main = color;
-
+            {tracks.map(({ name, rules, submit, theme: trackTheme }) => {
               return (
                 <Grid item>
                   <ThemeProvider theme={trackTheme}>
@@ -86,50 +80,61 @@ export default function Submit(props) {
               );
             })}
           </Grid>
-        </TitleSection>
-        <ContentSection anchorKey="general-rules">
-          <PageTitle
+        </Section>
+        <Section anchorKey="general-rules">
+          <Title
             title="General Rules"
             description="The general rules applied to all tracks."
           />
           <Typography variant="body1" color="textSecondary">
             Some general rules.
           </Typography>
-        </ContentSection>
-        <ContentSection anchorKey="track-rules">
-          <PageTitle
+        </Section>
+        <Section anchorKey="track-rules">
+          <Title
             title="Track Rules"
             description="The track-specific rules for each of the tracks."
           />
-          {tracks.map(({ color, name, rules }, index) => {
-            let trackTheme = createMuiTheme({ ...theme });
-            trackTheme.palette.primary.main = color;
-            trackTheme.palette.text.primary = color;
-
+          {tracks.map(({ name, rules, submit, theme: trackTheme }) => {
             return (
-              <Box maxWidth={600} margin="auto">
-                <ContentSection anchorKey={name}>
-                  <PageTitle
-                    title={
-                      <span style={{ color: color }}>
-                        {capitalizeFirstLetter(name.toLowerCase())}
-                      </span>
-                    }
-                    titleVariant="h5"
-                    divider={false}
-                  />
-                  <Typography variant="body1" color="textSecondary">
-                    {rules}
-                  </Typography>
-                </ContentSection>
-              </Box>
+              <ThemeProvider theme={trackTheme}>
+                <Box maxWidth={650} margin="auto">
+                  <Section anchorKey={name}>
+                    <Title
+                      title={capitalizeFirstLetter(name.toLowerCase())}
+                      titleVariant="h5"
+                      titleColor="primary"
+                      divider={false}
+                    />
+                    <Typography variant="body1" color="textSecondary">
+                      {rules}
+                    </Typography>
+                    <Box margin={trackTheme.spacing(3, "auto")}>
+                      <AdaptiveLink
+                        link={submit ? `${match.url}/${name}` : null}
+                      >
+                        <Button disabled={!submit} size="large" color="primary" variant="outlined">
+                          Submit
+                        </Button>
+                      </AdaptiveLink>
+                    </Box>
+                  </Section>
+                </Box>
+              </ThemeProvider>
             );
           })}
-        </ContentSection>
+        </Section>
       </Route>
-      <Route path={`${match.path}/:urlTrack`}>
-        <SubmitForm />
-      </Route>
+      {tracks.map((track) => {
+        const { name, theme: trackTheme } = track;
+        return (
+          <Route path={`${match.path}/${name}`}>
+            <ThemeProvider theme={trackTheme}>
+              <SubmitForm {...track} />
+            </ThemeProvider>
+          </Route>
+        );
+      })}
     </Switch>
   );
 }

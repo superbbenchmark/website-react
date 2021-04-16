@@ -1,8 +1,13 @@
-import { green, red, yellow } from "@material-ui/core/colors";
+import { createMuiTheme } from "@material-ui/core/styles";
 import LockIcon from "@material-ui/icons/Lock";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import AllInclusive from "@material-ui/icons/AllInclusive";
 
+import {
+  constrainedTheme,
+  lessConstrainedTheme,
+  unconstrainedTheme,
+} from "./components/Theme";
 import { Strong } from "./components/Utilies";
 
 const domains = [
@@ -154,9 +159,9 @@ const tracks = [
         hyper-paramters for training are allowed to tuned.
       </span>
     ),
-    submit: true,
+    submit: "The submission form is in preparation. Stay tuned :)",
     Icon: LockIcon,
-    color: red[300],
+    theme: createMuiTheme(constrainedTheme),
   },
   {
     name: "less-constrained",
@@ -169,7 +174,7 @@ const tracks = [
     ),
     submit: false,
     Icon: LockOpenIcon,
-    color: yellow[700],
+    theme: createMuiTheme(lessConstrainedTheme),
   },
   {
     name: "unconstrained",
@@ -182,7 +187,7 @@ const tracks = [
     ),
     submit: false,
     Icon: AllInclusive,
-    color: green[300],
+    theme: createMuiTheme(unconstrainedTheme),
   },
 ];
 

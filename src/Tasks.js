@@ -1,15 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
-import {
-  Box,
-  Typography,
-  Grid,
-  Button,
-} from "@material-ui/core";
+import { Box, Typography, Grid, Button } from "@material-ui/core";
 
-import { TitleSection, ContentSection } from "./components/Sections";
-import PageTitle from "./components/PageTitle";
+import { Section } from "./components/Sections";
+import { Title } from "./components/Titles";
 import AdaptiveLink from "./components/AdaptiveLink";
 import { LiftedPaper } from "./components/LiftedOnHover";
 import { capitalizeFirstLetter, Strong } from "./components/Utilies";
@@ -28,8 +23,8 @@ function Tasks(props) {
 
   return (
     <React.Fragment>
-      <TitleSection>
-        <PageTitle
+      <Section>
+        <Title
           title="Tasks"
           description={
             <span>
@@ -51,11 +46,11 @@ function Tasks(props) {
             </Grid>
           ))}
         </Grid>
-      </TitleSection>
+      </Section>
       {domains.map(({ name, description, tasks }) => {
         return (
-          <ContentSection anchorKey={name}>
-            <PageTitle
+          <Section anchorKey={name}>
+            <Title
               title={capitalizeFirstLetter(name.toLowerCase())}
               description={description}
             />
@@ -81,7 +76,7 @@ function Tasks(props) {
                 );
               })}
             </Grid>
-          </ContentSection>
+          </Section>
         );
       })}
     </React.Fragment>

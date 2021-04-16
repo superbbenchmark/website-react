@@ -1,16 +1,29 @@
-import React from 'react';
-import {
-  useParams,
-} from 'react-router-dom';
+import React from "react";
 
+import { SubSubSection } from "./Sections";
+import { SubTitle } from "./Titles";
+import { capitalizeFirstLetter } from "./Utilies";
+import { Typography, Button } from "@material-ui/core";
 
 export default function SubmitForm(props) {
-  const { urlTrack } = useParams();
+  const {
+    name = 'constrained',
+    submit = 'This is constrained track',
+  } = props;
+
   return (
-    <React.Fragment>
-      <h1>
-        {urlTrack}
-      </h1>
-    </React.Fragment>      
-  )
-};
+    <div>
+      <SubSubSection>
+        <SubTitle
+          title={<span><strong>{capitalizeFirstLetter(name.toLowerCase())}</strong> Submission</span>}
+          titleColor="primary"
+        />
+      </SubSubSection>
+      <SubSubSection>
+        <Typography variant="body1" color="textSecondary">
+          {submit}
+        </Typography>
+      </SubSubSection>
+    </div>
+  );
+}
