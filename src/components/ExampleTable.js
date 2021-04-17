@@ -120,35 +120,24 @@ function Table({ columns, data, height = "500px" }) {
   );
 }
 
-function ExampleTable(props) {
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "Name",
-        sticky: "left",
-        accessor: "firstName",
-        width: 80,
-      },
-      {
-        Header: "Age",
-        accessor: "age",
-        width: 60,
-      },
-      {
-        Header: "Visits",
-        accessor: "visits",
-        width: 60,
-      },
-      {
-        Header: "Status",
-        accessor: "status",
-      },
-    ],
+function ExampleTable({data, ...props}) {
+  let columns = Object.keys(data[0]).map((key) => {
+    return {
+      Header: key,
+      accessor: key,
+      width: key.toUpperCase() == key ? 60 : 100,
+    };
+  })
+  columns[0]["sticky"] = "left";
+
+  const memoColumns = React.useMemo(
+    () => columns
   );
+  
+  const longerData = data.concat(data).concat(data);
+  const memoData = React.useMemo(() => (longerData), []);
 
-  const data = React.useMemo(() => makeData(40), []);
-
-  return <Table columns={columns} data={data} {...props} />;
+  return <Table columns={memoColumns} data={memoData} {...props} />;
 }
 
 export default ExampleTable;

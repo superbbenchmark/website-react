@@ -14,6 +14,7 @@ import { mainTheme } from "./components/Theme";
 
 const useStyles = makeStyles((theme) => ({
   narrowViewport: {
+    width: "85%",
     maxWidth: 900,
     margin: "auto",
   },
