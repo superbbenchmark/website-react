@@ -142,7 +142,7 @@ function NavigationBar(props) {
     ["Code", "https://github.com/s3prl/s3prl"],
     ["Tasks", "/tasks"],
     ["Submit", "/submit"],
-    ["Compare", "/compare"],
+    // ["Compare", "/compare"],
     ["Leaderboard", "/leaderboard"],
   ].map(([text, link]) => [
     <Typography color="textSecondary" variant="overline" className={classes.navlink}>{text}</Typography>,
