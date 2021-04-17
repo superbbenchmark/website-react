@@ -25,7 +25,6 @@ function App() {
     <div className="App">
       <Router>
         <NavigationBar />
-        <Box margin={theme.spacing(4, "auto")}></Box>
         <Switch>
           <Route path="/" exact>
             <div className={`${classes.narrowViewport}`}>
