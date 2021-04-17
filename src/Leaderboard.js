@@ -1,11 +1,70 @@
 import React from "react";
-import { useTable, useBlockLayout } from "react-table";
+import styled from "styled-components";
+import { useTable, useBlockLayout, useSortBy } from "react-table";
 import { useSticky } from "react-table-sticky";
+import { useTheme } from "@material-ui/core/styles";
 
 import { submissions } from "./Data";
-import "./Leaderboard.scss";
+
+const Styles = styled.div`
+  .table {
+    outline: 1px solid #ddd;
+
+    .th,
+    .td {
+      background-color: ${(props) => props.theme.palette.primary.main};
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      border: 0.2px solid #ddd;
+      padding: ${(props) => props.theme.spacing(1, 1)};
+    }
+
+    .th {
+      font-weight: bold;
+    }
+
+    &.sticky {
+      overflow: scroll;
+      .header,
+      .footer {
+        position: sticky;
+        z-index: 1;
+        width: fit-content;
+      }
+
+      .header {
+        top: 0;
+        box-shadow: 0px 3px 3px #ccc;
+      }
+
+      .footer {
+        bottom: 0;
+        box-shadow: 0px -3px 3px #ccc;
+      }
+
+      .body {
+        position: relative;
+        z-index: 0;
+      }
+
+      [data-sticky-td] {
+        position: sticky;
+      }
+
+      [data-sticky-last-left-td] {
+        box-shadow: 2px 2px 3px #ccc;
+      }
+
+      [data-sticky-first-right-td] {
+        box-shadow: -2px -2px 3px #ccc;
+      }
+    }
+  }
+`;
 
 function Table({ columns, data, height = "500px" }) {
+  const theme = useTheme();
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 10,
@@ -27,73 +86,82 @@ function Table({ columns, data, height = "500px" }) {
       data,
       defaultColumn,
     },
+    useSortBy,
     useBlockLayout,
     useSticky
   );
 
   return (
-    <div
-      {...getTableProps()}
-      className="table sticky"
-      style={{
-        width: "fit-content",
-        maxWidth: "100%",
-        maxHeight: height,
-        margin: "auto",
-      }}
-    >
-      <div className="header">
-        {headerGroups.map((headerGroup) => (
-          <div {...headerGroup.getHeaderGroupProps()} className="tr">
-            {headerGroup.headers.map((column) => (
-              <div {...column.getHeaderProps()} className="th">
-                {column.render("Header")}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-
-      <div {...getTableBodyProps()} className="body">
-        {rows.map((row, i) => {
-          prepareRow(row);
-          return (
-            <div {...row.getRowProps()} className="tr">
-              {row.cells.map((cell) => {
+    <Styles theme={theme}>
+      <div
+        {...getTableProps()}
+        className="table sticky"
+        style={{
+          width: "fit-content",
+          maxWidth: "100%",
+          maxHeight: height,
+          margin: "auto",
+        }}
+      >
+        <div className="header">
+          {headerGroups.map((headerGroup) => (
+            <div {...headerGroup.getHeaderGroupProps()} className="tr">
+              {headerGroup.headers.map((column) => {
                 return (
-                  <div {...cell.getCellProps()} className="td">
-                    {cell.render("Cell")}
+                  <div
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    className="th"
+                  >
+                    {column.render("Header")}
                   </div>
                 );
               })}
             </div>
-          );
-        })}
+          ))}
+        </div>
+
+        <div {...getTableBodyProps()} className="body">
+          {rows.map((row, i) => {
+            prepareRow(row);
+            return (
+              <div {...row.getRowProps()} className="tr">
+                {row.cells.map((cell) => {
+                  return (
+                    <div {...cell.getCellProps()} className="td">
+                      {cell.render("Cell")}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </Styles>
   );
 }
 
 function LeaderBoard(props) {
+  const theme = useTheme();
   const columnWidth = {
     Method: 120,
     Description: 120,
-    Parameters: 60,
-    Stride: 50,
-    Input: 80,
-    Corpus: 80,
-    PR: 50,
-    KS: 50,
-    IC: 50,
-    SID: 50,
-    ER: 50,
-    ASR: 50,
-    "ASR-LM": 70,
-    QbE: 70,
-    "SF-F1": 50,
-    "SF-CER": 80,
-    SV: 50,
-    SD: 50,
+    Parameters: 100,
+    Stride: 100,
+    Input: 100,
+    Corpus: 100,
+    PR: 100,
+    KS: 100,
+    IC: 100,
+    SID: 100,
+    ER: 100,
+    ASR: 100,
+    "ASR-LM": 100,
+    QbE: 100,
+    "SF-F1": 100,
+    "SF-CER": 100,
+    SV: 100,
+    SD: 100,
   };
 
   let columns = Object.keys(columnWidth).map((key) => {
@@ -108,7 +176,7 @@ function LeaderBoard(props) {
   const memoColumns = React.useMemo(() => columns);
 
   const longerData = submissions.concat(submissions).concat(submissions);
-  const memoData = React.useMemo(() => longerData, []);
+  const memoData = React.useMemo(() => submissions, []);
 
   return <Table columns={memoColumns} data={memoData} {...props} />;
 }
