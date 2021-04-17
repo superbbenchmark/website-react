@@ -6,5 +6,5 @@ import { submissions } from "./Data";
 import { Typography } from "@material-ui/core";
 
 export default function LeaderBoard(props) {
-  return <ExampleTable />;
+  return <ExampleTable {...props} />;
 }

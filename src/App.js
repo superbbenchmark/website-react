@@ -1,4 +1,5 @@
 import "./App.css";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Box, Typography } from "@material-ui/core";
 import { useTheme, ThemeProvider, makeStyles, createMuiTheme } from "@material-ui/core/styles";
@@ -19,12 +20,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
+  const [ width, setWidth ] = React.useState(0);
+  const [ height, setHeight ] = React.useState(0);
+  const [ navbarHeight, setNavbarHeight ] = React.useState(0);
+
+  const setViewPort = () => {
+    setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
+    setNavbarHeight(document.getElementById("navbar").offsetHeight);
+  }
+  React.useEffect(setViewPort);
+  window.addEventListener("resize", setViewPort);
+
   const classes = useStyles();
   const theme = useTheme();
   return (
     <div className="App">
       <Router>
-        <NavigationBar />
+        <div id="navbar">
+          <NavigationBar setNavbarHeight={setNavbarHeight} />
+        </div>
         <Switch>
           <Route path="/" exact>
             <div className={`${classes.narrowViewport}`}>
@@ -47,7 +62,7 @@ function App() {
             </div>
           </Route>
           <Route path="/leaderboard">
-            <Leaderboard />
+            <Leaderboard height={`${height - navbarHeight}px`} />
           </Route>
         </Switch>
       </Router>

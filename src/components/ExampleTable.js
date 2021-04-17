@@ -54,7 +54,7 @@ const Styles = styled.div`
   }
 `;
 
-function Table({ columns, data }) {
+function Table({ columns, data, height = "500px" }) {
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 10,
@@ -85,7 +85,7 @@ function Table({ columns, data }) {
       <div
         {...getTableProps()}
         className="table sticky"
-        style={{ width: "fit-content", maxWidth: "100%", height: "85vh", margin: "auto" }}
+        style={{ width: "fit-content", maxWidth: "100%", maxHeight: height, margin: "auto" }}
       >
         <div className="header">
           {headerGroups.map((headerGroup) => (
@@ -120,7 +120,7 @@ function Table({ columns, data }) {
   );
 }
 
-function ExampleTable() {
+function ExampleTable(props) {
   const columns = React.useMemo(
     () => [
       {
@@ -148,7 +148,7 @@ function ExampleTable() {
 
   const data = React.useMemo(() => makeData(40), []);
 
-  return <Table columns={columns} data={data} />;
+  return <Table columns={columns} data={data} {...props} />;
 }
 
 export default ExampleTable;
