@@ -75,11 +75,32 @@ function Table({ columns, data, height = "500px" }) {
 }
 
 function LeaderBoard(props) {
-  let columns = Object.keys(submissions[0]).map((key) => {
+  const columnWidth = {
+    Method: 120,
+    Description: 120,
+    Parameters: 60,
+    Stride: 50,
+    Input: 80,
+    Corpus: 80,
+    PR: 50,
+    KS: 50,
+    IC: 50,
+    SID: 50,
+    ER: 50,
+    ASR: 50,
+    "ASR-LM": 70,
+    QbE: 70,
+    "SF-F1": 50,
+    "SF-CER": 80,
+    SV: 50,
+    SD: 50,
+  };
+
+  let columns = Object.keys(columnWidth).map((key) => {
     return {
       Header: key,
       accessor: key,
-      width: key.toUpperCase() == key ? 60 : 100,
+      width: columnWidth[key],
     };
   });
   columns[0]["sticky"] = "left";

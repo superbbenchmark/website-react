@@ -5,6 +5,10 @@
   .td {
     background-color: #fff;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-left: 4px;
+    padding-right: 4px;
   }
 
   &.sticky {
