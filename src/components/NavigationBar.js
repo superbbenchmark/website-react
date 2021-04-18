@@ -133,8 +133,7 @@ function LiftingBarButton(props) {
   );
 }
 
-function NavigationBar(props) {
-  const { width } = props;
+function NavigationBar({ width, tableControlRef, ...props }) {
   const classes = useStyles();
   const theme = useTheme();
   const location = useLocation();
@@ -157,6 +156,7 @@ function NavigationBar(props) {
     link,
   ]);
 
+  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"));
   return (
     <React.Fragment>
       <CssBaseline />
@@ -164,7 +164,7 @@ function NavigationBar(props) {
         <AppBar color="primary">
           <Toolbar className={classes.toolbar}>
             <Grid container alignItems="center">
-              <Grid item xs={8} md={5}>
+              <Grid item xs={9} md={5}>
                 <Grid
                   container
                   direction="row"
@@ -180,9 +180,7 @@ function NavigationBar(props) {
                           variant="h6"
                           className={`${classes.navlink}`}
                         >
-                          {useMediaQuery(theme.breakpoints.up("sm"))
-                            ? "SUPERB Benchmark"
-                            : "SUPERB"}
+                          {largeScreen ? "SUPERB Benchmark" : "SUPERB"}
                         </Typography>
                       </LiftingBarButton>
                     </AdaptiveLink>
@@ -190,15 +188,21 @@ function NavigationBar(props) {
                   {location.pathname.includes("leaderboard") && (
                     <Grid item>
                       <AdaptiveLink link={null}>
-                        <Button size="small" variant="outlined">
-                          Adjust Table
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          onClick={() => {
+                            tableControlRef.current.click();
+                          }}
+                        >
+                          {largeScreen ? "Adjust Table" : "Adjust"}
                         </Button>
                       </AdaptiveLink>
                     </Grid>
                   )}
                 </Grid>
               </Grid>
-              <Grid item xs={4} md={7}>
+              <Grid item xs={3} md={7}>
                 <Grid
                   container
                   direction="row"

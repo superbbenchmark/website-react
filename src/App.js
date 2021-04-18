@@ -24,6 +24,7 @@ function App() {
   const [ width, setWidth ] = React.useState(0);
   const [ height, setHeight ] = React.useState(0);
   const [ navbarHeight, setNavbarHeight ] = React.useState(0);
+  const tableControlRef = React.useRef(null);
 
   const setViewPort = () => {
     setWidth(window.innerWidth);
@@ -39,7 +40,7 @@ function App() {
     <div className="App">
       <Router>
         <div id="navbar">
-          <NavigationBar />
+          <NavigationBar tableControlRef={tableControlRef} />
         </div>
         <Switch>
           <Route path="/" exact>
@@ -63,7 +64,7 @@ function App() {
             </div>
           </Route>
           <Route path="/leaderboard">
-            <Leaderboard height={`${height - navbarHeight}px`} />
+            <Leaderboard height={`${height - navbarHeight}px`} tableControlRef={tableControlRef} />
           </Route>
         </Switch>
       </Router>

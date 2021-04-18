@@ -27,6 +27,7 @@ const Styles = styled.div`
 
     .th {
       font-weight: bold;
+      padding: ${(props) => props.theme.spacing(1.5, 1)};
     }
 
     &.sticky {
@@ -86,7 +87,7 @@ const Styles = styled.div`
     }
 `;
 
-function Table({ columns, data, height = "500px" }) {
+function Table({ columns, data, height = "500px", tableControlRef = null }) {
   const theme = useTheme();
   const defaultColumn = React.useMemo(
     () => ({
@@ -117,6 +118,12 @@ function Table({ columns, data, height = "500px" }) {
 
   return (
     <Styles theme={theme}>
+      <div
+        ref={tableControlRef}
+        onClick={() => {
+          console.log("open table control pannel");
+        }}
+      />
       <div
         {...getTableProps()}
         className="table sticky"
