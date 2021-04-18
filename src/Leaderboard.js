@@ -73,7 +73,7 @@ const Styles = styled.div`
   .resizer {
     display: inline-block;
     background: ${(props) => `${fade(props.theme.palette.text.primary, 0.2)}`};
-    width: ${(props) => `${props.theme.spacing(2.5)}px`};
+    width: ${(props) => `${props.theme.spacing(2)}px`};
     height: 100%;
     position: absolute;
     right: 0;
@@ -105,6 +105,15 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
       columns,
       data,
       defaultColumn,
+      initialState: {
+        hiddenColumns: [
+          "Description",
+          "Parameters",
+          "Stride",
+          "Input",
+          "Corpus",
+        ],
+      },
     },
     useSortBy,
     useBlockLayout,
@@ -120,16 +129,6 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
     prepareRow,
     setHiddenColumns,
   } = tableInstance;
-
-  React.useEffect(() => {
-    setHiddenColumns([
-      "Description",
-      "Parameters",
-      "Stride",
-      "Input",
-      "Corpus",
-    ]);
-  });
 
   return (
     <Styles theme={theme}>
