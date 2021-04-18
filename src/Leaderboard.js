@@ -10,6 +10,7 @@ import { useSticky } from "react-table-sticky";
 import { useTheme, fade } from "@material-ui/core/styles";
 
 import { submissions } from "./Data";
+import Model from "./components/Modal";
 
 const Styles = styled.div`
   .table {
@@ -98,13 +99,7 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
     []
   );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
+  const tableInstance = useTable(
     {
       columns,
       data,
@@ -116,14 +111,17 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
     useSticky
   );
 
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = tableInstance;
+
   return (
     <Styles theme={theme}>
-      <div
-        ref={tableControlRef}
-        onClick={() => {
-          console.log("open table control pannel");
-        }}
-      />
+      <Model tableInstance={tableInstance} modalOpenRef={tableControlRef} />
       <div
         {...getTableProps()}
         className="table sticky"
