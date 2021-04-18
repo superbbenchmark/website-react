@@ -1,20 +1,23 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import {
+  Modal,
+  Backdrop,
+  Fade,
+  Paper,
+  Switch,
+  FormGroup,
+  FormControlLabel,
+  Grid,
+  Box,
+  Typography,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
   },
 }));
 
@@ -25,13 +28,7 @@ export default function TransitionsModal({
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = tableInstance;
+  const { allColumns, setGlobalFilter } = tableInstance;
 
   const handleOpen = () => {
     setOpen(true);
@@ -41,6 +38,7 @@ export default function TransitionsModal({
     setOpen(false);
   };
 
+  const theme = useTheme();
   return (
     <div>
       {modalOpenRef ? (
@@ -63,12 +61,35 @@ export default function TransitionsModal({
         }}
       >
         <Fade in={open}>
-          <div className={classes.paper}>
-            <h2 id="transition-modal-title">Transition modal</h2>
-            <p id="transition-modal-description">
-              react-transition-group animates me.
-            </p>
-          </div>
+          <Box width="85%" maxWidth={700}>
+            <Paper>
+              <Box padding={theme.spacing(4, 2, 4, 6)} margin="auto" maxHeight="80vh" overflow="auto">
+                <Typography variant="h4">Toggle</Typography>
+                <Box margin={theme.spacing(4, "auto", 0)}>
+                  <Grid container direction="row">
+                    {allColumns.map((column) => {
+                      return (
+                        <Grid item xs={12} md={4} lg={3}>
+                          <FormControlLabel
+                            control={
+                              <Switch
+                                checked={column.isVisible}
+                                onChange={() => {
+                                  column.toggleHidden();
+                                }}
+                                name={column.Header}
+                              />
+                            }
+                            label={column.Header}
+                          />
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                </Box>
+              </Box>
+            </Paper>
+          </Box>
         </Fade>
       </Modal>
     </div>

@@ -5,6 +5,7 @@ import {
   useBlockLayout,
   useSortBy,
   useResizeColumns,
+  useGlobalFilter,
 } from "react-table";
 import { useSticky } from "react-table-sticky";
 import { useTheme, fade } from "@material-ui/core/styles";
@@ -117,7 +118,18 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
     headerGroups,
     rows,
     prepareRow,
+    setHiddenColumns,
   } = tableInstance;
+
+  React.useEffect(() => {
+    setHiddenColumns([
+      "Description",
+      "Parameters",
+      "Stride",
+      "Input",
+      "Corpus",
+    ]);
+  });
 
   return (
     <Styles theme={theme}>
