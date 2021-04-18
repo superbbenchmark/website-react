@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { useTable, useBlockLayout, useSortBy } from "react-table";
+import {
+  useTable,
+  useBlockLayout,
+  useSortBy,
+  useResizeColumns,
+} from "react-table";
 import { useSticky } from "react-table-sticky";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme, fade } from "@material-ui/core/styles";
 
 import { submissions } from "./Data";
 
@@ -61,6 +66,23 @@ const Styles = styled.div`
       }
     }
   }
+
+  .resizer {
+    display: inline-block;
+    background: ${props => `${fade(props.theme.palette.text.primary, 0.2)}`};
+    width: ${props => `${props.theme.spacing(2.5)}px`};
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateX(50%);
+    z-index: 1;
+    ${"" /* prevents from scrolling while dragging on touch devices */}
+    touch-action:none;
+
+    &.isResizing, &:hover {
+      background: ${props => `${fade(props.theme.palette.text.primary, 0.6)}`};
+    }
 `;
 
 function Table({ columns, data, height = "500px" }) {
@@ -88,6 +110,7 @@ function Table({ columns, data, height = "500px" }) {
     },
     useSortBy,
     useBlockLayout,
+    useResizeColumns,
     useSticky
   );
 
@@ -113,6 +136,12 @@ function Table({ columns, data, height = "500px" }) {
                     className="th"
                   >
                     {column.render("Header")}
+                    <div
+                      {...column.getResizerProps()}
+                      className={`resizer ${
+                        column.isResizing ? "isResizing" : ""
+                      }`}
+                    />
                   </div>
                 );
               })}
