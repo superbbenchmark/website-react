@@ -39,7 +39,7 @@ function App() {
     <div className="App">
       <Router>
         <div id="navbar">
-          <NavigationBar setNavbarHeight={setNavbarHeight} />
+          <NavigationBar />
         </div>
         <Switch>
           <Route path="/" exact>

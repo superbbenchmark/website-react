@@ -69,8 +69,8 @@ const Styles = styled.div`
 
   .resizer {
     display: inline-block;
-    background: ${props => `${fade(props.theme.palette.text.primary, 0.2)}`};
-    width: ${props => `${props.theme.spacing(2.5)}px`};
+    background: ${(props) => `${fade(props.theme.palette.text.primary, 0.2)}`};
+    width: ${(props) => `${props.theme.spacing(2.5)}px`};
     height: 100%;
     position: absolute;
     right: 0;
@@ -81,7 +81,8 @@ const Styles = styled.div`
     touch-action:none;
 
     &.isResizing, &:hover {
-      background: ${props => `${fade(props.theme.palette.text.primary, 0.6)}`};
+      background: ${(props) =>
+        `${fade(props.theme.palette.text.primary, 0.6)}`};
     }
 `;
 
