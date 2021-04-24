@@ -127,7 +127,6 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
     headerGroups,
     rows,
     prepareRow,
-    setHiddenColumns,
   } = tableInstance;
 
   return (
@@ -189,39 +188,85 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
 
 function LeaderBoard(props) {
   const theme = useTheme();
-  const columnWidth = {
-    Method: 120,
-    Description: 120,
-    Parameters: 100,
-    Stride: 100,
-    Input: 100,
-    Corpus: 100,
-    PR: 100,
-    KS: 100,
-    IC: 100,
-    SID: 100,
-    ER: 100,
-    ASR: 100,
-    "ASR-LM": 100,
-    QbE: 100,
-    "SF-F1": 100,
-    "SF-CER": 100,
-    SV: 100,
-    SD: 100,
+  const columnInfo = {
+    Method: {
+      width: 120,
+    },
+    Description: {
+      width: 120,
+    },
+    Parameters: {
+      width: 100,
+    },
+    Stride: {
+      width: 100,
+    },
+    Input: {
+      width: 100,
+    },
+    Corpus: {
+      width: 100,
+    },
+    PR: {
+      width: 100,
+    },
+    KS: {
+      width: 100,
+    },
+    IC: {
+      width: 100,
+    },
+    SID: {
+      width: 100,
+    },
+    ER: {
+      width: 100,
+    },
+    ASR: {
+      width: 100,
+    },
+    "ASR-LM": {
+      width: 100,
+    },
+    QbE: {
+      width: 100,
+    },
+    "SF-F1": {
+      width: 100,
+    },
+    "SF-CER": {
+      width: 100,
+    },
+    SV: {
+      width: 100,
+    },
+    SD: {
+      width: 100,
+    },
   };
 
-  let columns = Object.keys(columnWidth).map((key) => {
+  const memoizedNumericSort = React.useCallback(
+    (rowA, rowB, columnId, desc) => {
+      const valueA = rowA.original[columnId];
+      const valueB = rowB.original[columnId];
+      return valueA > valueB ? 1 : -1;
+    }
+  );
+
+  let columns = Object.keys(columnInfo).map((key) => {
     return {
       Header: key,
       accessor: key,
-      width: columnWidth[key],
+      width: columnInfo[key].width,
+      sortType:
+        typeof submissions[0][key] == "number"
+          ? memoizedNumericSort
+          : "alphanumeric",
     };
   });
   columns[0]["sticky"] = "left";
 
   const memoColumns = React.useMemo(() => columns);
-
-  const longerData = submissions.concat(submissions).concat(submissions);
   const memoData = React.useMemo(() => submissions, []);
 
   return <Table columns={memoColumns} data={memoData} {...props} />;
