@@ -156,7 +156,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
     link,
   ]);
 
-  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"));
+  const largeScreen = useMediaQuery(theme.breakpoints.up("lg"));
   return (
     <React.Fragment>
       <CssBaseline />
@@ -164,7 +164,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
         <AppBar color="primary">
           <Toolbar className={classes.toolbar}>
             <Grid container alignItems="center">
-              <Grid item xs={9} md={5}>
+              <Grid item xs={9} md={4}>
                 <Grid
                   container
                   direction="row"
@@ -180,7 +180,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                           variant="h6"
                           className={`${classes.navlink}`}
                         >
-                          {largeScreen ? "SUPERB Benchmark" : "SUPERB"}
+                          {largeScreen ? "SUPERB" : "SUPERB"}
                         </Typography>
                       </LiftingBarButton>
                     </AdaptiveLink>
@@ -202,7 +202,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                   )}
                 </Grid>
               </Grid>
-              <Grid item xs={3} md={7}>
+              <Grid item xs={3} md={8}>
                 <Grid
                   container
                   direction="row"
