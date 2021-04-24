@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
 
-import { SubSection } from "./Sections";
+import { Section, SubSection } from "./Sections";
 import { SubTitle } from "./Titles";
 
 const useStyles = makeStyles((theme) => ({
@@ -76,10 +76,15 @@ export default function TransitionsModal({
                 <SubSection>
                   <SubTitle title="Leaderboard" />
                   <Typography variant="body2" color="textSecondary">
-                    All the submissions are merged into a single table. You can use the buttons below to choose which tracks you are interested or
-                    what information (column) you wish to compare.
-                    The default ranking of all submissions are sorted by a randomly selected task, so the ranking will be different everytime
-                    you refresh the page. You can check the column with the <span style={{color: green[300]}}>green task name</span> for the current sorting column.
+                    All the submissions are presented in a single table. You can
+                    use the buttons below to choose which tracks you are
+                    interested or what information (column) you wish to compare.
+                    The default ranking of all submissions are sorted by a
+                    randomly selected task, so the ranking will be different
+                    everytime you refresh the page. You can check the column
+                    with the{" "}
+                    <span style={{ color: green[300] }}>green task name</span>{" "}
+                    for the current sorting column.
                   </Typography>
                 </SubSection>
                 <SubSection>
