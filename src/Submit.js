@@ -87,7 +87,7 @@ export default function Submit(props) {
             description="The general rules applied to all tracks."
           />
           <Typography variant="body1" color="textSecondary">
-            Some general rules.
+            To be decided.
           </Typography>
         </Section>
         <Section anchorKey="track-rules">

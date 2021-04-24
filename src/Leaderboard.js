@@ -9,6 +9,9 @@ import {
 } from "react-table";
 import { useSticky } from "react-table-sticky";
 import { useTheme, fade } from "@material-ui/core/styles";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
 
 import { submissions } from "./Data";
 import Model from "./components/Modal";
@@ -30,6 +33,12 @@ const Styles = styled.div`
     .th {
       font-weight: bold;
       padding: ${(props) => props.theme.spacing(1.5, 1)};
+    }
+
+    .toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     &.sticky {
@@ -99,6 +108,14 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
     }),
     []
   );
+  const scores = columns.filter((item) => item.isScore);
+  const randomColumn = scores[Math.floor(Math.random() * scores.length)];
+  const defaultSortby = React.useMemo(() => [
+    {
+      id: randomColumn.accessor,
+      desc: randomColumn.higherBetter,
+    },
+  ]);
 
   const tableInstance = useTable(
     {
@@ -113,6 +130,7 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
           "Input",
           "Corpus",
         ],
+        sortBy: defaultSortby,
       },
     },
     useSortBy,
@@ -146,12 +164,31 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
           {headerGroups.map((headerGroup) => (
             <div {...headerGroup.getHeaderGroupProps()} className="tr">
               {headerGroup.headers.map((column) => {
+                let color =
+                  column.isSortedDesc == undefined ||
+                  column.higherBetter == undefined
+                    ? theme.palette.text.primary
+                    : column.isSortedDesc == column.higherBetter
+                    ? green[300]
+                    : red[300];
+
                 return (
-                  <div
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="th"
-                  >
-                    {column.render("Header")}
+                  <div {...column.getHeaderProps()} className="th">
+                    <div {...column.getSortByToggleProps()} className="toggle">
+                      <span style={{ margin: "0px 1px", color: color }}>
+                        {column.render("Header")}
+                      </span>
+                      {column.higherBetter != undefined &&
+                        (column.higherBetter ? (
+                          <ArrowUpwardIcon
+                            style={{ fontSize: 16, color: color }}
+                          />
+                        ) : (
+                          <ArrowDownwardIcon
+                            style={{ fontSize: 16, color: color }}
+                          />
+                        ))}
+                    </div>
                     <div
                       {...column.getResizerProps()}
                       className={`resizer ${
@@ -191,57 +228,87 @@ function LeaderBoard(props) {
   const columnInfo = {
     Method: {
       width: 120,
+      higherBetter: undefined,
     },
     Description: {
       width: 120,
+      higherBetter: undefined,
     },
     Parameters: {
       width: 100,
+      higherBetter: undefined,
     },
     Stride: {
       width: 100,
+      higherBetter: undefined,
     },
     Input: {
       width: 100,
+      higherBetter: undefined,
     },
     Corpus: {
       width: 100,
+      higherBetter: undefined,
     },
     PR: {
       width: 100,
+      higherBetter: false,
+      isScore: true,
     },
     KS: {
       width: 100,
+      higherBetter: true,
+      isScore: true,
     },
     IC: {
       width: 100,
+      higherBetter: true,
+      isScore: true,
     },
     SID: {
       width: 100,
+      higherBetter: true,
+      isScore: true,
     },
     ER: {
       width: 100,
+      higherBetter: true,
+      isScore: true,
     },
     ASR: {
       width: 100,
+      higherBetter: false,
+      isScore: true,
     },
     "ASR-LM": {
       width: 100,
+      higherBetter: false,
+      isScore: true,
     },
     QbE: {
       width: 100,
+      higherBetter: true,
+      isScore: true,
     },
     "SF-F1": {
       width: 100,
+      higherBetter: true,
+      isScore: true,
     },
     "SF-CER": {
       width: 100,
+      higherBetter: false,
+      isScore: true,
     },
     SV: {
       width: 100,
+      higherBetter: false,
+      isScore: true,
     },
     SD: {
       width: 100,
+      higherBetter: false,
+      isScore: true,
     },
   };
 
@@ -262,6 +329,8 @@ function LeaderBoard(props) {
         typeof submissions[0][key] == "number"
           ? memoizedNumericSort
           : "alphanumeric",
+      higherBetter: columnInfo[key].higherBetter,
+      isScore: columnInfo[key].isScore,
     };
   });
   columns[0]["sticky"] = "left";

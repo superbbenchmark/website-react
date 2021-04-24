@@ -195,7 +195,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                             tableControlRef.current.click();
                           }}
                         >
-                          {largeScreen ? "Control" : "Control"}
+                          {largeScreen ? "Help" : "Help"}
                         </Button>
                       </AdaptiveLink>
                     </Grid>
