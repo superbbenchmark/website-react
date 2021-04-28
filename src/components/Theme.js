@@ -8,7 +8,7 @@ const mainTheme = {
     },
     text: {
       primary: blueGrey[600],
-      secondary: grey[500],
+      secondary: grey[600],
     },
   },
 };
