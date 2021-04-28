@@ -30,12 +30,12 @@ export default function Landing(props) {
         {[
           "ntu-1000.png",
           "fair-1000.png",
-          "cmu-1000.png",
           "mit-1000.png",
+          "cmu-1000.png",
           "jhu-1000.png",
         ].map((filename) => {
           return (
-            <Grid item xs={8} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={6}>
               <img src={filename} width="100%" />
             </Grid>
           );
