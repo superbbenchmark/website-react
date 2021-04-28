@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import { Typography, Link } from "@material-ui/core";
+import { Typography, Link, Grid } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
@@ -16,7 +16,7 @@ export default function Landing(props) {
           <strong>SUPERB</strong>
         </Typography>
       </Box>
-      <Box margin={theme.spacing(1, "auto", 4)}>
+      <Box margin={theme.spacing(1, "auto", 6)}>
         <Typography
           variant={useMediaQuery(theme.breakpoints.up("sm")) ? "h4" : "h5"}
           color="textPrimary"
@@ -25,6 +25,23 @@ export default function Landing(props) {
           <strong>PER</strong>formance <strong>B</strong>enchmark
         </Typography>
       </Box>
+      <SubSection>
+      <Grid container justify="space-evenly" spacing={0}>
+        {[
+          "ntu-1000.png",
+          "fair-1000.png",
+          "cmu-1000.png",
+          "mit-1000.png",
+          "jhu-1000.png",
+        ].map((filename) => {
+          return (
+            <Grid item xs={8} sm={6} md={4}>
+              <img src={filename} width="100%" />
+            </Grid>
+          );
+        })}
+      </Grid>
+      </SubSection>
       <Box maxWidth={800} margin="auto" textAlign="left">
         <SubSubSection>
           <Typography variant="body1" color="textSecondary">
