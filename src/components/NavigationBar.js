@@ -140,7 +140,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
 
   let items = [
     ["Paper", "https://arxiv.org/"],
-    ["Code", "https://github.com/s3prl/s3prl/tree/develop/downstream#benchmark"],
+    ["Code", "https://github.com/s3prl/s3prl/tree/master/downstream"],
     ["Tasks", "/tasks"],
     ["Submit", "/submit"],
     // ["Compare", "/compare"],
