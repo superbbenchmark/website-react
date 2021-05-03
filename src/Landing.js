@@ -64,7 +64,7 @@ export default function Landing(props) {
                   A
                   <DescriptionButton
                     name="benchmark toolkit"
-                    link={"https://github.com/s3prl/s3prl"}
+                    link={"https://github.com/s3prl/s3prl/tree/master/downstream"}
                   />
                   designed to evaluate and analyze pretrained model performance
                   on various downstream tasks following the conventional
