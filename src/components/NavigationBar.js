@@ -139,7 +139,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
   const location = useLocation();
 
   let items = [
-    ["Paper", "https://arxiv.org/"],
+    ["Paper", "https://arxiv.org/abs/2105.01051"],
     ["Code", "https://github.com/s3prl/s3prl"],
     ["Tasks", "/tasks"],
     ["Submit", "/submit"],
