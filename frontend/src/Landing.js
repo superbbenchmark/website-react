@@ -91,14 +91,14 @@ export default function Landing(props) {
         <SubSection>
           <Grid container justify="space-evenly" spacing={0}>
             {[
-              ["cmu-1000.png", "https://www.cmu.edu/"],
               ["ntu-1000.png", "https://www.ntu.edu.tw/english/"],
+              ["cmu-1000.png", "https://www.cmu.edu/"],
               ["mit-1000.png", "https://www.mit.edu/"],
               ["jhu-1000.png", "https://www.jhu.edu/"],
               ["fair-1000.png", "https://ai.facebook.com/"],
             ].map((filename) => {
               return (
-                <Grid item xs={4} sm={3} md={4}>
+                <Grid item xs={6} sm={4} md={4}>
                   <a target="_blank" href={filename[1]}>
                     <img src={filename[0]} width="100%" />
                   </a>
