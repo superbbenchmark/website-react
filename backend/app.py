@@ -5,6 +5,7 @@ from models.user import UserModel
 import google_token
 from http import HTTPStatus
 from flask_jwt_extended import JWTManager, create_access_token
+from flask_cors import CORS
 
 app = Flask(__name__)
 
@@ -14,6 +15,7 @@ app.config['GOOGLE_CLIENT_ID'] = '796679159105-6335p2q2ub5pr15lnf3g2cqkhnucmvkl.
 app.config['JWT_SECRET_KEY'] = 'speechlab531'
 
 jwt = JWTManager(app)
+CORS(app)
 
 
 @app.route("/api/login", methods=['POST'])

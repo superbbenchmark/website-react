@@ -3,3 +3,4 @@ flask-sqlalchemy==2.5.1
 pymysql==1.0.2
 cryptography==3.4.7
 flask-jwt-extended==4.2.1
+flask-cors==3.0.10
