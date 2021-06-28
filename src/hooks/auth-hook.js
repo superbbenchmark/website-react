@@ -1,10 +1,15 @@
 import { useState, useCallback, useEffect } from "react";
+import { useGoogleLogout } from "react-google-login";
 
 let logoutTimer;
+
+const clientId =
+    "796679159105-6335p2q2ub5pr15lnf3g2cqkhnucmvkl.apps.googleusercontent.com";
 
 export const useAuth = () => {
     const [token, setToken] = useState(false);
     const [tokenExpirationDate, setTokenExpirationDate] = useState();
+    const { signOut } = useGoogleLogout({ clientId });
 
     const login = useCallback((token, expirationDate) => {
         setToken(token);
@@ -21,6 +26,7 @@ export const useAuth = () => {
     }, []);
 
     const logout = useCallback(() => {
+        signOut();
         setToken(null);
         setTokenExpirationDate(null);
         localStorage.removeItem("data");
