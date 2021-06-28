@@ -1,6 +1,11 @@
 import "./App.css";
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+} from "react-router-dom";
 import { Box, Typography } from "@material-ui/core";
 import {
     useTheme,
@@ -16,7 +21,11 @@ import Compare from "./Compare";
 import Leaderboard from "./Leaderboard";
 import NavigationBar from "./components/NavigationBar";
 import Login from "./components/Login";
+import Logout from "./components/Logout";
 import { mainTheme } from "./components/Theme";
+import { AuthContext } from "./context/auth-context";
+import { useAuth } from "./hooks/auth-hook";
+import { useContext } from "react";
 
 const useStyles = makeStyles((theme) => ({
     narrowViewport: {
@@ -35,6 +44,7 @@ function App() {
     const [height, setHeight] = React.useState(0);
     const [navbarHeight, setNavbarHeight] = React.useState(0);
     const tableControlRef = React.useRef(null);
+    const auth = useContext(AuthContext);
 
     const setViewPort = () => {
         setWidth(window.innerWidth);
@@ -73,19 +83,26 @@ function App() {
                             <Compare />
                         </div>
                     </Route>
-                    <Route path="/login">
-                        <div
-                            className={`${classes.narrowViewport} ${classes.LoginButton}`}
-                        >
-                            <Login />
-                        </div>
-                    </Route>
+                    {!auth.isLoggedIn ? (
+                        <Route path="/login">
+                            <div
+                                className={`${classes.narrowViewport} ${classes.LoginButton}`}
+                            >
+                                <Login />
+                            </div>
+                        </Route>
+                    ) : (
+                        <Route path="/logout">
+                            <Logout />
+                        </Route>
+                    )}
                     <Route path="/leaderboard">
                         <Leaderboard
                             height={`${height - navbarHeight}px`}
                             tableControlRef={tableControlRef}
                         />
                     </Route>
+                    <Redirect to="/" />
                 </Switch>
             </Router>
         </div>
@@ -93,9 +110,19 @@ function App() {
 }
 
 export default () => {
+    const { token, login, logout } = useAuth();
     return (
         <ThemeProvider theme={createMuiTheme(mainTheme)}>
-            <App />
+            <AuthContext.Provider
+                value={{
+                    isLoggedIn: !!token,
+                    token: token,
+                    login: login,
+                    logout: logout,
+                }}
+            >
+                <App />
+            </AuthContext.Provider>
         </ThemeProvider>
     );
 };

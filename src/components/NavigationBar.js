@@ -24,6 +24,9 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Drawer from "./Drawer";
 import AdaptiveLink from "./AdaptiveLink";
 
+import { useContext } from "react";
+import { AuthContext } from "../context/auth-context";
+
 function HideOnScroll(props) {
     const { children, window } = props;
     // Note that you normally won't need to set the window ref as useScrollTrigger
@@ -143,6 +146,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
     const classes = useStyles();
     const theme = useTheme();
     const location = useLocation();
+    const auth = useContext(AuthContext);
 
     let items = [
         ["Paper", "https://arxiv.org/abs/2105.01051"],
@@ -151,8 +155,9 @@ function NavigationBar({ width, tableControlRef, ...props }) {
         ["Submit", "/submit"],
         // ["Compare", "/compare"],
         ["Leaderboard", "/leaderboard"],
-        ["Login", "/login"],
-    ].map(([text, link]) => [
+    ];
+    items.push(auth.isLoggedIn ? ["Logout", "/logout"] : ["Login", "/login"]);
+    items = items.map(([text, link]) => [
         <Typography
             color="textSecondary"
             variant="overline"
