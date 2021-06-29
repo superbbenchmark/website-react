@@ -42,7 +42,8 @@ def login():
         access_token = create_access_token(identity=identity['email'])
         return {"message": "Login Success", "access_token": access_token}, HTTPStatus.OK
 
-    except:
+    except Exception as e:
+        print(e)
         return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
