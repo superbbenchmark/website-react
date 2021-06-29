@@ -2,9 +2,10 @@ from os import access
 from flask import Flask, request, jsonify
 from db import db
 from models.user import UserModel
+from models.files import FileModel
 import google_token
 from http import HTTPStatus
-from flask_jwt_extended import JWTManager, create_access_token
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
 from utils import get_leaderboard
 
@@ -17,6 +18,11 @@ app.config['JWT_SECRET_KEY'] = 'speechlab531'
 
 jwt = JWTManager(app)
 CORS(app)
+
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 
 @app.route("/api/login", methods=['POST'])
@@ -56,6 +62,13 @@ def leaderboard_request():
     except Exception as e:
         print(e)
         return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+@app.route("/api/result/upload", methods=["POST"])
+@jwt_required()
+def result_upload():
+    user_mail = get_jwt_identity()
+    return {"message": user_mail}, 200
+
 
 if __name__ == '__main__':
     db.init_app(app)
