@@ -32,7 +32,7 @@ def create_tables():
 def login():
     try:
         if 'id_token' not in request.get_json():
-            return {"message": "No Google ID token provided"}, HTTPStatus.FORBIDDEN
+            return {"msg": "No Google ID token provided"}, HTTPStatus.FORBIDDEN
 
         token = request.get_json()['id_token']
 
@@ -40,21 +40,21 @@ def login():
             identity = google_token.validate_id_token(
                 token, app.config['GOOGLE_CLIENT_ID'])
         except ValueError:
-            return {"message": 'Invalid Google ID token'}, HTTPStatus.FORBIDDEN
+            return {"msg": 'Invalid Google ID token'}, HTTPStatus.FORBIDDEN
 
         # Get the user info out of the validated identity
         if ('email' not in identity or 'name' not in identity):
-            return {"message": "Unexcpected authorization response"}, HTTPStatus.FORBIDDEN
+            return {"msg": "Unexcpected authorization response"}, HTTPStatus.FORBIDDEN
 
         if not UserModel.find_by_email(email=identity['email']):
             user = UserModel(email=identity['email'], name=identity['name'])
             user.save_to_db()
         access_token = create_access_token(
             identity=identity['email'], expires_delta=datetime.timedelta(hours=1))
-        return {"message": "Login Success", "access_token": access_token}, HTTPStatus.OK
+        return {"msg": "Login Success", "access_token": access_token}, HTTPStatus.OK
 
     except Exception as e:
-        return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+        return {"msg": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route("/api/result/leaderboard", methods=['GET'])
