@@ -14,20 +14,27 @@ class FileModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.ForeignKey('users.email'), nullable=False)
+
+    # upload froms
     submitName = db.Column(db.String(80),  nullable=False)
+    modelURL = db.Column(db.String(264))
+    modelDesc = db.Column(db.Text())
+    paramDesc = db.Column(db.Text())
+    paramShared = db.Column(db.String(80))
+    fineTunedParam = db.Column(db.String(80))
+    taskSpecParam = db.Column(db.String(80))
+    public = db.Column(db.Boolean, default=False, nullable=False)
+
     state = db.Column(db.Enum(Status),  nullable=False,
                       default=Status.UPLOADED)
     filePath = db.Column(db.String(264), nullable=False)
-    ModelURL = db.Column(db.String(264))
-    ModelDescription = db.Column(db.Text())
-    TotalScore = db.Column(db.Float)
-    PRscore = db.Column(db.Float)
-    ASRscore = db.Column(db.Float)
-    date_upload = db.Column(db.DateTime,  default=db.func.current_timestamp())
+    dateUpload = db.Column(db.DateTime,  default=db.func.current_timestamp())
+
+    score = db.relationship("ScoreModel",  backref="file")
 
     @classmethod
     def find_by_email(cls, email: str) -> "FileModel":
-        return cls.query.filter_by(email=email).first()
+        return cls.query.filter_by(email=email)
 
     @classmethod
     def find_all(cls) -> List["FileModel"]:
