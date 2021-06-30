@@ -16,6 +16,7 @@ import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
 
 import { submissions, submission_types } from "./Data";
 import Model from "./components/Modal";
+import config from "./config.json";
 
 const Styles = styled.div`
   .table {
@@ -323,7 +324,7 @@ function LeaderBoard(props) {
   );
 
   const getLeaderboard = () => {
-    axios.get("http://localhost:5000/api/result/leaderboard")
+    axios.get(`${config.SERVER_URL}/api/result/leaderboard`)
     .then((res) => { 
         //console.log(res.data.leaderboard)
         setLeaderboardData(res.data.leaderboard);
