@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 from db import db
 from models.user import UserModel
-from models.files import FileModel
+from models.file import FileModel
+from models.score import ScoreModel
 import google_token
 from http import HTTPStatus
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -54,6 +55,7 @@ def login():
         return {"msg": "Login Success", "access_token": access_token}, HTTPStatus.OK
 
     except Exception as e:
+        print(e)
         return {"msg": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 

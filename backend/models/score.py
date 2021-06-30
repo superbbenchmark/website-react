@@ -5,14 +5,12 @@ class ScoreModel(db.Model):
     __tablename__ = "scores"
 
     id = db.Column(db.Integer, primary_key=True)
-    fileId = db.Column(db.Integer, db.ForeignKey('file.id'), nullable=False)
+    fileId = db.Column(db.Integer, db.ForeignKey('files.id'), nullable=False)
 
     # metrics
     ASR = db.Column(db.Float)
     PR = db.Column(db.Float)
     SID = db.Column(db.Float)
-
-    file = db.relationship("FileModel",  backref="score")
 
     @classmethod
     def find_by_fileId(cls, _id: int) -> "ScoreModel":

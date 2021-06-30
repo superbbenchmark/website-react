@@ -30,7 +30,7 @@ class FileModel(db.Model):
     filePath = db.Column(db.String(264), nullable=False)
     dateUpload = db.Column(db.DateTime,  default=db.func.current_timestamp())
 
-    score = db.relationship("ScoreModel",  backref="file")
+    score = db.relationship("ScoreModel",  backref="files")
 
     @classmethod
     def find_by_email(cls, email: str) -> "FileModel":
