@@ -325,7 +325,7 @@ function LeaderBoard(props) {
   const getLeaderboard = () => {
     axios.get("http://localhost:5000/api/result/leaderboard")
     .then((res) => { 
-        console.log(res.data.leaderboard)
+        //console.log(res.data.leaderboard)
         setLeaderboardData(res.data.leaderboard);
     })
     .catch((error) => { console.error(error) })
