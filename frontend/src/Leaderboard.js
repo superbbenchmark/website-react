@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react"
+import axios from "axios";
 import styled from "styled-components";
 import {
   useTable,
@@ -13,7 +14,7 @@ import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
 
-import { submissions } from "./Data";
+import { submissions, submission_types } from "./Data";
 import Model from "./components/Modal";
 
 const Styles = styled.div`
@@ -225,6 +226,7 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
 
 function LeaderBoard(props) {
   const theme = useTheme();
+  const [LeaderboardData, setLeaderboardData] = useState([]);
   const columnInfo = {
     Method: {
       width: 120,
@@ -320,13 +322,26 @@ function LeaderBoard(props) {
     }
   );
 
+  const getLeaderboard = () => {
+    axios.get("http://localhost:5000/api/result/leaderboard")
+    .then((res) => { 
+        console.log(res.data.leaderboard)
+        setLeaderboardData(res.data.leaderboard);
+    })
+    .catch((error) => { console.error(error) })
+  }
+
+  useEffect(() => {
+    getLeaderboard();
+  },[]);
+
   let columns = Object.keys(columnInfo).map((key) => {
     return {
       Header: key,
       accessor: key,
       width: columnInfo[key].width,
       sortType:
-        typeof submissions[0][key] == "number"
+        typeof submission_types[key] == "number"
           ? memoizedNumericSort
           : "alphanumeric",
       higherBetter: columnInfo[key].higherBetter,
@@ -336,9 +351,9 @@ function LeaderBoard(props) {
   columns[0]["sticky"] = "left";
 
   const memoColumns = React.useMemo(() => columns);
-  const memoData = React.useMemo(() => submissions, []);
+  //const memoData = React.useMemo(() => submissions, []);
 
-  return <Table columns={memoColumns} data={memoData} {...props} />;
+  return <Table columns={memoColumns} data={LeaderboardData} {...props} />;
 }
 
 export default LeaderBoard;

@@ -1,11 +1,12 @@
 from os import access
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from db import db
 from models.user import UserModel
 import google_token
 from http import HTTPStatus
 from flask_jwt_extended import JWTManager, create_access_token
 from flask_cors import CORS
+from utils import get_leaderboard
 
 app = Flask(__name__)
 
@@ -46,6 +47,15 @@ def login():
         print(e)
         return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
+@app.route("/api/result/leaderboard", methods=['GET'])
+def leaderboard_request():
+    try:
+        leaderboard_data = get_leaderboard()
+        return jsonify({"leaderboard" : leaderboard_data}), HTTPStatus.OK
+
+    except Exception as e:
+        print(e)
+        return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 if __name__ == '__main__':
     db.init_app(app)
