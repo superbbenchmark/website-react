@@ -30,5 +30,5 @@ def create_folder(email, upload_count):
     return folder
 
 
-def get_path(folder, file_name):
+def get_full_path(folder, file_name):
     return os.path.join(folder, secure_filename(file_name))

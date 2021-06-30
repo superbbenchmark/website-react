@@ -54,7 +54,6 @@ def login():
         return {"message": "Login Success", "access_token": access_token}, HTTPStatus.OK
 
     except Exception as e:
-        print(e)
         return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
@@ -74,7 +73,19 @@ def leaderboard_request():
 def result_upload():
     try:
         user_mail = get_jwt_identity()
+
+        submitName = request.form.get('submitName')
+        modelURL = request.form.get('modelURL')
+        modelDesc = request.form.get('modelDesc')
+        paramDesc = request.form.get('paramDesc')
+        paramShared = request.form.get('paramShared')
+        fineTunedParam = request.form.get('fineTunedParam')
+        taskSpecParam = request.form.get('taskSpecParam')
+        public = bool(request.form.get('public'))
         file = request.files['file']
+
+        if not (submitName and modelDesc and paramDesc):
+            return {"msg": "Column Missing."}, HTTPStatus.FORBIDDEN
 
         if file.filename == "":
             return {"msg": "No file selected."}, HTTPStatus.FORBIDDEN
@@ -82,10 +93,22 @@ def result_upload():
             return {"msg": "Wrong file format."}, HTTPStatus.FORBIDDEN
 
         upload_count = FileModel.get_upload_count_by_mail(email=user_mail) + 1
+
         folder = file_upload.create_folder(user_mail, str(upload_count))
-        file_path = file_upload.get_path(folder, file.filename)
+        file_path = file_upload.get_full_path(folder, file.filename)
+
         fileObj = FileModel(
-            email=user_mail, submitName="Test", filePath=file_path)
+            email=user_mail,
+            submitName=submitName,
+            modelURL=modelURL,
+            modelDesc=modelDesc,
+            paramDesc=paramDesc,
+            paramShared=paramShared,
+            fineTunedParam=fineTunedParam,
+            taskSpecParam=taskSpecParam,
+            public=public,
+            filePath=file_path
+        )
         fileObj.save_to_db()
 
         try:
@@ -94,7 +117,7 @@ def result_upload():
         except Exception as e:
             fileObj.delete_from_db()  # Rollback
             return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
-    except:
+    except Exception as e:
         return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
