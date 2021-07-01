@@ -76,14 +76,18 @@ def result_upload():
     try:
         user_mail = get_jwt_identity()
 
+        # TODO: Form Validation
         submitName = request.form.get('submitName')
         modelURL = request.form.get('modelURL')
         modelDesc = request.form.get('modelDesc')
+        stride = request.form.get('stride')
+        inputFormat = request.form.get('inputFormat')
+        corpus = request.form.get('corpus')
         paramDesc = request.form.get('paramDesc')
         paramShared = request.form.get('paramShared')
         fineTunedParam = request.form.get('fineTunedParam')
         taskSpecParam = request.form.get('taskSpecParam')
-        public = bool(request.form.get('public'))
+        task = request.form.get('task')
         file = request.files['file']
 
         if not (submitName and modelDesc and paramDesc):
@@ -104,11 +108,14 @@ def result_upload():
             submitName=submitName,
             modelURL=modelURL,
             modelDesc=modelDesc,
+            stride=stride,
+            inputFormat=inputFormat,
+            corpus=corpus,
             paramDesc=paramDesc,
             paramShared=paramShared,
             fineTunedParam=fineTunedParam,
             taskSpecParam=taskSpecParam,
-            public=public,
+            task=task,
             filePath=file_path
         )
         fileObj.save_to_db()

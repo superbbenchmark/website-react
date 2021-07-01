@@ -9,6 +9,12 @@ class Status(enum.Enum):
     DONE = 3
 
 
+class Task(enum.Enum):
+    CONSTRAINED = 1
+    LESS_CONSTRAINED = 2
+    UNCONSTRAINED = 3
+
+
 class FileModel(db.Model):
     __tablename__ = "files"
 
@@ -19,11 +25,14 @@ class FileModel(db.Model):
     submitName = db.Column(db.String(80),  nullable=False)
     modelURL = db.Column(db.String(264))
     modelDesc = db.Column(db.Text())
+    stride = db.Column(db.Text())
+    inputFormat = db.Column(db.Text())
+    corpus = db.Column(db.Text())
     paramDesc = db.Column(db.Text())
     paramShared = db.Column(db.String(80))
     fineTunedParam = db.Column(db.String(80))
     taskSpecParam = db.Column(db.String(80))
-    public = db.Column(db.Boolean, default=False, nullable=False)
+    task = db.Column(db.Enum(Task),  nullable=False)
 
     state = db.Column(db.Enum(Status),  nullable=False,
                       default=Status.UPLOADED)
