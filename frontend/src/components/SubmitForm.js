@@ -211,7 +211,7 @@ export default function SubmitForm(props) {
                     label={"Parameter Description"}
                     required
                     fullWidth
-                    onInput={(e) => setParamShared(e.target.value)}
+                    onInput={(e) => setParamDesc(e.target.value)}
                 />
                 <TextField
                     className={classes.textField}
