@@ -100,9 +100,11 @@ export default function SubmitForm(props) {
     const submitHandler = async (event) => {
         event.preventDefault();
         // validation
-        if (!isGithubUrl(modelURL)) {
-            swal({text: "Invalid URL", icon: "warning"});
-            return;
+        if (modelURL.length > 0){
+            if (!isGithubUrl(modelURL)) {
+                swal({text: "Invalid URL", icon: "warning"});
+                return;
+            }
         }
         try {
             const formData = new FormData();
