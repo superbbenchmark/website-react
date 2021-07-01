@@ -1,4 +1,5 @@
 import React, { useRef, useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 
 import { SubSubSection } from "./Sections";
 import { SubTitle } from "./Titles";
@@ -37,6 +38,7 @@ export default function SubmitForm(props) {
         props;
     const classes = useStyles();
     const filePickerRef = useRef();
+    const history = useHistory();
 
     const auth = useContext(AuthContext);
     const [submitName, setSubmitName] = useState("");
@@ -82,6 +84,7 @@ export default function SubmitForm(props) {
                 .catch((err) => {
                     console.log(err.response.data.msg);
                 });
+            history.push("/submit");
         } catch (err) {}
     };
 
