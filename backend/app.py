@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from threading import Thread
 from db import db
 from models.user import UserModel
 from models.file import FileModel
@@ -10,6 +11,7 @@ import datetime
 from flask_cors import CORS
 from utils import get_leaderboard
 import file_upload
+from calculate import metric_calculate_pipeline
 
 app = Flask(__name__)
 
@@ -89,7 +91,6 @@ def result_upload():
         taskSpecParam = request.form.get('taskSpecParam')
         task = request.form.get('task')
         file = request.files['file']
-
         if not (submitName and modelDesc and paramDesc):
             return {"msg": "Column Missing."}, HTTPStatus.FORBIDDEN
 
@@ -122,6 +123,13 @@ def result_upload():
 
         try:
             file.save(file_path)
+
+            # start processing
+            thread = Thread(target=metric_calculate_pipeline, kwargs={"file_path":file_path, 
+                                                                      "upload_count":upload_count, 
+                                                                      "email":user_mail})
+            thread.start()
+
             return {"msg": "Upload Success!"}, HTTPStatus.OK
         except Exception as e:
             fileObj.delete_from_db()  # Rollback
