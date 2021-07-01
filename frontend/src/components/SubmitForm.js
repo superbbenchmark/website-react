@@ -1,8 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 
 import { SubSubSection } from "./Sections";
 import { SubTitle } from "./Titles";
 import { capitalizeFirstLetter } from "./Utilies";
+import { AuthContext } from "../context/auth-context";
 import { Typography, Button, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
@@ -10,6 +11,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,6 +37,8 @@ export default function SubmitForm(props) {
         props;
     const classes = useStyles();
     const filePickerRef = useRef();
+
+    const auth = useContext(AuthContext);
     const [submitName, setSubmitName] = useState("");
     const [modelURL, setModelURL] = useState("");
     const [modelDesc, setModelDesc] = useState("");
@@ -46,6 +50,40 @@ export default function SubmitForm(props) {
     const [fineTunedParam, setFineTunedParam] = useState("");
     const [taskSpecParam, setTaskSpecParam] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
+    const [task, setTask] = useState("constrained");
+
+    const submitHandler = async (event) => {
+        event.preventDefault();
+        try {
+            const formData = new FormData();
+            formData.append("submitName", submitName);
+            formData.append("modelURL", modelURL);
+            formData.append("modelDesc", modelDesc);
+            formData.append("stride", stride);
+            formData.append("inputFormat", inputFormat);
+            formData.append("corpus", corpus);
+            formData.append("paramDesc", paramDesc);
+            formData.append("paramShared", paramShared);
+            formData.append("fineTunedParam", fineTunedParam);
+            formData.append("taskSpecParam", taskSpecParam);
+            formData.append("task", task);
+            formData.append("file", selectedFile);
+            const res = await axios({
+                method: "post",
+                url: "http://127.0.0.1:5000/api/result/upload",
+                data: formData,
+                headers: {
+                    Authorization: "Bearer " + auth.token,
+                },
+            })
+                .then((res) => {
+                    console.log(res.data.msg);
+                })
+                .catch((err) => {
+                    console.log(err.response.data.msg);
+                });
+        } catch (err) {}
+    };
 
     return (
         <div>
@@ -67,7 +105,11 @@ export default function SubmitForm(props) {
                     {submit}
                 </Typography>
             </SubSubSection>
-            <form className={classes.root} autoComplete="off">
+            <form
+                className={classes.root}
+                autoComplete="off"
+                onSubmit={submitHandler}
+            >
                 <TextField
                     className={classes.textField}
                     label="Submission Name"
@@ -107,7 +149,7 @@ export default function SubmitForm(props) {
                     label={"Corpus"}
                     required
                     fullWidth
-                    onInput={(e) => setInputFormat(e.target.value)}
+                    onInput={(e) => setCorpus(e.target.value)}
                 />
                 <TextField
                     className={classes.textField}
@@ -149,6 +191,8 @@ export default function SubmitForm(props) {
                         aria-label="position"
                         name="position"
                         defaultValue="constrained"
+                        value={task}
+                        onChange={(e) => setTask(e.target.value)}
                     >
                         <FormControlLabel
                             value="constrained"
@@ -179,6 +223,7 @@ export default function SubmitForm(props) {
                     className={classes.Button}
                     variant="contained"
                     color="primary"
+                    type="submit"
                 >
                     Submit
                 </Button>
