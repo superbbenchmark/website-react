@@ -8,7 +8,6 @@ import { submitFormTheme } from "./Theme";
 import { tracks } from "../Data";
 import { AuthContext } from "../context/auth-context";
 import { Typography, Button, TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import swal from "sweetalert";
 import {
     makeStyles,
