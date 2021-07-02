@@ -110,7 +110,7 @@ function App() {
                             tableControlRef={tableControlRef}
                         />
                     </Route>
-                    <Redirect to="/" />
+                    <Redirect to="/login" />
                 </Switch>
             </Router>
         </div>

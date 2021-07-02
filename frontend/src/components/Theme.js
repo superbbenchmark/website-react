@@ -1,4 +1,5 @@
 import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
+import { ThemeProvider } from "@material-ui/core/styles";
 import update from "immutability-helper";
 
 const mainTheme = {
@@ -37,9 +38,18 @@ const unconstrainedTheme = update(mainTheme, {
     },
 });
 
+const submitFormTheme = update(mainTheme, {
+    palette: {
+        primary: {
+            main: { $set: blueGrey[600] },
+        },
+    },
+});
+
 export {
     mainTheme,
     constrainedTheme,
     lessConstrainedTheme,
     unconstrainedTheme,
+    submitFormTheme,
 };
