@@ -136,7 +136,6 @@ export default function SubmitForm(props) {
                     console.log(err.response.data.msg);
                     swal({title: "Error", text: err.response.data.msg, icon: "error"});
                 });
-            history.push("/submit");
         } catch (err) {}
     };
 
@@ -148,7 +147,7 @@ export default function SubmitForm(props) {
                         <span>
                             <strong>
                                 {capitalizeFirstLetter(name.toLowerCase())}
-                            </strong>{" "}
+                            </strong>
                             Submission
                         </span>
                     }

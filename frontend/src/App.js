@@ -16,12 +16,13 @@ import {
 
 import Landing from "./Landing";
 import Tasks from "./Tasks";
-import Submit from "./Submit";
+import Rules from "./Rules";
 import Compare from "./Compare";
 import Leaderboard from "./Leaderboard";
 import NavigationBar from "./components/NavigationBar";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
+import SubmitForm from "./components/SubmitForm";
 import { mainTheme } from "./components/Theme";
 import { AuthContext } from "./context/auth-context";
 import { useAuth } from "./hooks/auth-hook";
@@ -73,9 +74,9 @@ function App() {
                             <Tasks />
                         </div>
                     </Route>
-                    <Route path="/submit">
+                    <Route path="/rules">
                         <div className={`${classes.narrowViewport}`}>
-                            <Submit />
+                            <Rules />
                         </div>
                     </Route>
                     <Route path="/compare">
@@ -92,9 +93,16 @@ function App() {
                             </div>
                         </Route>
                     ) : (
-                        <Route path="/logout">
-                            <Logout />
-                        </Route>
+                        <>
+                            <Route path="/logout">
+                                <Logout />
+                            </Route>
+                            <Route path="/submit">
+                                <div className={`${classes.narrowViewport}`}>
+                                    <SubmitForm />
+                                </div>
+                            </Route>
+                        </>
                     )}
                     <Route path="/leaderboard">
                         <Leaderboard
