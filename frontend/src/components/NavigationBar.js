@@ -152,8 +152,9 @@ function NavigationBar({ width, tableControlRef, ...props }) {
         ["Paper", "https://arxiv.org/abs/2105.01051"],
         ["Code", "https://github.com/s3prl/s3prl"],
         ["Tasks", "/tasks"],
-        ["Submit", "/submit"],
+        ["Rules", "/rules"],
         // ["Compare", "/compare"],
+        ["Submit", "/submit"],
         ["Leaderboard", "/leaderboard"],
     ];
     items.push(auth.isLoggedIn ? ["Logout", "/logout"] : ["Login", "/login"]);
@@ -176,7 +177,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                 <AppBar color="primary">
                     <Toolbar className={classes.toolbar}>
                         <Grid container alignItems="center">
-                            <Grid item xs={9} md={4}>
+                            <Grid item xs={9} md={3}>
                                 <Grid
                                     container
                                     direction="row"
@@ -220,7 +221,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                                     )}
                                 </Grid>
                             </Grid>
-                            <Grid item xs={3} md={8}>
+                            <Grid item xs={3} md={9}>
                                 <Grid
                                     container
                                     direction="row"
