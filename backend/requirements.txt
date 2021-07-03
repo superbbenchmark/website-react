@@ -1,3 +1,4 @@
+numpy==1.19.4
 Flask==2.0.1
 flask-sqlalchemy==2.5.1
 pymysql==1.0.2
@@ -8,3 +9,8 @@ protobuf==3.17.3
 google-auth==1.32.0
 python-magic-bin==0.4.14
 pyyaml==5.4.1
+tabulate==0.8.9
+scipy==1.5.4
+sklearn==0.24.0
+editdistance==0.5.3
+gdown==3.13.0

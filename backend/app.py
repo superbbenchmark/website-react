@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from threading import Thread
 from db import db
 from models.user import UserModel
@@ -136,6 +136,15 @@ def result_upload():
             return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
     except Exception as e:
         return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+@app.route("/api/download/example", methods=['GET'])
+def download_example():
+    try:
+        return send_file("./examples/predict.zip", as_attachment=True)
+
+    except Exception as e:
+        print(e)
+        return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 if __name__ == '__main__':

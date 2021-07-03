@@ -16,10 +16,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:root@127.0.0.1:330
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://<user>:<password>@<host>:<port>/<database>"
 ```
 
-4. Install python packages
+4. Install and download requirements
 
 ```bash
-python3 -m pip install -r requirements.txt
+./prepare.sh
 ```
 
 5. In backend/ run
