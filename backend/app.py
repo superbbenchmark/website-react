@@ -19,7 +19,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:root@127.0.0.1:3306/superb"
 app.config['GOOGLE_CLIENT_ID'] = '796679159105-6335p2q2ub5pr15lnf3g2cqkhnucmvkl.apps.googleusercontent.com'
 app.config['JWT_SECRET_KEY'] = 'speechlab531'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Max file size: 16MB
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # Max file size: 16MB
 app.config['UPLOAD_DIR'] = "./upload"
 
 jwt = JWTManager(app)
@@ -123,6 +123,8 @@ def result_upload():
             filePath=file_path,
             aoeTimeUpload=get_AOETime()
         )
+        scoreObj = ScoreModel()
+        fileObj.scores.append(scoreObj)
         fileObj.save_to_db()
 
         try:
@@ -136,8 +138,10 @@ def result_upload():
             return {"msg": "Upload Success!"}, HTTPStatus.OK
         except Exception as e:
             fileObj.delete_from_db()  # Rollback
+            print(e)
             return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
     except Exception as e:
+        print(e)
         return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 @app.route("/api/download/example", methods=['GET'])
