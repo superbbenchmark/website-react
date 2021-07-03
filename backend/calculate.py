@@ -24,7 +24,8 @@ def metric_calculate_pipeline(file_path="./upload/aaa@gmail.com/1/predict.zip", 
     state = os.system(f"timeout {configs['UNZIP_TIMEOUT']} unzip {file_path} -d {os.path.dirname(file_path)}")
     # timeout!
     if (state != 0):
-        print("unzip timeout")
+        print("Unzip timeout")
+        print("Unzip timeout", file=output_log_f)
         return
     
     ground_truth_root = configs["GROUND_TRUTH_ROOT"]
