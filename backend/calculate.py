@@ -17,7 +17,7 @@ def read_file(path, callback=lambda x: x, sep=" "):
             content[filename] = callback(value)
     return content
 
-def metric_calculate_pipeline(file_path="./upload/aaa@gmail.com/1/predict.zip", submitUUID = ""):
+def metric_calculate_pipeline(file_path, submitUUID):
     with open("configs.yaml") as f:
         configs = yaml.safe_load(f)
 
@@ -285,5 +285,3 @@ def metric_calculate_pipeline(file_path="./upload/aaa@gmail.com/1/predict.zip", 
                 except Exception as e:
                     print(e)
                     print(e, file=output_log_f)
-    
-metric_calculate_pipeline()
