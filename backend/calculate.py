@@ -21,12 +21,11 @@ def metric_calculate_pipeline(file_path="./upload/aaa@gmail.com/1/predict.zip", 
     with open("configs.yaml") as f:
         configs = yaml.safe_load(f)
 
-    #state = os.system(f"timeout {configs['UNZIP_TIMEOUT']} unzip {file_path} -d {os.path.dirname(file_path)}")
+    state = os.system(f"timeout {configs['UNZIP_TIMEOUT']} unzip {file_path} -d {os.path.dirname(file_path)}")
     # timeout!
-    #print(state)
-    #if (state != 0):
-    #    print("unzip timeout")
-    #    return
+    if (state != 0):
+        print("unzip timeout")
+        return
     
     ground_truth_root = configs["GROUND_TRUTH_ROOT"]
     predict_root = os.path.join(os.path.dirname(file_path), "predict")
