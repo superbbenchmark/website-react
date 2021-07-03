@@ -8,9 +8,18 @@ class ScoreModel(db.Model):
     fileId = db.Column(db.Integer, db.ForeignKey('files.id'), nullable=False)
 
     # metrics
-    ASR = db.Column(db.Float)
-    PR = db.Column(db.Float)
-    SID = db.Column(db.Float)
+    PR_per_public = db.Column(db.Float)
+    KS_acc_public = db.Column(db.Float)
+    IC_acc_public = db.Column(db.Float)
+    SID_acc_public = db.Column(db.Float)
+    ER_acc_public = db.Column(db.Float)
+    ASR_per_public = db.Column(db.Float)
+    ASR_LM_per_public = db.Column(db.Float)
+    QbE_mtwv_public = db.Column(db.Float)
+    SF_f1_public = db.Column(db.Float)
+    SF_cer_public = db.Column(db.Float)
+    SV_eer_public = db.Column(db.Float)
+    SD_der_public = db.Column(db.Float)
 
     @classmethod
     def find_by_fileId(cls, _id: int) -> "ScoreModel":

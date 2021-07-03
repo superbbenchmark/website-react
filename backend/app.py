@@ -138,10 +138,8 @@ def result_upload():
             return {"msg": "Upload Success!"}, HTTPStatus.OK
         except Exception as e:
             fileObj.delete_from_db()  # Rollback
-            print(e)
             return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
     except Exception as e:
-        print(e)
         return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 @app.route("/api/download/example", methods=['GET'])

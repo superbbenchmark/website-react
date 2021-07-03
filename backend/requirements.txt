@@ -11,7 +11,8 @@ python-magic-bin==0.4.14
 pyyaml==5.4.1
 tabulate==0.8.9
 scipy==1.5.4
-sklearn==0.24.0
 editdistance==0.5.3
 h5py==3.1.0
+intervaltree==3.1.0
 gdown==3.13.0
+sklearn==0.24.0
