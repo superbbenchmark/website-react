@@ -130,7 +130,7 @@ def result_upload():
 
             # start processing
             thread = Thread(target=metric_calculate_pipeline, kwargs={"file_path":file_path,
-                                                                      "submitUUID":submitUUID)
+                                                                      "submitUUID":submitUUID})
             thread.start()
 
             return {"msg": "Upload Success!"}, HTTPStatus.OK
