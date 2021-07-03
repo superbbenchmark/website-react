@@ -7,6 +7,7 @@ class Status(enum.Enum):
     UPLOADED = 1
     COMPUTING = 2
     DONE = 3
+    ERROR = 4
 
 
 class Task(enum.Enum):
@@ -36,6 +37,7 @@ class FileModel(db.Model):
 
     state = db.Column(db.Enum(Status),  nullable=False,
                       default=Status.UPLOADED)
+    stateInfo = db.Column(db.String(80))
     filePath = db.Column(db.String(264), nullable=False)
     aoeTimeUpload = db.Column(db.DateTime, nullable=False)
     dateUpload = db.Column(db.DateTime,  default=db.func.current_timestamp())
