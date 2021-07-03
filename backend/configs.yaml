@@ -1,4 +1,6 @@
 # Metrics related
+UNZIP_TIMEOUT: "10s"
+
 TASKS_GALLERY:
   # PR
   - TASK: "PR_PUBLIC"
