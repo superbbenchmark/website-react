@@ -1,5 +1,9 @@
 import datetime 
+import uuid
 
+def get_uuid():
+    return str(uuid.uuid4())
+    
 def get_AOETime():
     return (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=12)).strftime("%Y-%m-%d %H:%M:%S")
 

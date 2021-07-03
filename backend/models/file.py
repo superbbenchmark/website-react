@@ -21,6 +21,7 @@ class FileModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.ForeignKey('users.email'), nullable=False)
+    submitUUID = db.Column(db.CHAR(36),  nullable=False)
 
     # upload froms
     submitName = db.Column(db.String(80),  nullable=False)
@@ -35,6 +36,7 @@ class FileModel(db.Model):
     taskSpecParam = db.Column(db.String(80))
     task = db.Column(db.Enum(Task),  nullable=False)
 
+    # others
     state = db.Column(db.Enum(Status),  nullable=False,
                       default=Status.UPLOADED)
     stateInfo = db.Column(db.String(80))

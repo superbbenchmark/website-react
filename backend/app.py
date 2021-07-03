@@ -9,7 +9,7 @@ from http import HTTPStatus
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import datetime
 from flask_cors import CORS
-from utils import get_leaderboard, get_AOETime
+from utils import get_leaderboard, get_AOETime, get_uuid
 import file_upload
 from calculate import metric_calculate_pipeline
 
@@ -104,8 +104,11 @@ def result_upload():
         folder = file_upload.create_folder(user_mail, str(upload_count))
         file_path = file_upload.get_full_path(folder, file.filename)
 
+        submitUUID = get_uuid()
+
         fileObj = FileModel(
             email=user_mail,
+            submitUUID=submitUUID,
             submitName=submitName,
             modelURL=modelURL,
             modelDesc=modelDesc,
@@ -126,9 +129,8 @@ def result_upload():
             file.save(file_path)
 
             # start processing
-            thread = Thread(target=metric_calculate_pipeline, kwargs={"file_path":file_path, 
-                                                                      "upload_count":upload_count, 
-                                                                      "email":user_mail})
+            thread = Thread(target=metric_calculate_pipeline, kwargs={"file_path":file_path,
+                                                                      "submitUUID":submitUUID)
             thread.start()
 
             return {"msg": "Upload Success!"}, HTTPStatus.OK
