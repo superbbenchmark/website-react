@@ -13,4 +13,5 @@ tabulate==0.8.9
 scipy==1.5.4
 sklearn==0.24.0
 editdistance==0.5.3
+h5py==3.1.0
 gdown==3.13.0
