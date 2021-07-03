@@ -20,19 +20,19 @@ def read_file(path, callback=lambda x: x, sep=" "):
 def metric_calculate_pipeline(file_path="./upload/aaa@gmail.com/1/predict.zip", submitUUID = ""):
     with open("configs.yaml") as f:
         configs = yaml.safe_load(f)
-
-    state = os.system(f"timeout {configs['UNZIP_TIMEOUT']} unzip {file_path} -d {os.path.dirname(file_path)}")
-    # timeout!
-    if (state != 0):
-        print("Unzip timeout")
-        print("Unzip timeout", file=output_log_f)
-        return
-    
-    ground_truth_root = configs["GROUND_TRUTH_ROOT"]
-    predict_root = os.path.join(os.path.dirname(file_path), "predict")
-    output_log = os.path.join(os.path.dirname(file_path), "metrics.log")
-
     with open(output_log, "w") as output_log_f:
+        state = os.system(f"timeout {configs['UNZIP_TIMEOUT']} unzip {file_path} -d {os.path.dirname(file_path)}")
+        # timeout!
+        if (state != 0):
+            print("Unzip timeout")
+            print("Unzip timeout", file=output_log_f)
+            return
+        
+        ground_truth_root = configs["GROUND_TRUTH_ROOT"]
+        predict_root = os.path.join(os.path.dirname(file_path), "predict")
+        output_log = os.path.join(os.path.dirname(file_path), "metrics.log")
+
+    
         #============================================#
         #                   PR                       #
         #============================================#
