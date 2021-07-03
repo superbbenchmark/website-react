@@ -1,3 +1,8 @@
+import datetime 
+
+def get_AOETime():
+    return (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=12)).strftime("%Y-%m-%d %H:%M:%S")
+
 def get_leaderboard():
     data = [{
             "Method": "FBANK",

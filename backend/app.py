@@ -9,7 +9,7 @@ from http import HTTPStatus
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import datetime
 from flask_cors import CORS
-from utils import get_leaderboard
+from utils import get_leaderboard, get_AOETime
 import file_upload
 from calculate import metric_calculate_pipeline
 
@@ -117,7 +117,8 @@ def result_upload():
             fineTunedParam=fineTunedParam,
             taskSpecParam=taskSpecParam,
             task=task,
-            filePath=file_path
+            filePath=file_path,
+            aoeTimeUpload=get_AOETime()
         )
         fileObj.save_to_db()
 

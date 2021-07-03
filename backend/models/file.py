@@ -37,6 +37,7 @@ class FileModel(db.Model):
     state = db.Column(db.Enum(Status),  nullable=False,
                       default=Status.UPLOADED)
     filePath = db.Column(db.String(264), nullable=False)
+    aoeTimeUpload = db.Column(db.DateTime, nullable=False)
     dateUpload = db.Column(db.DateTime,  default=db.func.current_timestamp())
 
     score = db.relationship("ScoreModel",  backref="files")
