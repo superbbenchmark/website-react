@@ -7,6 +7,10 @@ import re
 import glob
 import tempfile
 from inference.metric import wer, slot_type_f1, slot_value_cer, EER
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+from models.naive_models import FileModel, ScoreModel
+from dotenv import load_dotenv
 
 def read_file(path, callback=lambda x: x, sep=" "):
     content = {}
@@ -18,13 +22,21 @@ def read_file(path, callback=lambda x: x, sep=" "):
     return content
 
 def metric_calculate_pipeline(file_path, submitUUID):
+    #  connect in memory sqlite database or you can connect your own database
+    load_dotenv()
+    engine = create_engine(os.getenv('SQLALCHEMY_DATABASE_URI', default="mysql+pymysql://root:root@127.0.0.1:3306/superb"))
+
+    # create session and bind engine
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
     with open("configs.yaml") as f:
         configs = yaml.safe_load(f)
 
     output_log = os.path.join(os.path.dirname(file_path), "metrics.log")
     with open(output_log, "w") as output_log_f:
-        state = os.system(f"timeout {configs['UNZIP_TIMEOUT']} unzip {file_path} -d {os.path.dirname(file_path)}")
-        #state = os.system(f"unzip {file_path} -d {os.path.dirname(file_path)}")
+        #state = os.system(f"timeout {configs['UNZIP_TIMEOUT']} unzip {file_path} -d {os.path.dirname(file_path)}")
+        state = os.system(f"unzip {file_path} -d {os.path.dirname(file_path)}")
         # timeout!
         if (state != 0):
             print("Unzip timeout")
