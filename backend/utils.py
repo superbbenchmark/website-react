@@ -1,11 +1,51 @@
 import datetime 
 import uuid
+import enum
+import datetime
 
 def get_uuid():
     return str(uuid.uuid4())
     
 def get_AOETime():
     return (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=12)).strftime("%Y-%m-%d %H:%M:%S")
+
+def submission_records_parser(submission_records, configs):
+
+    def __submission_records_parser(attribute, key_name):
+        if attribute is None:
+            return "-"
+        elif attribute == "":
+            return "-"
+        elif isinstance(attribute, enum.Enum):
+            return attribute.name
+        elif isinstance(attribute, datetime.datetime):
+            return attribute.strftime("%Y-%m-%d %H:%M:%S")
+        elif isinstance(attribute, float):
+            if (("per" in key_name) or ("acc" in key_name) or ("wer" in key_name) or ("f1" in key_name) or ("cer" in key_name) or ("eer" in key_name)):
+                return round(attribute * 100, 2)
+            elif ("der" in key_name):
+                return round(attribute, 2)
+            elif ("mtwv" in key_name):
+                return round(attribute, 4)
+            else:
+                return attribute
+        else:
+            return attribute
+
+    file_info_list = configs["INDIVIDUAL_SUBMISSION_INFO"]["FILE"]
+    score_info_list = configs["INDIVIDUAL_SUBMISSION_INFO"]["SCORE"]
+
+    submission_info = []
+    for file_model in submission_records:
+        single_info = {}
+        score_model = file_model.scores[0]
+        for file_info in file_info_list:
+            single_info[file_info] = __submission_records_parser(file_model.__dict__[file_info], file_info)
+        for score_info in score_info_list:
+            single_info[score_info] = __submission_records_parser(score_model.__dict__[score_info], score_info)
+        
+        submission_info.append(single_info)
+    return submission_info
 
 def get_leaderboard():
     data = [{

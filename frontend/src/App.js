@@ -23,6 +23,7 @@ import NavigationBar from "./components/NavigationBar";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import SubmitForm from "./components/SubmitForm";
+import Profile from "./components/Profile";
 import { mainTheme } from "./components/Theme";
 import { AuthContext } from "./context/auth-context";
 import { useAuth } from "./hooks/auth-hook";
@@ -84,6 +85,12 @@ function App() {
                             <Compare />
                         </div>
                     </Route>
+                    <Route path="/leaderboard">
+                        <Leaderboard
+                            height={`${height - navbarHeight}px`}
+                            tableControlRef={tableControlRef}
+                        />
+                    </Route>
                     {!auth.isLoggedIn ? (
                         <Route path="/login">
                             <div
@@ -94,6 +101,9 @@ function App() {
                         </Route>
                     ) : (
                         <>
+                            <Route path="/profile">
+                                <Profile tableControlRef={tableControlRef}/>
+                            </Route>
                             <Route path="/logout">
                                 <Logout />
                             </Route>
@@ -104,12 +114,7 @@ function App() {
                             </Route>
                         </>
                     )}
-                    <Route path="/leaderboard">
-                        <Leaderboard
-                            height={`${height - navbarHeight}px`}
-                            tableControlRef={tableControlRef}
-                        />
-                    </Route>
+                    
                     <Redirect to="/login" />
                 </Switch>
             </Router>

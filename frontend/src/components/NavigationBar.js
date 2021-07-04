@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
     },
     toolbar: {
         width: "100%",
-        maxWidth: 900,
+        maxWidth: 1000,
         margin: "auto",
         paddingLeft: 20,
         paddingRight: 20,
@@ -157,7 +157,12 @@ function NavigationBar({ width, tableControlRef, ...props }) {
         ["Submit", "/submit"],
         ["Leaderboard", "/leaderboard"],
     ];
-    items.push(auth.isLoggedIn ? ["Logout", "/logout"] : ["Login", "/login"]);
+    if (auth.isLoggedIn){
+        items.push(["Profile", "/profile"]);
+        items.push(["Logout", "/logout"]);
+    } else {
+        items.push(["Login", "/login"]);
+    }
     items = items.map(([text, link]) => [
         <Typography
             color="textSecondary"
@@ -200,9 +205,11 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                                             </LiftingBarButton>
                                         </AdaptiveLink>
                                     </Grid>
-                                    {location.pathname.includes(
+                                    {(location.pathname.includes(
                                         "leaderboard"
-                                    ) && (
+                                    ) || location.pathname.includes(
+                                        "profile"
+                                    )) && (
                                         <Grid item>
                                             <AdaptiveLink link={null}>
                                                 <Button

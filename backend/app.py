@@ -9,14 +9,18 @@ from http import HTTPStatus
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import datetime
 from flask_cors import CORS
-from utils import get_leaderboard, get_AOETime, get_uuid
+from utils import get_leaderboard, get_AOETime, get_uuid, submission_records_parser
 import file_upload
 from calculate import metric_calculate_pipeline
 from dotenv import load_dotenv
 import os
+import yaml
 
 app = Flask(__name__)
 load_dotenv()
+
+with open("configs.yaml") as f:
+    configs = yaml.safe_load(f)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI', default="mysql+pymysql://root:root@127.0.0.1:3306/superb")
@@ -74,6 +78,18 @@ def leaderboard_request():
         print(e)
         return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
+@app.route("/api/result/individual", methods=["GET"])
+@jwt_required()
+def individual_upload():
+    try:
+        user_mail = get_jwt_identity()
+        submission_records = FileModel.find_by_email(email=user_mail).all()
+        submission_info = submission_records_parser(submission_records, configs)
+
+        return jsonify({"submission_info": submission_info}), HTTPStatus.OK
+    except Exception as e:
+        print(e)
+        return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 @app.route("/api/result/upload", methods=["POST"])
 @jwt_required()
@@ -151,7 +167,6 @@ def download_example():
         return send_file("./examples/predict.zip", as_attachment=True)
 
     except Exception as e:
-        print(e)
         return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 

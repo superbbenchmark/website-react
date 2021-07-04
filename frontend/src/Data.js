@@ -194,6 +194,189 @@ const tracks = [
     },
 ];
 
+const individual_submission_columnInfo = {
+    aoeTimeUpload: {
+        header: "Upolad Time",
+        width: 160,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    task: {
+        header: "Task",
+        width: 130,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    showOnLeaderboard: {
+        header: "Show",
+        width: 70,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    submitName: {
+        header: "Method",
+        width: 100,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    modelURL: {
+        header: "Model URL",
+        width: 100,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    modelDesc: {
+        header: "Description",
+        width: 100,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    stride: {
+        header: "Stride",
+        width: 100,
+        higherBetter: undefined,
+        type: "number",
+    },
+    inputFormat: {
+        header: "Input Format",
+        width: 100,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    corpus: {
+        header: "Corpus",
+        width: 100,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    paramDesc: {
+        header: "Parameter Description",
+        width: 100,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    paramShared: {
+        header: "Shared parameters",
+        width: 100,
+        higherBetter: undefined,
+        type: "number",
+    },
+    fineTunedParam: {
+        header: "Fine-tuned parameters",
+        width: 100,
+        higherBetter: undefined,
+        type: "number",
+    },
+    taskSpecParam: {
+        header: "Task-specific parameters",
+        width: 100,
+        higherBetter: undefined,
+        type: "number",
+    },
+    state: {
+        header: "State",
+        width: 70,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    stateInfo: {
+        header: "State Info",
+        width: 100,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    submitUUID: {
+        header: "Submission ID",
+        width: 100,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    PR_per_public: {
+        header: "PR public",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    KS_acc_public: {
+        header: "KS public",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    IC_acc_public: {
+        header: "IC public",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    SID_acc_public: {
+        header: "SID public",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    ER_acc_public: {
+        header: "ER public",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    ASR_wer_public: {
+        header: "ASR public",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    ASR_LM_wer_public: {
+        header: "ASR-LM public",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    QbE_mtwv_public: {
+        header: "QbE public",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    SF_f1_public: {
+        header: "SF-F1 public",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    SF_cer_public: {
+        header: "SF-CER public",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    SV_eer_public: {
+        header: "SV public",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    SD_der_public: {
+        header: "SD public",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+  };
+
 const submission_types = {
   Method: "string",
   Description: "string",
@@ -479,4 +662,4 @@ const submissions = [
     },
 ];
 
-export { domains, tracks, submissions, submission_types};
+export { domains, tracks, submissions, submission_types, individual_submission_columnInfo};
