@@ -6,6 +6,13 @@ from models.file import Status, Task
 
 Base = declarative_base()
 
+class UserModel(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String(80), nullable=False, unique=True)
+    name = Column(String(80), nullable=False)
+
 class FileModel(Base):
     __tablename__ = "files"
 
