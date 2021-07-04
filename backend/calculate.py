@@ -35,8 +35,8 @@ def metric_calculate_pipeline(file_path, submitUUID):
 
     output_log = os.path.join(os.path.dirname(file_path), "metrics.log")
     with open(output_log, "w") as output_log_f:
-        #state = os.system(f"timeout {configs['UNZIP_TIMEOUT']} unzip {file_path} -d {os.path.dirname(file_path)}")
-        state = os.system(f"unzip {file_path} -d {os.path.dirname(file_path)}")
+        state = os.system(f"timeout {configs['UNZIP_TIMEOUT']} unzip {file_path} -d {os.path.dirname(file_path)}")
+        #state = os.system(f"unzip {file_path} -d {os.path.dirname(file_path)}")
         # timeout!
         if (state != 0):
             print("Unzip timeout")
@@ -68,12 +68,13 @@ def metric_calculate_pipeline(file_path, submitUUID):
                     score = wer(predict_values, truth_values)
                     print(f"PR: per {score}")
                     print(f"PR: per {score}", file=output_log_f)
+                    session.query(FileModel).filter_by(submitUUID=submitUUID).first().scores[0].PR_per_public = score
+                    session.commit()
                 except Exception as e:
                     print(e)
                     print(e, file=output_log_f)
 
                     
-
         #============================================#
         #                   KS                       #
         #============================================#
@@ -95,6 +96,8 @@ def metric_calculate_pipeline(file_path, submitUUID):
                     score = np.array(match).mean()
                     print(f"KS: acc {score}")
                     print(f"KS: acc {score}", file=output_log_f)
+                    session.query(FileModel).filter_by(submitUUID=submitUUID).first().scores[0].KS_acc_public = score
+                    session.commit()
                 except Exception as e:
                     print(e)
                     print(e, file=output_log_f)
@@ -120,6 +123,8 @@ def metric_calculate_pipeline(file_path, submitUUID):
                     score = np.array(match).mean()
                     print(f"IC: acc {score}")
                     print(f"IC: acc {score}", file=output_log_f)
+                    session.query(FileModel).filter_by(submitUUID=submitUUID).first().scores[0].IC_acc_public = score
+                    session.commit()
                 except Exception as e:
                     print(e)
                     print(e, file=output_log_f)
@@ -145,6 +150,8 @@ def metric_calculate_pipeline(file_path, submitUUID):
                     score = np.array(match).mean()
                     print(f"SID: acc {score}")
                     print(f"SID: acc {score}", file=output_log_f)
+                    session.query(FileModel).filter_by(submitUUID=submitUUID).first().scores[0].SID_acc_public = score
+                    session.commit()
                 except Exception as e:
                     print(e)
                     print(e, file=output_log_f)
@@ -170,6 +177,8 @@ def metric_calculate_pipeline(file_path, submitUUID):
                     score = np.array(match).mean()
                     print(f"ER: acc {score}")
                     print(f"ER: acc {score}", file=output_log_f)
+                    session.query(FileModel).filter_by(submitUUID=submitUUID).first().scores[0].ER_acc_public = score
+                    session.commit()
                 except Exception as e:
                     print(e)
                     print(e, file=output_log_f)
@@ -193,15 +202,37 @@ def metric_calculate_pipeline(file_path, submitUUID):
                     truth_values = [truth[filename] for filename in filenames]
 
                     score = wer(predict_values, truth_values)
-                    print(f"ASR: per {score}")
-                    print(f"ASR: per {score}", file=output_log_f)
+                    print(f"ASR: wer {score}")
+                    print(f"ASR: wer {score}", file=output_log_f)
+                    session.query(FileModel).filter_by(submitUUID=submitUUID).first().scores[0].ASR_wer_public = score
+                    session.commit()
                 except Exception as e:
                     print(e)
                     print(e, file=output_log_f)
 
         # ASR_LM PUBLIC
         if os.path.isdir(os.path.join(predict_root, "asr_lm_public")):
-            pass
+            if os.path.isfile(os.path.join(predict_root, "asr_lm_public", "predict.ark")):
+                print("[ASR LM PUBLIC]", file=output_log_f)
+                try:
+                    truth_file = os.path.join(ground_truth_root, "asr_public", "truth.ark")
+                    predict_file = os.path.join(predict_root, "asr_lm_public", "predict.ark")
+
+                    predict = read_file(predict_file)
+                    truth = read_file(truth_file)
+
+                    filenames = sorted(predict.keys())
+                    predict_values = [predict[filename] for filename in filenames]
+                    truth_values = [truth[filename] for filename in filenames]
+
+                    score = wer(predict_values, truth_values)
+                    print(f"ASR LM: wer {score}")
+                    print(f"ASR LM: wer {score}", file=output_log_f)
+                    session.query(FileModel).filter_by(submitUUID=submitUUID).first().scores[0].ASR_LM_wer_public = score
+                    session.commit()
+                except Exception as e:
+                    print(e)
+                    print(e, file=output_log_f)
 
         #============================================#
         #                   QbE                      #
@@ -224,6 +255,8 @@ def metric_calculate_pipeline(file_path, submitUUID):
 
                     print(f"QbE: mtwv {mtwv}")
                     print(f"QbE: mtwv {mtwv}", file=output_log_f)
+                    session.query(FileModel).filter_by(submitUUID=submitUUID).first().scores[0].QbE_mtwv_public = mtwv
+                    session.commit()
                 except Exception as e:
                     print(e)
                     print(e, file=output_log_f)
@@ -251,6 +284,9 @@ def metric_calculate_pipeline(file_path, submitUUID):
                     cer = slot_value_cer(predict_values, truth_values)
                     print(f"SF: slot_type_f1 {f1}, slot_value_cer {cer}")
                     print(f"SF: slot_type_f1 {f1}, slot_value_cer {cer}", file=output_log_f)
+                    session.query(FileModel).filter_by(submitUUID=submitUUID).first().scores[0].SF_f1_public = f1
+                    session.query(FileModel).filter_by(submitUUID=submitUUID).first().scores[0].SF_cer_public = cer
+                    session.commit()
                 except Exception as e:
                     print(e)
                     print(e, file=output_log_f)
@@ -276,6 +312,8 @@ def metric_calculate_pipeline(file_path, submitUUID):
                     eer, *other = EER(truth_scores, predict_scores)
                     print(f"SV: eer {eer}")
                     print(f"SV: eer {eer}", file=output_log_f)
+                    session.query(FileModel).filter_by(submitUUID=submitUUID).first().scores[0].SV_eer_public = eer
+                    session.commit()
                 except Exception as e:
                     print(e)
                     print(e, file=output_log_f)
@@ -295,6 +333,8 @@ def metric_calculate_pipeline(file_path, submitUUID):
                             der = result.readline().strip()
                     print(f"SD: der {der}")
                     print(f"SD: der {der}", file=output_log_f)
+                    session.query(FileModel).filter_by(submitUUID=submitUUID).first().scores[0].SD_der_public = der
+                    session.commit()
                 except Exception as e:
                     print(e)
                     print(e, file=output_log_f)
