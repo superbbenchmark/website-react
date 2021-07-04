@@ -1,5 +1,6 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useContext } from "react";
 import { useHistory } from "react-router-dom";
+import { useForm, Controller } from "react-hook-form";
 
 import { SubSubSection } from "./Sections";
 import { SubTitle } from "./Titles";
@@ -20,7 +21,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import axios from "axios";
-import isGithubUrl from "is-github-url";
+import { formVal } from "../utils/form-validator";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,82 +46,35 @@ export default function SubmitForm(props) {
     const classes = useStyles();
     const filePickerRef = useRef();
     const history = useHistory();
+    const {
+        control,
+        handleSubmit,
+        register,
+        formState: { errors },
+        setValue,
+        watch,
+    } = useForm({ defaultValues: { task: "constrained" } });
+
+    const { ref, ...rest } = register("file", formVal.file);
 
     const auth = useContext(AuthContext);
-    const [submitName, setSubmitName] = useState("");
-    const [modelURL, setModelURL] = useState("");
-    const [modelDesc, setModelDesc] = useState("");
-    const [stride, setStride] = useState("");
-    const [inputFormat, setInputFormat] = useState("");
-    const [corpus, setCorpus] = useState("");
-    const [paramDesc, setParamDesc] = useState("");
-    const [paramShared, setParamShared] = useState("");
-    const [fineTunedParam, setFineTunedParam] = useState("");
-    const [taskSpecParam, setTaskSpecParam] = useState("");
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [task, setTask] = useState("constrained");
+    const watchFile = watch("file");
 
-    const validNumber = (inputtxt) => {
-        var letters = /^[eE0-9]+$/;
-        if (inputtxt.length === 0) {
-            return true;
-        } else if (inputtxt.match(letters) && inputtxt.length <= 100) {
-            return true;
-        } else {
-            swal({ text: "Only numbers are allowed.", icon: "warning" });
-            return false;
-        }
-    };
-
-    const setVariableValidation = (setFunc, validFunc, e) => {
-        if (validFunc(e.target.value)) {
-            setFunc(e.target.value);
-        } else {
-            e.target.value = "";
-        }
-    };
-
-    const onFileChange = (e) => {
-        try {
-            if (e.target.files[0].size > 16 * 1024 * 1024) {
-                swal({ text: "File is too large!", icon: "warning" });
-                e.target.value = "";
-            } else if (!e.target.files[0].name.endsWith(".zip")) {
-                swal({ text: "Please upload zip. file!", icon: "warning" });
-                e.target.value = "";
-            } else {
-                setSelectedFile(e.target.files[0]);
-                swal({ text: "File upload successful!", icon: "success" });
-            }
-        } catch (err) {
-            swal({ title: "Upload error", text: err, icon: "warning" });
-            e.target.value = "";
-        }
-    };
-
-    const submitHandler = async (event) => {
-        event.preventDefault();
-        // validation
-        if (modelURL.length > 0) {
-            if (!isGithubUrl(modelURL)) {
-                swal({ text: "Invalid URL", icon: "warning" });
-                return;
-            }
-        }
+    const submitHandler = async (data) => {
         try {
             const formData = new FormData();
-            formData.append("submitName", submitName);
-            formData.append("modelURL", modelURL);
-            formData.append("modelDesc", modelDesc);
-            formData.append("stride", stride);
-            formData.append("inputFormat", inputFormat);
-            formData.append("corpus", corpus);
-            formData.append("paramDesc", paramDesc);
-            formData.append("paramShared", paramShared);
-            formData.append("fineTunedParam", fineTunedParam);
-            formData.append("taskSpecParam", taskSpecParam);
-            formData.append("task", task);
-            formData.append("file", selectedFile);
+            formData.append("submitName", data.submitName);
+            formData.append("modelURL", data.modelURL);
+            formData.append("modelDesc", data.modelDesc);
+            formData.append("stride", data.stride);
+            formData.append("inputFormat", data.inputFormat);
+            formData.append("corpus", data.corpus);
+            formData.append("paramDesc", data.paramDesc);
+            formData.append("paramShared", data.paramShared);
+            formData.append("fineTunedParam", data.fineTunedParam);
+            formData.append("taskSpecParam", data.taskSpecParam);
+            formData.append("task", data.task);
+            formData.append("file", data?.file[0]);
             const res = await axios({
                 method: "post",
                 url: "http://127.0.0.1:5000/api/result/upload",
@@ -169,82 +123,185 @@ export default function SubmitForm(props) {
                 <form
                     className={classes.root}
                     autoComplete="off"
-                    onSubmit={submitHandler}
+                    onSubmit={handleSubmit(submitHandler)}
                 >
-                    <TextField
-                        className={classes.textField}
-                        label="Submission Name"
-                        required
-                        fullWidth
-                        onInput={(e) => setSubmitName(e.target.value)}
+                    <Controller
+                        control={control}
+                        name="submitName"
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className={classes.textField}
+                                label="Submission Name*"
+                                fullWidth
+                                error={errors.submitName}
+                                helperText={
+                                    errors.submitName &&
+                                    errors.submitName.message
+                                }
+                            />
+                        )}
+                        rules={formVal.submitName}
                     />
-                    <TextField
-                        className={classes.textField}
-                        label={"Model URL/Github"}
-                        fullWidth
-                        onInput={(e) => setModelURL(e.target.value)}
+                    <Controller
+                        control={control}
+                        name="modelURL"
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className={classes.textField}
+                                label="Model URL/Github"
+                                fullWidth
+                                error={errors.modelURL}
+                                helperText={
+                                    errors.modelURL && errors.modelURL.message
+                                }
+                            />
+                        )}
+                        rules={formVal.modelURL}
                     />
-                    <TextField
-                        className={classes.textField}
-                        label={"Model Description"}
-                        required
-                        fullWidth
-                        onInput={(e) => setModelDesc(e.target.value)}
+                    <Controller
+                        control={control}
+                        name="modelDesc"
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className={classes.textField}
+                                label="Model Description*"
+                                fullWidth
+                                error={errors.modelDesc}
+                                helperText={
+                                    errors.modelDesc && errors.modelDesc.message
+                                }
+                            />
+                        )}
+                        rules={formVal.modelDesc}
                     />
-                    <TextField
-                        className={classes.textField}
-                        label={"Stride"}
-                        required
-                        fullWidth
-                        onInput={(e) => setStride(e.target.value)}
+                    <Controller
+                        control={control}
+                        name="stride"
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className={classes.textField}
+                                label="Stride*"
+                                fullWidth
+                                error={errors.stride}
+                                helperText={
+                                    errors.stride && errors.stride.message
+                                }
+                            />
+                        )}
+                        rules={formVal.stride}
                     />
-                    <TextField
-                        className={classes.textField}
-                        label={"Input Format"}
-                        required
-                        fullWidth
-                        onInput={(e) => setInputFormat(e.target.value)}
+                    <Controller
+                        control={control}
+                        name="inputFormat"
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className={classes.textField}
+                                label="Input Format*"
+                                fullWidth
+                                error={errors.inputFormat}
+                                helperText={
+                                    errors.inputFormat &&
+                                    errors.inputFormat.message
+                                }
+                            />
+                        )}
+                        rules={formVal.inputFormat}
                     />
-                    <TextField
-                        className={classes.textField}
-                        label={"Corpus"}
-                        required
-                        fullWidth
-                        onInput={(e) => setCorpus(e.target.value)}
+                    <Controller
+                        control={control}
+                        name="corpus"
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className={classes.textField}
+                                label="Corpus*"
+                                fullWidth
+                                error={errors.corpus}
+                                helperText={
+                                    errors.corpus && errors.corpus.message
+                                }
+                            />
+                        )}
+                        rules={formVal.corpus}
                     />
-                    <TextField
-                        className={classes.textField}
-                        label={"Parameter Description"}
-                        required
-                        fullWidth
-                        onInput={(e) => setParamDesc(e.target.value)}
+                    <Controller
+                        control={control}
+                        name="paramDesc"
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                hintText="Enter Your Product Name"
+                                className={classes.textField}
+                                label="Parameter Description*"
+                                fullWidth
+                                error={errors.paramDesc}
+                                helperText={
+                                    errors.paramDesc && errors.paramDesc.message
+                                }
+                            />
+                        )}
+                        rules={formVal.paramDesc}
                     />
-                    <TextField
-                        className={classes.textField}
-                        label={"Parameter shared without fine-tuning"}
-                        required
-                        fullWidth
-                        onInput={(e) => setParamShared(e.target.value)}
+                    <Controller
+                        control={control}
+                        name="paramShared"
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className={classes.textField}
+                                label="Parameter shared without fine-tuning*"
+                                fullWidth
+                                error={errors.paramShared}
+                                helperText={
+                                    errors.paramShared &&
+                                    errors.paramShared.message
+                                }
+                            />
+                        )}
+                        rules={formVal.paramShared}
                     />
-                    <TextField
-                        className={classes.textField}
-                        label={"Fine-tuned parameters"}
-                        fullWidth
-                        onInput={(e) => setFineTunedParam(e.target.value)}
+                    <Controller
+                        control={control}
+                        name="fineTunedParam"
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className={classes.textField}
+                                label="Fine-tuned parameters"
+                                fullWidth
+                                error={errors.fineTunedParam}
+                                helperText={
+                                    errors.fineTunedParam &&
+                                    errors.fineTunedParam.message
+                                }
+                            />
+                        )}
+                        rules={formVal.fineTunedParam}
                     />
-                    <TextField
-                        className={classes.textField}
-                        label={"Task-Specific parameters"}
-                        fullWidth
-                        onInput={(e) => setTaskSpecParam(e.target.value)}
+                    <Controller
+                        control={control}
+                        name="taskSpecParam"
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className={classes.textField}
+                                label="Task-Specific parameters"
+                                fullWidth
+                                error={errors.taskSpecParam}
+                                helperText={
+                                    errors.taskSpecParam &&
+                                    errors.taskSpecParam.message
+                                }
+                            />
+                        )}
+                        rules={formVal.taskSpecParam}
                     />
-                    <input
-                        type="file"
-                        accept=".zip"
-                        style={{ display: "none" }}
-                        ref={filePickerRef}
-                        onChange={(e) => setSelectedFile(e.target.files[0])}
-                    />
+
                     <FormControl
                         component="fieldset"
                         style={{ marginTop: "2%" }}
@@ -253,10 +310,9 @@ export default function SubmitForm(props) {
                         <RadioGroup
                             row
                             aria-label="position"
-                            name="position"
+                            name="task"
                             defaultValue="constrained"
-                            value={task}
-                            onChange={(e) => setTask(e.target.value)}
+                            {...register("task")}
                         >
                             {tracks.map((track) => {
                                 return (
@@ -278,14 +334,30 @@ export default function SubmitForm(props) {
                             })}
                         </RadioGroup>
                     </FormControl>
+                    <input
+                        type="file"
+                        accept=".zip"
+                        style={{ display: "none" }}
+                        name="file"
+                        ref={(e) => {
+                            ref(e);
+                            filePickerRef.current = e;
+                        }}
+                        onChange={(e) => setValue("file", e.target.files)}
+                    />
                     <Button
                         className={classes.Button}
                         variant="contained"
                         color="primary"
                         onClick={() => filePickerRef.current.click()}
                     >
-                        {selectedFile ? selectedFile.name : "Select zip"}
+                        {watchFile && watchFile[0]?.name
+                            ? watchFile[0]?.name
+                            : "Select zip"}
                     </Button>
+                    <span style={{ color: "red" }}>
+                        {errors.file && errors.file.message}
+                    </span>
                     <Button
                         className={classes.Button}
                         variant="contained"
