@@ -79,6 +79,10 @@ class FileModel(db.Model):
         return cls.query.all()
 
     @classmethod
+    def find_show_on_leaderboard(cls) -> List["FileModel"]:
+        return cls.query.filter_by(showOnLeaderboard=Show.YES).all()
+
+    @classmethod
     def get_upload_count_by_mail(cls, email: str) -> int:
         return cls.query.filter_by(email=email).count()
 

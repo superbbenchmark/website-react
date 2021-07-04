@@ -8,20 +8,27 @@ import {
   useResizeColumns,
   useGlobalFilter,
 } from "react-table";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { capitalizeFirstLetter } from "./components/Utilies";
 import { useSticky } from "react-table-sticky";
-import { useTheme, fade } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
+import { useTheme, fade, ThemeProvider } from "@material-ui/core/styles";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
-
-import { submissions, submission_types } from "./Data";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import InsertLinkIcon from '@material-ui/icons/InsertLink';
+import { leaderboard_columnInfo, leaderboard_selections } from "./Data";
 import Model from "./components/Modal";
 import config from "./config.json";
+import update from "immutability-helper";
 
 const Styles = styled.div`
   .table {
     outline: 1px solid #ddd;
-
+    
     .th,
     .td {
       background-color: ${(props) => props.theme.palette.primary.main};
@@ -126,11 +133,15 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
       defaultColumn,
       initialState: {
         hiddenColumns: [
-          "Description",
-          "Parameters",
-          "Stride",
-          "Input",
-          "Corpus",
+          "aoeTimeUpload",
+          "modelDesc",
+          "stride",
+          "inputFormat",
+          "corpus",
+          "paramDesc",
+          "paramShared",
+          "fineTunedParam",
+          "taskSpecParam",
         ],
         sortBy: defaultSortby,
       },
@@ -228,92 +239,8 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
 function LeaderBoard(props) {
   const theme = useTheme();
   const [LeaderboardData, setLeaderboardData] = useState([]);
-  const columnInfo = {
-    Method: {
-      width: 120,
-      higherBetter: undefined,
-    },
-    Description: {
-      width: 120,
-      higherBetter: undefined,
-    },
-    Parameters: {
-      width: 100,
-      higherBetter: undefined,
-    },
-    Stride: {
-      width: 100,
-      higherBetter: undefined,
-    },
-    Input: {
-      width: 100,
-      higherBetter: undefined,
-    },
-    Corpus: {
-      width: 100,
-      higherBetter: undefined,
-    },
-    PR: {
-      width: 100,
-      higherBetter: false,
-      isScore: true,
-    },
-    KS: {
-      width: 100,
-      higherBetter: true,
-      isScore: true,
-    },
-    IC: {
-      width: 100,
-      higherBetter: true,
-      isScore: true,
-    },
-    SID: {
-      width: 100,
-      higherBetter: true,
-      isScore: true,
-    },
-    ER: {
-      width: 100,
-      higherBetter: true,
-      isScore: true,
-    },
-    ASR: {
-      width: 100,
-      higherBetter: false,
-      isScore: true,
-    },
-    "ASR-LM": {
-      width: 100,
-      higherBetter: false,
-      isScore: true,
-    },
-    QbE: {
-      width: 100,
-      higherBetter: true,
-      isScore: true,
-    },
-    "SF-F1": {
-      width: 100,
-      higherBetter: true,
-      isScore: true,
-    },
-    "SF-CER": {
-      width: 100,
-      higherBetter: false,
-      isScore: true,
-    },
-    SV: {
-      width: 100,
-      higherBetter: false,
-      isScore: true,
-    },
-    SD: {
-      width: 100,
-      higherBetter: false,
-      isScore: true,
-    },
-  };
+  const [LeaderboardShownData, setLeaderboardShownData] = useState([]);
+  const [task, setTask] = useState("all");
 
   const memoizedNumericSort = React.useCallback(
     (rowA, rowB, columnId, desc) => {
@@ -326,35 +253,68 @@ function LeaderBoard(props) {
   const getLeaderboard = () => {
     axios.get(`${config.SERVER_URL}/api/result/leaderboard`)
     .then((res) => { 
-        //console.log(res.data.leaderboard)
         setLeaderboardData(res.data.leaderboard);
+        setLeaderboardShownData(res.data.leaderboard);
     })
     .catch((error) => { console.error(error) })
+  }
+
+  const mapping_array = {"CONSTRAINED":"constrained", "LESS_CONSTRAINED":"less-constrained", "UNCONSTRAINED":"unconstrained"}
+  const onTaskChange = (e) => {
+    setTask(e.target.value);
+    (e.target.value === "all") ?  setLeaderboardShownData(LeaderboardData) : setLeaderboardShownData(LeaderboardData.filter(data => mapping_array[data.task] === e.target.value))
+  }
+
+  const parseModelURL = ({value}) => {
+    if (value === "-") return String(value)
+    else return <a href={value}><InsertLinkIcon style={{ height: '20px' }}></InsertLinkIcon></a>
   }
 
   useEffect(() => {
     getLeaderboard();
   },[]);
 
-  let columns = Object.keys(columnInfo).map((key) => {
+  let columns = Object.keys(leaderboard_columnInfo).map((key) => {
     return {
-      Header: key,
+      Header: leaderboard_columnInfo[key].header,
       accessor: key,
-      width: columnInfo[key].width,
-      sortType:
-        typeof submission_types[key] == "number"
-          ? memoizedNumericSort
-          : "alphanumeric",
-      higherBetter: columnInfo[key].higherBetter,
-      isScore: columnInfo[key].isScore,
+      width: leaderboard_columnInfo[key].width,
+      sortType: leaderboard_columnInfo[key] == "number" ? memoizedNumericSort : "alphanumeric",
+      higherBetter: leaderboard_columnInfo[key].higherBetter,
+      isScore: leaderboard_columnInfo[key].isScore,
+      Cell: key === "modelURL" ? parseModelURL : ({value}) => String(value)
     };
   });
   columns[0]["sticky"] = "left";
 
   const memoColumns = React.useMemo(() => columns);
-  //const memoData = React.useMemo(() => submissions, []);
 
-  return <Table columns={memoColumns} data={LeaderboardData} {...props} />;
+  return (
+    <>
+      <div className="select group" style={{width: "fit-content", maxWidth: "100%", margin: "auto",}}>
+          <RadioGroup row aria-label="position" name="position" defaultValue="all" value={task} onChange={onTaskChange}>
+              {leaderboard_selections.map((leaderboard_selections) => {
+                  return (
+                      <ThemeProvider theme={leaderboard_selections.theme}>
+                          <FormControlLabel
+                              value={leaderboard_selections.name}
+                              control={<Radio color="primary" />}
+                              label={
+                                  <Typography color="primary">
+                                      {capitalizeFirstLetter(
+                                          leaderboard_selections.name.toLowerCase()
+                                      )}
+                                  </Typography>
+                              }
+                              color="primary"
+                          />
+                      </ThemeProvider>
+                  );
+              })}
+          </RadioGroup>
+      </div>
+      <Table columns={memoColumns} data={LeaderboardShownData} {...props} />
+    </>);
 }
 
 export default LeaderBoard;
