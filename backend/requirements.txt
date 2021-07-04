@@ -16,3 +16,4 @@ h5py==3.1.0
 intervaltree==3.1.0
 gdown==3.13.0
 scikit-learn==0.24.0
+python-dotenv=0.18.0
