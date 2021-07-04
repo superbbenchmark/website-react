@@ -18,14 +18,22 @@ import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import CheckIcon from '@material-ui/icons/Check';
+import Checkbox from '@material-ui/core/Checkbox';
+import CropSquareIcon from '@material-ui/icons/CropSquare';
 import { individual_submission_columnInfo, tracks } from "../Data";
 import { AuthContext } from "../context/auth-context";
+import swal from "sweetalert";
 import Model from "./Modal";
 import config from "../config.json";
 
 const Styles = styled.div`
   .table {
     outline: 1px solid #ddd;
+
+    .click-btn {
+      cursor: pointer;
+    }
 
     .th,
     .td {
@@ -34,6 +42,7 @@ const Styles = styled.div`
       white-space: nowrap;
       text-overflow: ellipsis;
       border: 0.2px solid #ddd;
+      vertical-align: middle;
       padding: ${(props) => props.theme.spacing(1, 1)};
     }
 
@@ -219,7 +228,6 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
             return (
               <div {...row.getRowProps()} className="tr">
                 {row.cells.map((cell) => {
-                    console.log(cell)
                   return (
                     <div {...cell.getCellProps()} className="td">
                       {cell.render("Cell")}
@@ -252,8 +260,8 @@ function Profile(props) {
 
   const mapping_array = {"CONSTRAINED":"constrained", "LESS_CONSTRAINED":"less-constrained", "UNCONSTRAINED":"unconstrained"}
 
-  const getLeaderboard = () => {
-    axios({
+  const getIndividualSubmission = async () => {
+    await axios({
         method:"get",
         url: `${config.SERVER_URL}/api/result/individual`,
         headers: {
@@ -272,9 +280,35 @@ function Profile(props) {
     setTask(e.target.value);
     setShownDate(allSubmissionData.filter(data => mapping_array[data.task] === e.target.value))
   }
+ 
+  const setShowOnLeaderboard = async (submission_id) => {
+    await axios({
+      method:"post",
+      url: `${config.SERVER_URL}/api/result/shown`,
+      headers: {
+          Authorization: "Bearer " + auth.token,
+      },
+      data: {
+        task: task,
+        submission_id: submission_id,
+      },
+    })
+    .then((res) => { 
+      swal({ text: "Shown on the leaderboard!", icon: "success" });
+      getIndividualSubmission();
+    })
+    .catch((error) => { 
+      console.error(error) 
+      swal({ text: error, icon: "error" });
+    })
+  }
+  const parseShowCell = ({row, value}) => {
+    if (value === "NO") return <CropSquareIcon className="click-btn" onClick={() => setShowOnLeaderboard(row.allCells[15].value)}></CropSquareIcon>
+    else return <CheckIcon style={{ color: green[500] }}></CheckIcon>
+  }
 
   useEffect(() => {
-    getLeaderboard();
+    getIndividualSubmission();
   },[]);
 
   let columns = Object.keys(individual_submission_columnInfo).map((key) => {
@@ -285,6 +319,7 @@ function Profile(props) {
       sortType: individual_submission_columnInfo[key] == "number" ? memoizedNumericSort : "alphanumeric",
       higherBetter: individual_submission_columnInfo[key].higherBetter,
       isScore: individual_submission_columnInfo[key].isScore,
+      Cell: key === "showOnLeaderboard" ? parseShowCell : ({value}) => String(value)
     };
   });
   columns[0]["sticky"] = "left";

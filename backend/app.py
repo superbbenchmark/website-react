@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, send_file
 from threading import Thread
 from db import db
 from models.user import UserModel
-from models.file import FileModel
+from models.file import FileModel, Task
 from models.score import ScoreModel
 import google_token
 from http import HTTPStatus
@@ -87,6 +87,30 @@ def individual_upload():
         submission_info = submission_records_parser(submission_records, configs)
 
         return jsonify({"submission_info": submission_info}), HTTPStatus.OK
+    except Exception as e:
+        print(e)
+        return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+@app.route("/api/result/shown", methods=["POST"])
+@jwt_required()
+def set_shown_result():
+    try:
+        user_mail = get_jwt_identity()
+        data = request.get_json()
+        task = data["task"]
+        submitID = data["submission_id"]
+        submission_record = FileModel.find_by_submitID(submitUUID=submitID)
+        mapping = {"constrained":1, "less-constrained":2, "unconstrained":3}
+
+        assert submission_record.email == user_mail
+        assert submission_record.task.value == mapping[task]
+        print(submitID)
+
+        # set the "show" of all the same task submission to "NO"
+        FileModel.reset_same_task_show_attribute(email=user_mail, task=Task(mapping[task]))
+        FileModel.set_show_attribute_by_submitID(submitUUID=submitID)
+
+        return jsonify({"msg": f"change {submitID}"}), HTTPStatus.OK
     except Exception as e:
         print(e)
         return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
