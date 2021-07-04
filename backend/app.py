@@ -151,7 +151,6 @@ def download_example():
         return send_file("./examples/predict.zip", as_attachment=True)
 
     except Exception as e:
-        print(e)
         return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 

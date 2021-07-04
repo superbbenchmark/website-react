@@ -16,6 +16,11 @@ class Task(enum.Enum):
     UNCONSTRAINED = 3
 
 
+class Show(enum.Enum):
+    NO = 0
+    YES = 1
+
+
 class FileModel(db.Model):
     __tablename__ = "files"
 
@@ -43,6 +48,7 @@ class FileModel(db.Model):
     filePath = db.Column(db.String(264), nullable=False)
     aoeTimeUpload = db.Column(db.DateTime, nullable=False)
     dateUpload = db.Column(db.DateTime,  default=db.func.current_timestamp())
+    showOnLeaderboard = db.Column(db.Enum(Show),  nullable=False, default=Show.NO)
 
     scores = db.relationship("ScoreModel",  backref="files")
 

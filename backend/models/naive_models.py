@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, Enum, Float, DateTime, String, Text, TIMESTAMP, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-from models.file import Status, Task
+from models.file import Status, Task, Show
 
 Base = declarative_base()
 
@@ -34,12 +34,12 @@ class FileModel(Base):
     task = Column(Enum(Task),  nullable=False)
 
     # others
-    state = Column(Enum(Status),  nullable=False,
-                      default=Status.UPLOADED)
+    state = Column(Enum(Status),  nullable=False)
     stateInfo = Column(String(80))
     filePath = Column(String(264), nullable=False)
     aoeTimeUpload = Column(DateTime, nullable=False)
     dateUpload = Column(DateTime)
+    showOnLeaderboard = Column(Enum(Show),  nullable=False)
 
     scores = relationship("ScoreModel",  backref="files")
 
