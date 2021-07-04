@@ -9,7 +9,7 @@ def get_uuid():
 def get_AOETime():
     return (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=12)).strftime("%Y-%m-%d %H:%M:%S")
 
-def submission_records_parser(submission_records, configs):
+def submission_records_parser(submission_records, configs, mode="individual"):
 
     def __submission_records_parser(attribute, key_name):
         if attribute is None:
@@ -31,9 +31,12 @@ def submission_records_parser(submission_records, configs):
                 return attribute
         else:
             return attribute
-
-    file_info_list = configs["INDIVIDUAL_SUBMISSION_INFO"]["FILE"]
-    score_info_list = configs["INDIVIDUAL_SUBMISSION_INFO"]["SCORE"]
+    if mode == "individual":
+        config_mode = "INDIVIDUAL_SUBMISSION_INFO"
+    elif mode == "leaderboard":
+        config_mode = "LEADERBOARD_INFO"
+    file_info_list = configs[config_mode]["FILE"]
+    score_info_list = configs[config_mode]["SCORE"]
 
     submission_info = []
     for file_model in submission_records:
@@ -47,45 +50,56 @@ def submission_records_parser(submission_records, configs):
         submission_info.append(single_info)
     return submission_info
 
-def get_leaderboard():
+
+def get_leaderboard_default():
     data = [{
-            "Method": "FBANK",
-            "Description": "classic feature",
-            "Parameters": 0,
-            "Stride": 10,
-            "Input": "waveform",
-            "Corpus": "-",
-            "PR": 82.01,
-            "KS": 8.63,
-            "IC": 9.1,
-            "SID": 8.5e-4,
-            "ER": 35.39,
-            "ASR": 23.18,
-            "ASR-LM": 15.21,
-            "QbE": 0.0058,
-            "SF-F1": 69.64,
-            "SF-CER": 52.94,
-            "SV": 9.56,
-            "SD": 10.05,
+            "aoeTimeUpload":"official",
+            "task":"CONSTRAINED",
+            "submitName": "FBANK",
+            "modelURL":"https://github.com/superbbenchmark/website-react/tree/master",
+            "modelDesc": "classic feature",
+            "stride":10,
+            "inputFormat": "waveform",
+            "corpus":"-",
+            "paramDesc":"-",
+            "paramShared": 0,
+            "fineTunedParam":"-",
+            "taskSpecParam":"-",
+            "PR_per_public": 82.01,
+            "KS_acc_public": 8.63,
+            "IC_acc_public": 9.10,
+            "SID_acc_public": 8.5e-4,
+            "ER_acc_public": 35.39,
+            "ASR_wer_public": 23.18,
+            "ASR_LM_wer_public": 15.21,
+            "QbE_mtwv_public": 0.0058,
+            "SF_f1_public": 69.64,
+            "SF_cer_public": 52.94,
+            "SV_eer_public": 9.56,
+            "SD_der_public": 10.05,
         },
         {
-            "Method": "PASE+",
-            "Description": "multi-task",
-            "Parameters": 7.83e6,
-            "Stride": 10,
-            "Input": "waveform",
-            "Corpus": "LS 50 hr",
-            "PR": 58.88,
-            "KS": 82.37,
-            "IC": 30.29,
-            "SID": 35.84,
-            "ER": 57.64,
-            "ASR": 24.92,
-            "ASR-LM": 16.61,
-            "QbE": 7.0e-4,
-            "SF-F1": 60.41,
-            "SF-CER": 62.77,
-            "SV": 10.91,
-            "SD": 8.52,
+            "aoeTimeUpload":"official",
+            "task":"CONSTRAINED",
+            "submitName": "PASE+",
+            "modelURL":"-",
+            "modelDesc": "multi-task",
+            "stride":10,
+            "inputFormat": "waveform",
+            "corpus": "LS 50 hr",
+            "paramDesc":"-",
+            "paramShared": 7.83e6,
+            "PR_per_public": 58.88,
+            "KS_acc_public": 82.37,
+            "IC_acc_public": 30.29,
+            "SID_acc_public": 35.84,
+            "ER_acc_public": 57.64,
+            "ASR_wer_public": 24.92,
+            "ASR_LM_wer_public": 16.61,
+            "QbE_mtwv_public": 7.0e-4,
+            "SF_f1_public": 60.41,
+            "SF_cer_public": 62.77,
+            "SV_eer_public": 10.91,
+            "SD_der_public": 8.52,
         },]
     return data

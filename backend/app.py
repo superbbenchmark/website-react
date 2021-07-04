@@ -2,14 +2,14 @@ from flask import Flask, request, jsonify, send_file
 from threading import Thread
 from db import db
 from models.user import UserModel
-from models.file import FileModel
+from models.file import FileModel, Task
 from models.score import ScoreModel
 import google_token
 from http import HTTPStatus
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import datetime
 from flask_cors import CORS
-from utils import get_leaderboard, get_AOETime, get_uuid, submission_records_parser
+from utils import get_leaderboard_default, get_AOETime, get_uuid, submission_records_parser
 import file_upload
 from calculate import metric_calculate_pipeline
 from dotenv import load_dotenv
@@ -28,6 +28,8 @@ app.config['GOOGLE_CLIENT_ID'] = '796679159105-6335p2q2ub5pr15lnf3g2cqkhnucmvkl.
 app.config['JWT_SECRET_KEY'] = 'speechlab531'
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # Max file size: 16MB
 app.config['UPLOAD_DIR'] = "./upload"
+
+mapping = {"constrained":1, "less-constrained":2, "unconstrained":3}
 
 jwt = JWTManager(app)
 CORS(app)
@@ -71,8 +73,12 @@ def login():
 @app.route("/api/result/leaderboard", methods=['GET'])
 def leaderboard_request():
     try:
-        leaderboard_data = get_leaderboard()
-        return jsonify({"leaderboard": leaderboard_data}), HTTPStatus.OK
+        leaderboard_default_data = get_leaderboard_default()
+        leaderboard_user_data = FileModel.find_show_on_leaderboard()
+        submission_info = submission_records_parser(leaderboard_user_data, configs, mode = "leaderboard")
+        leaderboard_default_data += submission_info
+
+        return jsonify({"leaderboard": leaderboard_default_data}), HTTPStatus.OK
 
     except Exception as e:
         print(e)
@@ -84,9 +90,33 @@ def individual_upload():
     try:
         user_mail = get_jwt_identity()
         submission_records = FileModel.find_by_email(email=user_mail).all()
-        submission_info = submission_records_parser(submission_records, configs)
+        submission_info = submission_records_parser(submission_records, configs, mode="individual")
 
         return jsonify({"submission_info": submission_info}), HTTPStatus.OK
+    except Exception as e:
+        print(e)
+        return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+@app.route("/api/result/shown", methods=["POST"])
+@jwt_required()
+def set_shown_result():
+    try:
+        user_mail = get_jwt_identity()
+        data = request.get_json()
+        task = data["task"]
+        submitID = data["submission_id"]
+        submission_record = FileModel.find_by_submitID(submitUUID=submitID)
+        
+
+        assert submission_record.email == user_mail
+        assert submission_record.task.value == mapping[task]
+        print(submitID)
+
+        # set the "show" of all the same task submission to "NO"
+        FileModel.reset_same_task_show_attribute(email=user_mail, task=Task(mapping[task]))
+        FileModel.set_show_attribute_by_submitID(submitUUID=submitID)
+
+        return jsonify({"msg": f"change {submitID}"}), HTTPStatus.OK
     except Exception as e:
         print(e)
         return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
@@ -109,6 +139,7 @@ def result_upload():
         fineTunedParam = request.form.get('fineTunedParam')
         taskSpecParam = request.form.get('taskSpecParam')
         task = request.form.get('task')
+        task = Task(mapping[task])
         file = request.files['file']
         if not (submitName and modelDesc and paramDesc):
             return {"msg": "Column Missing."}, HTTPStatus.FORBIDDEN

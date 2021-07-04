@@ -55,10 +55,32 @@ class FileModel(db.Model):
     @classmethod
     def find_by_email(cls, email: str) -> "FileModel":
         return cls.query.filter_by(email=email)
+    
+    @classmethod
+    def find_by_submitID(cls, submitUUID: str) -> "FileModel":
+        return cls.query.filter_by(submitUUID=submitUUID).first()
+
+    @classmethod
+    def reset_same_task_show_attribute(cls, email: str, task: enum.Enum) -> None:
+        submissions = cls.query.filter_by(email=email, task=task).all()
+        for submission in submissions:
+            submission.showOnLeaderboard = Show.NO
+        db.session.commit()
+    
+    @classmethod
+    def set_show_attribute_by_submitID(cls, submitUUID) -> None:
+        submission = cls.query.filter_by(submitUUID=submitUUID).first()
+        submission.showOnLeaderboard = Show.YES
+        print(submission.showOnLeaderboard)
+        db.session.commit()
 
     @classmethod
     def find_all(cls) -> List["FileModel"]:
         return cls.query.all()
+
+    @classmethod
+    def find_show_on_leaderboard(cls) -> List["FileModel"]:
+        return cls.query.filter_by(showOnLeaderboard=Show.YES).all()
 
     @classmethod
     def get_upload_count_by_mail(cls, email: str) -> int:
