@@ -1,3 +1,39 @@
 # Metrics related
 UNZIP_TIMEOUT: "30s"
 GROUND_TRUTH_ROOT: "./inference/truth/"
+
+# Individual submission info
+INDIVIDUAL_SUBMISSION_INFO:
+  FILE:
+    - aoeTimeUpload
+    - task
+    - showOnLeaderboard
+    - submitName
+    - modelURL
+    - modelDesc
+    - stride
+    - inputFormat
+    - corpus
+    - paramDesc
+    - paramShared
+    - fineTunedParam
+    - taskSpecParam
+    - state
+    - stateInfo
+    - submitUUID
+  SCORE:
+    - PR_per_public
+    - KS_acc_public
+    - IC_acc_public
+    - SID_acc_public
+    - ER_acc_public
+    - ASR_wer_public
+    - ASR_LM_wer_public
+    - QbE_mtwv_public
+    - SF_f1_public
+    - SF_cer_public
+    - SV_eer_public
+    - SD_der_public
+
+
+

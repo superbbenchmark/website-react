@@ -205,9 +205,11 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                                             </LiftingBarButton>
                                         </AdaptiveLink>
                                     </Grid>
-                                    {location.pathname.includes(
+                                    {(location.pathname.includes(
                                         "leaderboard"
-                                    ) && (
+                                    ) || location.pathname.includes(
+                                        "profile"
+                                    )) && (
                                         <Grid item>
                                             <AdaptiveLink link={null}>
                                                 <Button
