@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, send_file
 from threading import Thread
 from db import db
 from models.user import UserModel
-from models.file import FileModel, Task
+from models.file import FileModel, Task, Show
 from models.score import ScoreModel
 import google_token
 from http import HTTPStatus
@@ -106,19 +106,22 @@ def set_shown_result():
         task = data["task"]
         submitID = data["submission_id"]
         submission_record = FileModel.find_by_submitID(submitUUID=submitID)
-        
 
         assert submission_record.email == user_mail
-        assert submission_record.task.value == mapping[task]
-        print(submitID)
+        task_id = submission_record.task.value #== mapping[task]
 
-        # set the "show" of all the same task submission to "NO"
-        FileModel.reset_same_task_show_attribute(email=user_mail, task=Task(mapping[task]))
-        FileModel.set_show_attribute_by_submitID(submitUUID=submitID)
+        if submission_record.showOnLeaderboard == Show.YES:
+            # set the "show" of all the same task submission to "NO"
+            FileModel.reset_same_task_show_attribute(email=user_mail, task=Task(task_id))
+            return jsonify({"msg": "Remove from the leaderboard!", "submitID":submitID}), HTTPStatus.OK
+        
+        else:
+            # set the "show" of all the same task submission to "NO"
+            FileModel.reset_same_task_show_attribute(email=user_mail, task=Task(task_id))
+            FileModel.set_show_attribute_by_submitID(submitUUID=submitID)
+            return jsonify({"msg": "Shown on the leaderboard!", "submitID":submitID}), HTTPStatus.OK
 
-        return jsonify({"msg": f"change {submitID}"}), HTTPStatus.OK
     except Exception as e:
-        print(e)
         return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 @app.route("/api/result/upload", methods=["POST"])

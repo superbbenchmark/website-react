@@ -21,7 +21,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CheckIcon from '@material-ui/icons/Check';
 import Checkbox from '@material-ui/core/Checkbox';
 import CropSquareIcon from '@material-ui/icons/CropSquare';
-import { individual_submission_columnInfo, tracks } from "../Data";
+import { individual_submission_columnInfo, leaderboard_selections } from "../Data";
 import { AuthContext } from "../context/auth-context";
 import swal from "sweetalert";
 import Model from "./Modal";
@@ -248,7 +248,7 @@ function Profile(props) {
   const auth = useContext(AuthContext);
   const [allSubmissionData, setAllSubmissionData] = useState([]);
   const [shownData, setShownDate] = useState([]);
-  const [task, setTask] = useState("constrained");
+  const [task, setTask] = useState("all");
   
   const memoizedNumericSort = React.useCallback(
     (rowA, rowB, columnId, desc) => {
@@ -269,16 +269,15 @@ function Profile(props) {
         },
     })
     .then((res) => { 
-        console.log(res.data.submission_info)
         setAllSubmissionData(res.data.submission_info);
-        setShownDate(res.data.submission_info.filter(data => mapping_array[data.task] === task))
+        (task === "all") ? setShownDate(res.data.submission_info) : setShownDate(res.data.submission_info.filter(data => mapping_array[data.task] === task))
     })
     .catch((error) => { console.error(error) })
   }
   
   const onTaskChange = (e) => {
     setTask(e.target.value);
-    setShownDate(allSubmissionData.filter(data => mapping_array[data.task] === e.target.value))
+    (e.target.value === "all") ? setShownDate(allSubmissionData) : setShownDate(allSubmissionData.filter(data => mapping_array[data.task] === e.target.value))
   }
  
   const setShowOnLeaderboard = async (submission_id) => {
@@ -294,17 +293,16 @@ function Profile(props) {
       },
     })
     .then((res) => { 
-      swal({ text: "Shown on the leaderboard!", icon: "success" });
+      swal({ text: res.data.msg, icon: "success" });
       getIndividualSubmission();
     })
     .catch((error) => { 
-      console.error(error) 
-      swal({ text: error, icon: "error" });
+      swal({ text: "Internal server error", icon: "error" });
     })
   }
   const parseShowCell = ({row, value}) => {
     if (value === "NO") return <CropSquareIcon className="click-btn" onClick={() => setShowOnLeaderboard(row.allCells[15].value)}></CropSquareIcon>
-    else return <CheckIcon style={{ color: green[500] }}></CheckIcon>
+    else return <CheckIcon className = "click-btn" style={{ color: green[500] }} onClick={() => setShowOnLeaderboard(row.allCells[15].value)}></CheckIcon>
   }
 
   useEffect(() => {
@@ -330,24 +328,24 @@ function Profile(props) {
   <>
     <div className="select group" style={{width: "fit-content", maxWidth: "100%", margin: "auto",}}>
         <RadioGroup row aria-label="position" name="position" defaultValue="constrained" value={task} onChange={onTaskChange}>
-            {tracks.map((track) => {
-                return (
-                    <ThemeProvider theme={track.theme}>
-                        <FormControlLabel
-                            value={track.name}
-                            control={<Radio color="primary" />}
-                            label={
-                                <Typography color="primary">
-                                    {capitalizeFirstLetter(
-                                        track.name.toLowerCase()
-                                    )}
-                                </Typography>
-                            }
-                            color="primary"
-                        />
-                    </ThemeProvider>
-                );
-            })}
+        {leaderboard_selections.map((leaderboard_selections) => {
+                  return (
+                      <ThemeProvider theme={leaderboard_selections.theme}>
+                          <FormControlLabel
+                              value={leaderboard_selections.name}
+                              control={<Radio color="primary" />}
+                              label={
+                                  <Typography color="primary">
+                                      {capitalizeFirstLetter(
+                                          leaderboard_selections.name.toLowerCase()
+                                      )}
+                                  </Typography>
+                              }
+                              color="primary"
+                          />
+                      </ThemeProvider>
+                  );
+              })}
         </RadioGroup>
     </div>
     <Table columns={memoColumns} data={shownData} {...props} />

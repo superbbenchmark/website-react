@@ -71,7 +71,6 @@ class FileModel(db.Model):
     def set_show_attribute_by_submitID(cls, submitUUID) -> None:
         submission = cls.query.filter_by(submitUUID=submitUUID).first()
         submission.showOnLeaderboard = Show.YES
-        print(submission.showOnLeaderboard)
         db.session.commit()
 
     @classmethod
