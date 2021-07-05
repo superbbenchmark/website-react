@@ -11,7 +11,6 @@ import { DescriptionButton, MultiLinkButton } from "./components/Buttons";
 import { Strong, capitalizeFirstLetter } from "./components/Utilies";
 import { tracks } from "./Data";
 import AdaptiveLink from "./components/AdaptiveLink";
-import config from "./config.json";
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -139,7 +138,7 @@ export default function Submit(props) {
                         The prediction output of each task should be put in seperated folder sepified by the task.
                         Finally, please put all the task folders in one folder called <Strong>predict</Strong>{" "}  
                         and submit a zip archive. You can download an example for submission from this&nbsp;
-                         <Link href={`${config.SERVER_URL}/api/download/example`} color="secondary">Link</Link>.
+                         <Link href={"/api/download/example"} color="secondary">Link</Link>.
                     </Typography>
                 </Section>
             </Route>

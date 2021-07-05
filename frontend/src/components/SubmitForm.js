@@ -77,7 +77,7 @@ export default function SubmitForm(props) {
             formData.append("file", data?.file[0]);
             const res = await axios({
                 method: "post",
-                url: "http://127.0.0.1:5000/api/result/upload",
+                url: "/api/result/upload",
                 data: formData,
                 headers: {
                     Authorization: "Bearer " + auth.token,

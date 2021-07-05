@@ -16,7 +16,6 @@ import InsertLinkIcon from '@material-ui/icons/InsertLink';
 import { leaderboard_columnInfo } from "./Data";
 import Model from "./components/Modal";
 import TrackSelect from "./components/TrackSelect"
-import config from "./config.json";
 
 const Styles = styled.div`
   .table {
@@ -244,7 +243,7 @@ function LeaderBoard(props) {
   );
 
   const getLeaderboard = () => {
-    axios.get(`${config.SERVER_URL}/api/result/leaderboard`)
+    axios.get("/api/result/leaderboard")
     .then((res) => { 
         setLeaderboardData(res.data.leaderboard);
         setLeaderboardShownData(res.data.leaderboard);

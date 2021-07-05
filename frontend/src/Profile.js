@@ -26,7 +26,6 @@ import { AuthContext } from "./context/auth-context";
 import swal from "sweetalert";
 import Model from "./components/Modal";
 import TrackSelect from "./components/TrackSelect"
-import config from "./config.json";
 
 const Styles = styled.div`
   .table {
@@ -268,7 +267,7 @@ function Profile(props) {
   const getUserName = async () => {
     await axios({
       method:"get",
-        url: `${config.SERVER_URL}/api/profile/username`,
+        url: "/api/profile/username",
         headers: {
             Authorization: "Bearer " + auth.token,
         },
@@ -282,7 +281,7 @@ function Profile(props) {
   const getUserQuota = async () => {
     await axios({
       method:"get",
-        url: `${config.SERVER_URL}/api/profile/quota`,
+        url: "/api/profile/quota",
         headers: {
             Authorization: "Bearer " + auth.token,
         },
@@ -297,7 +296,7 @@ function Profile(props) {
   const handleResetUserName = async () => {
     await axios({
       method:"post",
-        url: `${config.SERVER_URL}/api/profile/resetusername`,
+        url: "/api/profile/resetusername",
         headers: {
           Authorization: "Bearer " + auth.token,
         },
@@ -318,7 +317,7 @@ function Profile(props) {
   const getIndividualSubmission = async () => {
     await axios({
         method:"get",
-        url: `${config.SERVER_URL}/api/result/individual`,
+        url: "/api/result/individual",
         headers: {
             Authorization: "Bearer " + auth.token,
         },
@@ -342,7 +341,7 @@ function Profile(props) {
   const setShowOnLeaderboard = async (submission_id) => {
     await axios({
       method:"post",
-      url: `${config.SERVER_URL}/api/result/shown`,
+      url: "/api/result/shown",
       headers: {
           Authorization: "Bearer " + auth.token,
       },
