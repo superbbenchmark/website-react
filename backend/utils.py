@@ -69,9 +69,9 @@ def submission_records_parser(submission_records, configs, mode="individual"):
         submission_info.append(single_info)
     return submission_info
 
-
 def get_leaderboard_default():
     data = [{
+            "name":"official",
             "aoeTimeUpload":"official",
             "task":"CONSTRAINED",
             "submitName": "FBANK",
@@ -98,6 +98,7 @@ def get_leaderboard_default():
             "SD_der_public": 10.05,
         },
         {
+            "name":"official",
             "aoeTimeUpload":"official",
             "task":"CONSTRAINED",
             "submitName": "PASE+",

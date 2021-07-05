@@ -9,23 +9,24 @@ import {
   useGlobalFilter,
 } from "react-table";
 import { useSticky } from "react-table-sticky";
-import { capitalizeFirstLetter } from "./Utilies";
-import { Typography, Button, TextField } from "@material-ui/core";
-import { useTheme, fade, ThemeProvider } from "@material-ui/core/styles";
+
+import { useTheme, fade } from "@material-ui/core/styles";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { Typography, TextField } from "@material-ui/core";
+import { Title } from "./components/Titles";
+import { Section } from "./components/Sections";
 import CheckIcon from '@material-ui/icons/Check';
-import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
 import CropSquareIcon from '@material-ui/icons/CropSquare';
-import { individual_submission_columnInfo, leaderboard_selections } from "../Data";
-import { AuthContext } from "../context/auth-context";
+import { individual_submission_columnInfo, leaderboard_selections } from "./Data";
+import { AuthContext } from "./context/auth-context";
 import swal from "sweetalert";
-import Model from "./Modal";
-import config from "../config.json";
+import Model from "./components/Modal";
+import TrackSelect from "./components/TrackSelect"
+import config from "./config.json";
 
 const Styles = styled.div`
   .table {
@@ -34,7 +35,7 @@ const Styles = styled.div`
     .click-btn {
       cursor: pointer;
     }
-
+    
     .th,
     .td {
       background-color: ${(props) => props.theme.palette.primary.main};
@@ -249,6 +250,10 @@ function Profile(props) {
   const [allSubmissionData, setAllSubmissionData] = useState([]);
   const [shownData, setShownDate] = useState([]);
   const [task, setTask] = useState("all");
+  const [username, setUsername] = useState("");
+  const [resetUserName, setResetUserName] = useState("");
+  const [dailyCounts, setDailyCounts] = useState(0);
+  const [monthlyCounts, setMonthlyCounts] = useState(0);
   
   const memoizedNumericSort = React.useCallback(
     (rowA, rowB, columnId, desc) => {
@@ -259,6 +264,55 @@ function Profile(props) {
   );
 
   const mapping_array = {"CONSTRAINED":"constrained", "LESS_CONSTRAINED":"less-constrained", "UNCONSTRAINED":"unconstrained"}
+  
+  const getUserName = async () => {
+    await axios({
+      method:"get",
+        url: `${config.SERVER_URL}/api/profile/username`,
+        headers: {
+            Authorization: "Bearer " + auth.token,
+        },
+    })
+    .then((res) => { 
+      setUsername(res.data.username)
+     })
+    .catch((error) => { console.error(error) })
+  }
+
+  const getUserQuota = async () => {
+    await axios({
+      method:"get",
+        url: `${config.SERVER_URL}/api/profile/quota`,
+        headers: {
+            Authorization: "Bearer " + auth.token,
+        },
+    })
+    .then((res) => { 
+      setDailyCounts(res.data.daily_counts)
+      setMonthlyCounts(res.data.monthly_counts)
+     })
+    .catch((error) => { console.error(error) })
+  }
+
+  const handleResetUserName = async () => {
+    await axios({
+      method:"post",
+        url: `${config.SERVER_URL}/api/profile/resetusername`,
+        headers: {
+          Authorization: "Bearer " + auth.token,
+        },
+        data: {
+          newusername: resetUserName
+        }
+    })
+    .then((res) => { 
+      setUsername(res.data.msg)
+     })
+    .catch((error) => { 
+      swal({ text: "Internal server error", icon: "error" });
+      console.error(error) })
+  }
+  
 
   const getIndividualSubmission = async () => {
     await axios({
@@ -278,6 +332,10 @@ function Profile(props) {
   const onTaskChange = (e) => {
     setTask(e.target.value);
     (e.target.value === "all") ? setShownDate(allSubmissionData) : setShownDate(allSubmissionData.filter(data => mapping_array[data.task] === e.target.value))
+  }
+
+  const handleNameOnChange = (e) => {
+    setResetUserName(e.target.value);
   }
  
   const setShowOnLeaderboard = async (submission_id) => {
@@ -307,6 +365,8 @@ function Profile(props) {
 
   useEffect(() => {
     getIndividualSubmission();
+    getUserName();
+    getUserQuota();
   },[]);
 
   let columns = Object.keys(individual_submission_columnInfo).map((key) => {
@@ -324,31 +384,28 @@ function Profile(props) {
 
   const memoColumns = React.useMemo(() => columns);
 
+  const resetbtnstyle = {
+    margin: 10,
+  };
+
   return (
   <>
-    <div className="select group" style={{width: "fit-content", maxWidth: "100%", margin: "auto",}}>
-        <RadioGroup row aria-label="position" name="position" defaultValue="constrained" value={task} onChange={onTaskChange}>
-        {leaderboard_selections.map((leaderboard_selections) => {
-                  return (
-                      <ThemeProvider theme={leaderboard_selections.theme}>
-                          <FormControlLabel
-                              value={leaderboard_selections.name}
-                              control={<Radio color="primary" />}
-                              label={
-                                  <Typography color="primary">
-                                      {capitalizeFirstLetter(
-                                          leaderboard_selections.name.toLowerCase()
-                                      )}
-                                  </Typography>
-                              }
-                              color="primary"
-                          />
-                      </ThemeProvider>
-                  );
-              })}
-        </RadioGroup>
-    </div>
+    <Section anchorKey="personal-profile">
+        <Title
+            title={"Hello " + username}
+            description={"Your number of daily submission is " + dailyCounts + " and monthly submission is " + monthlyCounts +"."}
+        />
+        <TextField required label="Reset your name" id="name-reset" defaultValue={username} size="small" color="secondary" onChange={handleNameOnChange}/>
+        <Button variant="contained" size="small" className="reset-name-btn" style={resetbtnstyle} onClick={handleResetUserName}>Reset</Button>
+    </Section>
+    <Section anchorKey="personal-submission">
+        <Title
+            title="Submission history"
+            description="You can chick the checkbox to show your submission result on the leaderboard."
+        />
+    <TrackSelect task={task} onTaskChange={onTaskChange}/>
     <Table columns={memoColumns} data={shownData} {...props} />
+    </Section>
   </>);
 }
 

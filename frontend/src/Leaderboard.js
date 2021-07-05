@@ -6,24 +6,17 @@ import {
   useBlockLayout,
   useSortBy,
   useResizeColumns,
-  useGlobalFilter,
 } from "react-table";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { capitalizeFirstLetter } from "./components/Utilies";
 import { useSticky } from "react-table-sticky";
-import { Typography } from "@material-ui/core";
-import { useTheme, fade, ThemeProvider } from "@material-ui/core/styles";
+import { useTheme, fade } from "@material-ui/core/styles";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import InsertLinkIcon from '@material-ui/icons/InsertLink';
-import { leaderboard_columnInfo, leaderboard_selections } from "./Data";
+import { leaderboard_columnInfo } from "./Data";
 import Model from "./components/Modal";
+import TrackSelect from "./components/TrackSelect"
 import config from "./config.json";
-import update from "immutability-helper";
 
 const Styles = styled.div`
   .table {
@@ -291,28 +284,7 @@ function LeaderBoard(props) {
 
   return (
     <>
-      <div className="select group" style={{width: "fit-content", maxWidth: "100%", margin: "auto",}}>
-          <RadioGroup row aria-label="position" name="position" defaultValue="all" value={task} onChange={onTaskChange}>
-              {leaderboard_selections.map((leaderboard_selections) => {
-                  return (
-                      <ThemeProvider theme={leaderboard_selections.theme}>
-                          <FormControlLabel
-                              value={leaderboard_selections.name}
-                              control={<Radio color="primary" />}
-                              label={
-                                  <Typography color="primary">
-                                      {capitalizeFirstLetter(
-                                          leaderboard_selections.name.toLowerCase()
-                                      )}
-                                  </Typography>
-                              }
-                              color="primary"
-                          />
-                      </ThemeProvider>
-                  );
-              })}
-          </RadioGroup>
-      </div>
+      <TrackSelect task={task} onTaskChange={onTaskChange}/>
       <Table columns={memoColumns} data={LeaderboardShownData} {...props} />
     </>);
 }

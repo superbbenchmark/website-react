@@ -412,6 +412,12 @@ const individual_submission_columnInfo = {
         higherBetter: undefined,
         type: "alphanumeric",
     },
+    name: {
+        header: "Name",
+        width: 100,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
     submitName: {
         header: "Method",
         width: 100,
