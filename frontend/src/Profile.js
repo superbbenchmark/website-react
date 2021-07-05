@@ -307,6 +307,7 @@ function Profile(props) {
     })
     .then((res) => { 
       setUsername(res.data.msg)
+      swal({ text: `Reset to ${res.data.msg}!`, icon: "success" });
      })
     .catch((error) => { 
       swal({ text: "Internal server error", icon: "error" });
