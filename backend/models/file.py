@@ -1,6 +1,7 @@
 from typing import List
 from db import db
 import enum
+import datetime
 
 
 class Status(enum.Enum):
@@ -84,6 +85,10 @@ class FileModel(db.Model):
     @classmethod
     def get_upload_count_by_mail(cls, email: str) -> int:
         return cls.query.filter_by(email=email).count()
+    
+    @classmethod
+    def get_interval_upload_count_by_mail(cls, email: str, AOEtime: datetime.datetime) -> int:
+        return cls.query.filter_by(email=email).filter(cls.aoeTimeUpload >= AOEtime).count()
 
     def save_to_db(self) -> None:
         db.session.add(self)

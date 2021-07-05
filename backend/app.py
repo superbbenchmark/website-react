@@ -9,7 +9,7 @@ from http import HTTPStatus
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import datetime
 from flask_cors import CORS
-from utils import get_leaderboard_default, get_AOETime, get_uuid, submission_records_parser
+from utils import get_leaderboard_default, get_AOETime, get_uuid, submission_records_parser, get_AOE_today, get_AOE_month
 import file_upload
 from calculate import metric_calculate_pipeline
 from dotenv import load_dotenv
@@ -129,6 +129,12 @@ def set_shown_result():
 def result_upload():
     try:
         user_mail = get_jwt_identity()
+
+        # check current submission counts
+        daily_counts = FileModel.get_interval_upload_count_by_mail(email=user_mail, AOEtime=get_AOE_today(to_str=False))
+        monthly_counts = FileModel.get_interval_upload_count_by_mail(email=user_mail, AOEtime=get_AOE_month(to_str=False))
+        if (daily_counts >= configs["DAILY_SUBMIT_LIMIT"]) or (monthly_counts >= configs["MONTHLY_SUBMIT_LIMIT"]):
+            return {"msg": f"You have submitted {daily_counts} times today and {monthly_counts} times this month."}, HTTPStatus.FORBIDDEN
 
         # TODO: Form Validation
         submitName = request.form.get('submitName')

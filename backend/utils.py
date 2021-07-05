@@ -6,8 +6,27 @@ import datetime
 def get_uuid():
     return str(uuid.uuid4())
     
-def get_AOETime():
-    return (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=12)).strftime("%Y-%m-%d %H:%M:%S")
+def get_AOETime(to_str = True):
+    aoe_time = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=12))
+    if to_str:
+        return aoe_time.strftime("%Y-%m-%d %H:%M:%S")
+    else:
+        return aoe_time.replace(microsecond=0)
+
+def get_AOE_today(to_str=True):
+    aoe_time = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=12)).replace(hour=0,minute=0,second=0,microsecond=0)
+    if to_str:
+        return aoe_time.strftime("%Y-%m-%d %H:%M:%S")
+    else:
+        return aoe_time
+
+def get_AOE_month(to_str=True):
+    aoe_time = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=12)).replace(day=1,hour=0,minute=0,second=0,microsecond=0)
+    if to_str:
+        return aoe_time.strftime("%Y-%m-%d %H:%M:%S")
+    else:
+        return aoe_time
+
 
 def submission_records_parser(submission_records, configs, mode="individual"):
 
