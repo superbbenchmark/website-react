@@ -23,7 +23,7 @@ import NavigationBar from "./components/NavigationBar";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import SubmitForm from "./components/SubmitForm";
-import Profile from "./components/Profile";
+import Profile from "./Profile";
 import { mainTheme } from "./components/Theme";
 import { AuthContext } from "./context/auth-context";
 import { useAuth } from "./hooks/auth-hook";

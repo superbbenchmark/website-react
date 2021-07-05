@@ -19,6 +19,12 @@ class UserModel(db.Model):
     @classmethod
     def find_by_id(cls, _id: int) -> "UserModel":
         return cls.query.filter_by(id=_id).first()
+    
+    @classmethod
+    def reset_username(cls, email: str, new_name: str) -> None:
+        user = cls.query.filter_by(email=email).first()
+        user.name = new_name
+        db.session.commit()
 
     def save_to_db(self) -> None:
         db.session.add(self)
