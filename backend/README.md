@@ -8,21 +8,19 @@
 CREATE database superb;
 ```
 
-3. Change your database URI in app.py (These configs might be moved to a sperate file in the future.)
+3. Create a `.env` file that contains a variable of `SQLALCHEMY_DATABASE_URI`.
 
-```python
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:root@127.0.0.1:3306/superb"
-# Change your uri
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://<user>:<password>@<host>:<port>/<database>"
+```
+SQLALCHEMY_DATABASE_URI=mysql+pymysql://<user>:<password>@127.0.0.1:3306/superb
 ```
 
-4. Install and download requirements
+4. Install requirements and unzip required files
 
 ```bash
 ./prepare.sh
 ```
 
-5. In backend/ run
+5. In `backend/` run
 
 ```bash
 python3 app.py
