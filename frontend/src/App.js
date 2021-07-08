@@ -57,66 +57,90 @@ function App() {
     window.addEventListener("resize", setViewPort);
 
     const classes = useStyles();
-    const theme = useTheme();
+    let routes;
+    if (auth.isLoggedIn) {
+        routes = (
+            <Switch>
+                <Route path="/" exact>
+                    <div className={`${classes.narrowViewport}`}>
+                        <Landing />
+                    </div>
+                </Route>
+                <Route path="/tasks">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Tasks />
+                    </div>
+                </Route>
+                <Route path="/rules">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Rules />
+                    </div>
+                </Route>
+                <Route path="/compare">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Compare />
+                    </div>
+                </Route>
+                <Route path="/leaderboard">
+                    <Leaderboard
+                        height={`${height - navbarHeight}px`}
+                        tableControlRef={tableControlRef}
+                    />
+                </Route>
+                <Route path="/profile" exact>
+                    <Profile tableControlRef={tableControlRef} />
+                </Route>
+                <Route path="/logout">
+                    <Logout />
+                </Route>
+                <Route path="/submit">
+                    <div className={`${classes.narrowViewport}`}>
+                        <SubmitForm />
+                    </div>
+                </Route>
+            </Switch>
+        );
+    } else {
+        routes = (
+            <Switch>
+                <Route path="/" exact>
+                    <div className={`${classes.narrowViewport}`}>
+                        <Landing />
+                    </div>
+                </Route>
+                <Route path="/tasks">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Tasks />
+                    </div>
+                </Route>
+                <Route path="/rules">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Rules />
+                    </div>
+                </Route>
+                <Route path="/leaderboard">
+                    <Leaderboard
+                        height={`${height - navbarHeight}px`}
+                        tableControlRef={tableControlRef}
+                    />
+                </Route>
+                <Route path="/login">
+                    <div
+                        className={`${classes.narrowViewport} ${classes.LoginButton}`}
+                    >
+                        <Login />
+                    </div>
+                </Route>
+            </Switch>
+        );
+    }
     return (
         <div className="App">
             <Router>
                 <div id="navbar">
                     <NavigationBar tableControlRef={tableControlRef} />
                 </div>
-                <Switch>
-                    <Route path="/" exact>
-                        <div className={`${classes.narrowViewport}`}>
-                            <Landing />
-                        </div>
-                    </Route>
-                    <Route path="/tasks">
-                        <div className={`${classes.narrowViewport}`}>
-                            <Tasks />
-                        </div>
-                    </Route>
-                    <Route path="/rules">
-                        <div className={`${classes.narrowViewport}`}>
-                            <Rules />
-                        </div>
-                    </Route>
-                    <Route path="/compare">
-                        <div className={`${classes.narrowViewport}`}>
-                            <Compare />
-                        </div>
-                    </Route>
-                    <Route path="/leaderboard">
-                        <Leaderboard
-                            height={`${height - navbarHeight}px`}
-                            tableControlRef={tableControlRef}
-                        />
-                    </Route>
-                    {!auth.isLoggedIn ? (
-                        <Route path="/login">
-                            <div
-                                className={`${classes.narrowViewport} ${classes.LoginButton}`}
-                            >
-                                <Login />
-                            </div>
-                        </Route>
-                    ) : (
-                        <>
-                            <Route path="/profile">
-                                <Profile tableControlRef={tableControlRef}/>
-                            </Route>
-                            <Route path="/logout">
-                                <Logout />
-                            </Route>
-                            <Route path="/submit">
-                                <div className={`${classes.narrowViewport}`}>
-                                    <SubmitForm />
-                                </div>
-                            </Route>
-                        </>
-                    )}
-                    
-                    <Redirect to="/login" />
-                </Switch>
+                {routes}
             </Router>
         </div>
     );
