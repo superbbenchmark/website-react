@@ -12,14 +12,7 @@ from resources.dowload import Example
 app = Flask(__name__)
 load_dotenv()
 
-
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
-    'SQLALCHEMY_DATABASE_URI', default="mysql+pymysql://root:root@127.0.0.1:3306/superb")
-app.config['GOOGLE_CLIENT_ID'] = '796679159105-6335p2q2ub5pr15lnf3g2cqkhnucmvkl.apps.googleusercontent.com'
-app.config['JWT_SECRET_KEY'] = 'speechlab531'
-app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # Max file size: 16MB
-app.config['UPLOAD_DIR'] = "./upload"
+app.config.from_object("flask_config")
 
 
 jwt = JWTManager(app)
