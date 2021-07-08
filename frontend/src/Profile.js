@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import {
-  useTable,
-  useBlockLayout,
-  useSortBy,
-  useResizeColumns,
-  useGlobalFilter,
+    useTable,
+    useBlockLayout,
+    useSortBy,
+    useResizeColumns,
+    useGlobalFilter,
 } from "react-table";
 import { useSticky } from "react-table-sticky";
 
@@ -17,15 +17,18 @@ import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
 import { Typography, TextField } from "@material-ui/core";
 import { Title } from "./components/Titles";
 import { Section } from "./components/Sections";
-import CheckIcon from '@material-ui/icons/Check';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import CropSquareIcon from '@material-ui/icons/CropSquare';
-import { individual_submission_columnInfo, leaderboard_selections } from "./Data";
+import CheckIcon from "@material-ui/icons/Check";
+import Button from "@material-ui/core/Button";
+import Icon from "@material-ui/core/Icon";
+import CropSquareIcon from "@material-ui/icons/CropSquare";
+import {
+    individual_submission_columnInfo,
+    leaderboard_selections,
+} from "./Data";
 import { AuthContext } from "./context/auth-context";
 import swal from "sweetalert";
 import Model from "./components/Modal";
-import TrackSelect from "./components/TrackSelect"
+import TrackSelect from "./components/TrackSelect";
 
 const Styles = styled.div`
   .table {
@@ -110,303 +113,382 @@ const Styles = styled.div`
 
     &.isResizing, &:hover {
       background: ${(props) =>
-        `${fade(props.theme.palette.text.primary, 0.6)}`};
+          `${fade(props.theme.palette.text.primary, 0.6)}`};
     }
 `;
 
 function Table({ columns, data, height = "500px", tableControlRef = null }) {
-  const theme = useTheme();
-  const defaultColumn = React.useMemo(
-    () => ({
-      minWidth: 10,
-      width: 150,
-      maxWidth: 400,
-    }),
-    []
-  );
-  const defaultSortby = React.useMemo(() => [
-    {
-      id: "aoeTimeUpload",
-      desc: true,
-    },
-  ]);
+    const theme = useTheme();
+    const defaultColumn = React.useMemo(
+        () => ({
+            minWidth: 10,
+            width: 150,
+            maxWidth: 400,
+        }),
+        []
+    );
+    const defaultSortby = React.useMemo(() => [
+        {
+            id: "aoeTimeUpload",
+            desc: true,
+        },
+    ]);
 
-  const tableInstance = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-      initialState: {
-        hiddenColumns: [
-          "modelDesc",
-          "modelURL",
-          "stride",
-          "inputFormat",
-          "corpus",
-          "paramDesc",
-          "paramShared",
-          "fineTunedParam",
-          "taskSpecParam",
-          "stateInfo",
-          "submitUUID",
-        ],
-        sortBy: defaultSortby,
-      },
-    },
-    useSortBy,
-    useBlockLayout,
-    useResizeColumns,
-    useSticky
-  );
+    const tableInstance = useTable(
+        {
+            columns,
+            data,
+            defaultColumn,
+            initialState: {
+                hiddenColumns: [
+                    "modelDesc",
+                    "modelURL",
+                    "stride",
+                    "inputFormat",
+                    "corpus",
+                    "paramDesc",
+                    "paramShared",
+                    "fineTunedParam",
+                    "taskSpecParam",
+                    "stateInfo",
+                    "submitUUID",
+                ],
+                sortBy: defaultSortby,
+            },
+        },
+        useSortBy,
+        useBlockLayout,
+        useResizeColumns,
+        useSticky
+    );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = tableInstance;
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+        tableInstance;
 
-  return (
-    <Styles theme={theme}>
-      <Model tableInstance={tableInstance} modalOpenRef={tableControlRef} />
-      <div
-        {...getTableProps()}
-        className="table sticky"
-        style={{
-          width: "fit-content",
-          maxWidth: "100%",
-          maxHeight: height,
-          margin: "auto",
-        }}
-      >
-        <div className="header">
-          {headerGroups.map((headerGroup) => (
-            <div {...headerGroup.getHeaderGroupProps()} className="tr">
-              {headerGroup.headers.map((column) => {
-                let color =
-                  column.isSortedDesc == undefined ||
-                  column.higherBetter == undefined
-                    ? theme.palette.text.primary
-                    : column.isSortedDesc == column.higherBetter
-                    ? green[300]
-                    : red[300];
+    return (
+        <Styles theme={theme}>
+            <Model
+                tableInstance={tableInstance}
+                modalOpenRef={tableControlRef}
+            />
+            <div
+                {...getTableProps()}
+                className="table sticky"
+                style={{
+                    width: "fit-content",
+                    maxWidth: "100%",
+                    maxHeight: height,
+                    margin: "auto",
+                }}
+            >
+                <div className="header">
+                    {headerGroups.map((headerGroup) => (
+                        <div
+                            {...headerGroup.getHeaderGroupProps()}
+                            className="tr"
+                        >
+                            {headerGroup.headers.map((column) => {
+                                let color =
+                                    column.isSortedDesc == undefined ||
+                                    column.higherBetter == undefined
+                                        ? theme.palette.text.primary
+                                        : column.isSortedDesc ==
+                                          column.higherBetter
+                                        ? green[300]
+                                        : red[300];
 
-                return (
-                  <div {...column.getHeaderProps()} className="th">
-                    <div {...column.getSortByToggleProps()} className="toggle">
-                      <span style={{ margin: "0px 1px", color: color }}>
-                        {column.render("Header")}
-                      </span>
-                      {column.higherBetter != undefined &&
-                        (column.higherBetter ? (
-                          <ArrowUpwardIcon
-                            style={{ fontSize: 16, color: color }}
-                          />
-                        ) : (
-                          <ArrowDownwardIcon
-                            style={{ fontSize: 16, color: color }}
-                          />
-                        ))}
-                    </div>
-                    <div
-                      {...column.getResizerProps()}
-                      className={`resizer ${
-                        column.isResizing ? "isResizing" : ""
-                      }`}
-                    />
-                  </div>
-                );
-              })}
+                                return (
+                                    <div
+                                        {...column.getHeaderProps()}
+                                        className="th"
+                                    >
+                                        <div
+                                            {...column.getSortByToggleProps()}
+                                            className="toggle"
+                                        >
+                                            <span
+                                                style={{
+                                                    margin: "0px 1px",
+                                                    color: color,
+                                                }}
+                                            >
+                                                {column.render("Header")}
+                                            </span>
+                                            {column.higherBetter != undefined &&
+                                                (column.higherBetter ? (
+                                                    <ArrowUpwardIcon
+                                                        style={{
+                                                            fontSize: 16,
+                                                            color: color,
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <ArrowDownwardIcon
+                                                        style={{
+                                                            fontSize: 16,
+                                                            color: color,
+                                                        }}
+                                                    />
+                                                ))}
+                                        </div>
+                                        <div
+                                            {...column.getResizerProps()}
+                                            className={`resizer ${
+                                                column.isResizing
+                                                    ? "isResizing"
+                                                    : ""
+                                            }`}
+                                        />
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ))}
+                </div>
+
+                <div {...getTableBodyProps()} className="body">
+                    {rows.map((row, i) => {
+                        prepareRow(row);
+                        return (
+                            <div {...row.getRowProps()} className="tr">
+                                {row.cells.map((cell) => {
+                                    return (
+                                        <div
+                                            {...cell.getCellProps()}
+                                            className="td"
+                                        >
+                                            {cell.render("Cell")}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
-          ))}
-        </div>
-
-        <div {...getTableBodyProps()} className="body">
-          {rows.map((row, i) => {
-            prepareRow(row);
-            return (
-              <div {...row.getRowProps()} className="tr">
-                {row.cells.map((cell) => {
-                  return (
-                    <div {...cell.getCellProps()} className="td">
-                      {cell.render("Cell")}
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </Styles>
-  );
+        </Styles>
+    );
 }
 
 function Profile(props) {
-  const theme = useTheme();
-  const auth = useContext(AuthContext);
-  const [allSubmissionData, setAllSubmissionData] = useState([]);
-  const [shownData, setShownDate] = useState([]);
-  const [task, setTask] = useState("all");
-  const [username, setUsername] = useState("");
-  const [resetUserName, setResetUserName] = useState("");
-  const [dailyCounts, setDailyCounts] = useState(0);
-  const [monthlyCounts, setMonthlyCounts] = useState(0);
-  
-  const memoizedNumericSort = React.useCallback(
-    (rowA, rowB, columnId, desc) => {
-      const valueA = rowA.original[columnId];
-      const valueB = rowB.original[columnId];
-      return valueA > valueB ? 1 : -1;
-    }
-  );
+    const theme = useTheme();
+    const auth = useContext(AuthContext);
+    const [allSubmissionData, setAllSubmissionData] = useState([]);
+    const [shownData, setShownDate] = useState([]);
+    const [task, setTask] = useState("all");
+    const [username, setUsername] = useState("");
+    const [resetUserName, setResetUserName] = useState("");
+    const [dailyCounts, setDailyCounts] = useState(0);
+    const [monthlyCounts, setMonthlyCounts] = useState(0);
 
-  const mapping_array = {"CONSTRAINED":"constrained", "LESS_CONSTRAINED":"less-constrained", "UNCONSTRAINED":"unconstrained"}
-  
-  const getUserName = async () => {
-    await axios({
-      method:"get",
-        url: "/api/profile/username",
-        headers: {
-            Authorization: "Bearer " + auth.token,
-        },
-    })
-    .then((res) => { 
-      setUsername(res.data.username)
-     })
-    .catch((error) => { console.error(error) })
-  }
-
-  const getUserQuota = async () => {
-    await axios({
-      method:"get",
-        url: "/api/profile/quota",
-        headers: {
-            Authorization: "Bearer " + auth.token,
-        },
-    })
-    .then((res) => { 
-      setDailyCounts(res.data.daily_counts)
-      setMonthlyCounts(res.data.monthly_counts)
-     })
-    .catch((error) => { console.error(error) })
-  }
-
-  const handleResetUserName = async () => {
-    await axios({
-      method:"post",
-        url: "/api/profile/resetusername",
-        headers: {
-          Authorization: "Bearer " + auth.token,
-        },
-        data: {
-          newusername: resetUserName
+    const memoizedNumericSort = React.useCallback(
+        (rowA, rowB, columnId, desc) => {
+            const valueA = rowA.original[columnId];
+            const valueB = rowB.original[columnId];
+            return valueA > valueB ? 1 : -1;
         }
-    })
-    .then((res) => { 
-      setUsername(res.data.msg)
-      swal({ text: `Reset to ${res.data.msg}!`, icon: "success" });
-     })
-    .catch((error) => { 
-      swal({ text: "Internal server error", icon: "error" });
-      console.error(error) })
-  }
-  
+    );
 
-  const getIndividualSubmission = async () => {
-    await axios({
-        method:"get",
-        url: "/api/result/individual",
-        headers: {
-            Authorization: "Bearer " + auth.token,
-        },
-    })
-    .then((res) => { 
-        setAllSubmissionData(res.data.submission_info);
-        (task === "all") ? setShownDate(res.data.submission_info) : setShownDate(res.data.submission_info.filter(data => mapping_array[data.task] === task))
-    })
-    .catch((error) => { console.error(error) })
-  }
-  
-  const onTaskChange = (e) => {
-    setTask(e.target.value);
-    (e.target.value === "all") ? setShownDate(allSubmissionData) : setShownDate(allSubmissionData.filter(data => mapping_array[data.task] === e.target.value))
-  }
-
-  const handleNameOnChange = (e) => {
-    setResetUserName(e.target.value);
-  }
- 
-  const setShowOnLeaderboard = async (submission_id) => {
-    await axios({
-      method:"post",
-      url: "/api/result/shown",
-      headers: {
-          Authorization: "Bearer " + auth.token,
-      },
-      data: {
-        task: task,
-        submission_id: submission_id,
-      },
-    })
-    .then((res) => { 
-      swal({ text: res.data.msg, icon: "success" });
-      getIndividualSubmission();
-    })
-    .catch((error) => { 
-      swal({ text: "Internal server error", icon: "error" });
-    })
-  }
-  const parseShowCell = ({row, value}) => {
-    if (value === "NO") return <CropSquareIcon className="click-btn" onClick={() => setShowOnLeaderboard(row.allCells[15].value)}></CropSquareIcon>
-    else return <CheckIcon className = "click-btn" style={{ color: green[500] }} onClick={() => setShowOnLeaderboard(row.allCells[15].value)}></CheckIcon>
-  }
-
-  useEffect(() => {
-    getIndividualSubmission();
-    getUserName();
-    getUserQuota();
-  },[]);
-
-  let columns = Object.keys(individual_submission_columnInfo).map((key) => {
-    return {
-      Header: individual_submission_columnInfo[key].header,
-      accessor: key,
-      width: individual_submission_columnInfo[key].width,
-      sortType: individual_submission_columnInfo[key] == "number" ? memoizedNumericSort : "alphanumeric",
-      higherBetter: individual_submission_columnInfo[key].higherBetter,
-      isScore: individual_submission_columnInfo[key].isScore,
-      Cell: key === "showOnLeaderboard" ? parseShowCell : ({value}) => String(value)
+    const mapping_array = {
+        CONSTRAINED: "constrained",
+        LESS_CONSTRAINED: "less-constrained",
+        UNCONSTRAINED: "unconstrained",
     };
-  });
-  columns[0]["sticky"] = "left";
 
-  const memoColumns = React.useMemo(() => columns);
+    const getUserName = async () => {
+        await axios({
+            method: "get",
+            url: "/api/user/info",
+            headers: {
+                Authorization: "Bearer " + auth.token,
+            },
+        })
+            .then((res) => {
+                setUsername(res.data.username);
+                setDailyCounts(res.data.daily_counts);
+                setMonthlyCounts(res.data.monthly_counts);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
 
-  const resetbtnstyle = {
-    margin: 10,
-  };
+    const handleResetUserName = async () => {
+        await axios({
+            method: "patch",
+            url: "/api/user/info",
+            headers: {
+                Authorization: "Bearer " + auth.token,
+            },
+            data: {
+                name: resetUserName,
+            },
+        })
+            .then((res) => {
+                setUsername(res.data.newUserName);
+                setDailyCounts(res.data.daily_counts);
+                setMonthlyCounts(res.data.monthly_counts);
+                swal({
+                    text: `Reset to ${res.data.newUserName}!`,
+                    icon: "success",
+                });
+            })
+            .catch((error) => {
+                swal({ text: "Internal server error", icon: "error" });
+                console.error(error);
+            });
+    };
 
-  return (
-  <>
-    <Section anchorKey="personal-profile">
-        <Title
-            title={"Hello " + username}
-            description={"Your number of daily submission is " + dailyCounts + " and monthly submission is " + monthlyCounts +"."}
-        />
-        <TextField required label="Reset your name" id="name-reset" defaultValue={username} size="small" color="secondary" onChange={handleNameOnChange}/>
-        <Button variant="contained" size="small" className="reset-name-btn" style={resetbtnstyle} onClick={handleResetUserName}>Reset</Button>
-    </Section>
-    <Section anchorKey="personal-submission">
-        <Title
-            title="Submission history"
-            description="You can chick the checkbox to show your submission result on the leaderboard."
-        />
-    <TrackSelect task={task} onTaskChange={onTaskChange}/>
-    <Table columns={memoColumns} data={shownData} {...props} />
-    </Section>
-  </>);
+    const getIndividualSubmission = async () => {
+        await axios({
+            method: "get",
+            url: "/api/result",
+            headers: {
+                Authorization: "Bearer " + auth.token,
+            },
+        })
+            .then((res) => {
+                setAllSubmissionData(res.data.submission_info);
+                console.log(res.data.submission_info);
+                task === "all"
+                    ? setShownDate(res.data.submission_info)
+                    : setShownDate(
+                          res.data.submission_info.filter(
+                              (data) => mapping_array[data.task] === task
+                          )
+                      );
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    const onTaskChange = (e) => {
+        setTask(e.target.value);
+        e.target.value === "all"
+            ? setShownDate(allSubmissionData)
+            : setShownDate(
+                  allSubmissionData.filter(
+                      (data) => mapping_array[data.task] === e.target.value
+                  )
+              );
+    };
+
+    const handleNameOnChange = (e) => {
+        setResetUserName(e.target.value);
+    };
+
+    const setShowOnLeaderboard = async (submission_id) => {
+        await axios({
+            method: "patch",
+            url: "/api/result",
+            headers: {
+                Authorization: "Bearer " + auth.token,
+            },
+            data: {
+                task: task,
+                submission_id: submission_id,
+            },
+        })
+            .then((res) => {
+                swal({ text: res.data.msg, icon: "success" });
+                getIndividualSubmission();
+            })
+            .catch((error) => {
+                swal({ text: "Internal server error", icon: "error" });
+            });
+    };
+    const parseShowCell = ({ row, value }) => {
+        if (value === "NO")
+            return (
+                <CropSquareIcon
+                    className="click-btn"
+                    onClick={() => setShowOnLeaderboard(row.allCells[15].value)}
+                ></CropSquareIcon>
+            );
+        else
+            return (
+                <CheckIcon
+                    className="click-btn"
+                    style={{ color: green[500] }}
+                    onClick={() => setShowOnLeaderboard(row.allCells[15].value)}
+                ></CheckIcon>
+            );
+    };
+
+    useEffect(() => {
+        getIndividualSubmission();
+        getUserName();
+        // getUserQuota();
+    }, []);
+
+    let columns = Object.keys(individual_submission_columnInfo).map((key) => {
+        return {
+            Header: individual_submission_columnInfo[key].header,
+            accessor: key,
+            width: individual_submission_columnInfo[key].width,
+            sortType:
+                individual_submission_columnInfo[key] == "number"
+                    ? memoizedNumericSort
+                    : "alphanumeric",
+            higherBetter: individual_submission_columnInfo[key].higherBetter,
+            isScore: individual_submission_columnInfo[key].isScore,
+            Cell:
+                key === "showOnLeaderboard"
+                    ? parseShowCell
+                    : ({ value }) => String(value),
+        };
+    });
+    columns[0]["sticky"] = "left";
+
+    const memoColumns = React.useMemo(() => columns);
+
+    const resetbtnstyle = {
+        margin: 10,
+    };
+
+    return (
+        <>
+            <Section anchorKey="personal-profile">
+                <Title
+                    title={"Hello " + username}
+                    description={
+                        "Your number of daily submission is " +
+                        dailyCounts +
+                        " and monthly submission is " +
+                        monthlyCounts +
+                        "."
+                    }
+                />
+                <TextField
+                    required
+                    label="Reset your name"
+                    id="name-reset"
+                    defaultValue={username}
+                    size="small"
+                    color="secondary"
+                    onChange={handleNameOnChange}
+                />
+                <Button
+                    variant="contained"
+                    size="small"
+                    className="reset-name-btn"
+                    style={resetbtnstyle}
+                    onClick={handleResetUserName}
+                >
+                    Reset
+                </Button>
+            </Section>
+            <Section anchorKey="personal-submission">
+                <Title
+                    title="Submission history"
+                    description="You can chick the checkbox to show your submission result on the leaderboard."
+                />
+                <TrackSelect task={task} onTaskChange={onTaskChange} />
+                <Table columns={memoColumns} data={shownData} {...props} />
+            </Section>
+        </>
+    );
 }
 
 export default Profile;
