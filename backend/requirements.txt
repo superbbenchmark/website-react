@@ -1,5 +1,5 @@
 numpy==1.19.4
-Flask==2.0.1
+Flask==1.1.4
 flask-sqlalchemy==2.5.1
 pymysql==1.0.2
 cryptography==3.4.7
@@ -17,3 +17,4 @@ intervaltree==3.1.0
 gdown==3.13.0
 scikit-learn==0.24.0
 python-dotenv==0.18.0
+flask-restx==0.4.0
