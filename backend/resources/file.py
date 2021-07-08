@@ -1,4 +1,4 @@
-from flask_restful import Resource
+from flask_restx import Resource
 from flask import request, jsonify, make_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from threading import Thread
@@ -6,7 +6,8 @@ from http import HTTPStatus
 
 from models.file import FileModel, Task, Show
 from models.score import ScoreModel
-from utils import submission_records_parser, get_AOE_month, get_AOE_today, get_uuid, get_AOETime
+from models.user import UserModel
+from utils import submission_records_parser, get_AOE_month, get_AOE_today, get_uuid, get_AOETime, get_leaderboard_default
 from calculate import metric_calculate_pipeline
 from config import configs
 import file_upload
@@ -53,7 +54,7 @@ class Result(Resource):
             fineTunedParam = request.form.get('fineTunedParam')
             taskSpecParam = request.form.get('taskSpecParam')
             task = request.form.get('task')
-            print(task)
+            # print(task)
             # task = Task(mapping[task])
             file = request.files['file']
             if not (submitName and modelDesc and paramDesc):
@@ -137,3 +138,28 @@ class Result(Resource):
         except Exception as e:
             print(e)
             return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+class LeaderBoard(Resource):
+    @classmethod
+    def get(cls):
+        try:
+            leaderboard_default_data = get_leaderboard_default()
+            leaderboard_user_data = FileModel.find_show_on_leaderboard()
+            submission_names = []
+            for user_data in leaderboard_user_data:
+                submission_names.append(
+                    UserModel.find_by_email(email=user_data.email).name)
+            submission_info = submission_records_parser(
+                leaderboard_user_data, configs, mode="leaderboard")
+
+            for single_info, name in zip(submission_info, submission_names):
+                single_info.update({"name": name})
+
+            leaderboard_default_data += submission_info
+
+            return {"leaderboard": leaderboard_default_data}, HTTPStatus.OK
+
+        except Exception as e:
+            print(e)
+            return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR

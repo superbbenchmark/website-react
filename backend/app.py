@@ -1,19 +1,17 @@
-from flask import Flask, request, jsonify, send_file
+from flask_restx import Api
+from config import configs
+from resources.user import UserInfo
+from resources.file import LeaderBoard, Result
+import os
+from dotenv import load_dotenv
+from flask_cors import CORS
+import datetime
+from flask_jwt_extended import JWTManager, create_access_token
+from flask import Flask, request, send_file
 from db import db
 from models.user import UserModel
-from models.file import FileModel
 import google_token
 from http import HTTPStatus
-from flask_restful import Api
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-import datetime
-from flask_cors import CORS
-from utils import get_leaderboard_default, submission_records_parser, get_AOE_today, get_AOE_month
-from dotenv import load_dotenv
-import os
-
-from resources.file import Result
-from config import configs
 
 app = Flask(__name__)
 load_dotenv()
@@ -69,77 +67,77 @@ def login():
         return {"msg": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-@app.route("/api/result/leaderboard", methods=['GET'])
-def leaderboard_request():
-    try:
-        leaderboard_default_data = get_leaderboard_default()
-        leaderboard_user_data = FileModel.find_show_on_leaderboard()
-        submission_names = []
-        for user_data in leaderboard_user_data:
-            submission_names.append(
-                UserModel.find_by_email(email=user_data.email).name)
-        submission_info = submission_records_parser(
-            leaderboard_user_data, configs, mode="leaderboard")
+# @app.route("/api/result/leaderboard", methods=['GET'])
+# def leaderboard_request():
+#     try:
+#         leaderboard_default_data = get_leaderboard_default()
+#         leaderboard_user_data = FileModel.find_show_on_leaderboard()
+#         submission_names = []
+#         for user_data in leaderboard_user_data:
+#             submission_names.append(
+#                 UserModel.find_by_email(email=user_data.email).name)
+#         submission_info = submission_records_parser(
+#             leaderboard_user_data, configs, mode="leaderboard")
 
-        for single_info, name in zip(submission_info, submission_names):
-            single_info.update({"name": name})
+#         for single_info, name in zip(submission_info, submission_names):
+#             single_info.update({"name": name})
 
-        leaderboard_default_data += submission_info
+#         leaderboard_default_data += submission_info
 
-        return jsonify({"leaderboard": leaderboard_default_data}), HTTPStatus.OK
+#         return jsonify({"leaderboard": leaderboard_default_data}), HTTPStatus.OK
 
-    except Exception as e:
-        print(e)
-        return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
-
-
-@app.route("/api/profile/quota", methods=["GET"])
-@jwt_required()
-def get_user_quota():
-    try:
-        user_mail = get_jwt_identity()
-        daily_counts = FileModel.get_interval_upload_count_by_mail(
-            email=user_mail, AOEtime=get_AOE_today(to_str=False))
-        monthly_counts = FileModel.get_interval_upload_count_by_mail(
-            email=user_mail, AOEtime=get_AOE_month(to_str=False))
-        daily_left = configs["DAILY_SUBMIT_LIMIT"] - daily_counts
-        monthly_left = configs["MONTHLY_SUBMIT_LIMIT"] - monthly_counts
-        return {"mgs": "Your quota:", "daily_counts": daily_counts, "monthly_counts": monthly_counts, "daily_left": daily_left, "monthly_left": monthly_left}, HTTPStatus.OK
-
-    except Exception as e:
-        print(e)
-        return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+#     except Exception as e:
+#         print(e)
+#         return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-@app.route("/api/profile/username", methods=["GET"])
-@jwt_required()
-def get_username():
-    try:
-        user_mail = get_jwt_identity()
-        user = UserModel.find_by_email(email=user_mail)
-        return jsonify({"username": user.name}), HTTPStatus.OK
+# @app.route("/api/profile/quota", methods=["GET"])
+# @jwt_required()
+# def get_user_quota():
+#     try:
+#         user_mail = get_jwt_identity()
+#         daily_counts = FileModel.get_interval_upload_count_by_mail(
+#             email=user_mail, AOEtime=get_AOE_today(to_str=False))
+#         monthly_counts = FileModel.get_interval_upload_count_by_mail(
+#             email=user_mail, AOEtime=get_AOE_month(to_str=False))
+#         daily_left = configs["DAILY_SUBMIT_LIMIT"] - daily_counts
+#         monthly_left = configs["MONTHLY_SUBMIT_LIMIT"] - monthly_counts
+#         return {"mgs": "Your quota:", "daily_counts": daily_counts, "monthly_counts": monthly_counts, "daily_left": daily_left, "monthly_left": monthly_left}, HTTPStatus.OK
 
-    except Exception as e:
-        print(e)
-        return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+#     except Exception as e:
+#         print(e)
+#         return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-@app.route("/api/profile/resetusername", methods=["POST"])
-@jwt_required()
-def reset_username():
-    try:
-        user_mail = get_jwt_identity()
-        data = request.get_json()
-        newusername = data["newusername"]
-        if (len(newusername) == 0):
-            return jsonify({"msg": "Too short!"}), HTTPStatus.FORBIDDEN
+# @app.route("/api/profile/username", methods=["GET"])
+# @jwt_required()
+# def get_username():
+#     try:
+#         user_mail = get_jwt_identity()
+#         user = UserModel.find_by_email(email=user_mail)
+#         return jsonify({"username": user.name}), HTTPStatus.OK
 
-        UserModel.reset_username(email=user_mail, new_name=newusername)
-        return jsonify({"msg": newusername}), HTTPStatus.OK
+#     except Exception as e:
+#         print(e)
+#         return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
-    except Exception as e:
-        print(e)
-        return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+# @app.route("/api/profile/resetusername", methods=["POST"])
+# @jwt_required()
+# def reset_username():
+#     try:
+#         user_mail = get_jwt_identity()
+#         data = request.get_json()
+#         newusername = data["newusername"]
+#         if (len(newusername) == 0):
+#             return jsonify({"msg": "Too short!"}), HTTPStatus.FORBIDDEN
+
+#         UserModel.reset_username(email=user_mail, new_name=newusername)
+#         return jsonify({"msg": newusername}), HTTPStatus.OK
+
+#     except Exception as e:
+#         print(e)
+#         return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route("/api/download/example", methods=['GET'])
@@ -152,6 +150,8 @@ def download_example():
 
 
 api.add_resource(Result, "/api/result")
+api.add_resource(LeaderBoard, "/api/result/leaderboard")
+api.add_resource(UserInfo, "/api/user/info")
 
 if __name__ == '__main__':
     db.init_app(app)
