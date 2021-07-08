@@ -17,20 +17,22 @@ class Result(Resource):
     @classmethod
     @jwt_required()
     def get(cls):
+        '''Get User submission info'''
         try:
             user_mail = get_jwt_identity()
             submission_records = FileModel.find_by_email(email=user_mail).all()
             submission_info = submission_records_parser(
                 submission_records, configs, mode="individual")
+            print(submission_info)
 
             return make_response(jsonify({"submission_info": submission_info}), HTTPStatus.OK)
         except Exception as e:
-            print(e)
             return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
     @classmethod
     @jwt_required()
     def post(cls):
+        '''Upload user submission'''
         try:
             user_mail = get_jwt_identity()
 
@@ -56,6 +58,7 @@ class Result(Resource):
             task = request.form.get('task')
             # print(task)
             # task = Task(mapping[task])
+            print(fineTunedParam == "")
             file = request.files['file']
             if not (submitName and modelDesc and paramDesc):
                 return {"msg": "Column Missing."}, HTTPStatus.FORBIDDEN
@@ -107,11 +110,12 @@ class Result(Resource):
                 fileObj.delete_from_db()  # Rollback
                 return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
         except Exception as e:
-            return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERRO
+            return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
     @classmethod
     @jwt_required()
     def patch(cls):
+        '''Change user submission show on leaderboard or not'''
         try:
             user_mail = get_jwt_identity()
             data = request.get_json()
@@ -143,6 +147,7 @@ class Result(Resource):
 class LeaderBoard(Resource):
     @classmethod
     def get(cls):
+        '''Get leaderboard data'''
         try:
             leaderboard_default_data = get_leaderboard_default()
             leaderboard_user_data = FileModel.find_show_on_leaderboard()

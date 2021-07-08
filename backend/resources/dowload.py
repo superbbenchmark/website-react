@@ -6,6 +6,7 @@ from http import HTTPStatus
 class Example(Resource):
     @classmethod
     def get(cls):
+        '''Download examples'''
         try:
             return send_file("./examples/predict.zip", as_attachment=True)
         except Exception as e:
