@@ -53,7 +53,21 @@ export default function SubmitForm(props) {
         formState: { errors },
         setValue,
         watch,
-    } = useForm({ defaultValues: { task: "1" } });
+    } = useForm({
+        defaultValues: {
+            submitName: "",
+            modeURL: "",
+            modelDesc: "",
+            stride: "",
+            inputFormat: "",
+            corpus: "",
+            paramDesc: "",
+            paramShared: "",
+            fineTunedParam: "",
+            taskSpecParam: "",
+            task: "1",
+        },
+    });
 
     const { ref, ...rest } = register("file", formVal.file);
 
@@ -77,7 +91,7 @@ export default function SubmitForm(props) {
             formData.append("file", data?.file[0]);
             const res = await axios({
                 method: "post",
-                url: "/api/result/upload",
+                url: "/api/result",
                 data: formData,
                 headers: {
                     Authorization: "Bearer " + auth.token,
