@@ -30,7 +30,7 @@ class UserInfo(Resource):
 
         except Exception as e:
             print(e)
-            return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+            return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
     @classmethod
     @jwt_required()
@@ -41,14 +41,14 @@ class UserInfo(Resource):
             data = request.get_json()
             newusername = data["name"]
             if (len(newusername) == 0):
-                return {"msg": "Too short!"}, HTTPStatus.FORBIDDEN
+                return {"message": "Too short!"}, HTTPStatus.FORBIDDEN
 
             UserModel.reset_username(email=user_mail, new_name=newusername)
             return {"newUserName": newusername}, HTTPStatus.OK
 
         except Exception as e:
             print(e)
-            return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+            return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 class UserLogin(Resource):
@@ -65,11 +65,11 @@ class UserLogin(Resource):
                 identity = google_token.validate_id_token(
                     token, configs['GOOGLE_CLIENT_ID'])
             except ValueError:
-                return {"msg": 'Invalid Google ID token'}, HTTPStatus.FORBIDDEN
+                return {"message": 'Invalid Google ID token'}, HTTPStatus.FORBIDDEN
 
             # Get the user info out of the validated identity
             if ('email' not in identity or 'name' not in identity):
-                return {"msg": "Unexcpected authorization response"}, HTTPStatus.FORBIDDEN
+                return {"message": "Unexcpected authorization response"}, HTTPStatus.FORBIDDEN
 
             if not UserModel.find_by_email(email=identity['email']):
                 user = UserModel(
@@ -77,8 +77,8 @@ class UserLogin(Resource):
                 user.save_to_db()
             access_token = create_access_token(
                 identity=identity['email'], expires_delta=datetime.timedelta(hours=1))
-            return {"msg": "Login Success", "access_token": access_token}, HTTPStatus.OK
+            return {"message": "Login Success", "access_token": access_token}, HTTPStatus.OK
 
         except Exception as e:
             print(e)
-            return {"msg": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+            return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR

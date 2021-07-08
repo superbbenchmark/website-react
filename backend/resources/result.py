@@ -26,7 +26,7 @@ class Result(Resource):
 
             return make_response(jsonify({"submission_info": submission_info}), HTTPStatus.OK)
         except Exception as e:
-            return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+            return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
     @classmethod
     @jwt_required()
@@ -41,7 +41,7 @@ class Result(Resource):
             monthly_counts = FileModel.get_interval_upload_count_by_mail(
                 email=user_mail, AOEtime=get_AOE_month(to_str=False))
             if (daily_counts >= configs["DAILY_SUBMIT_LIMIT"]) or (monthly_counts >= configs["MONTHLY_SUBMIT_LIMIT"]):
-                return {"msg": f"You have submitted {daily_counts} times today and {monthly_counts} times this month."}, HTTPStatus.FORBIDDEN
+                return {"message": f"You have submitted {daily_counts} times today and {monthly_counts} times this month."}, HTTPStatus.FORBIDDEN
 
             # TODO: Form Validation
             submitName = request.form.get('submitName')
@@ -57,15 +57,14 @@ class Result(Resource):
             task = request.form.get('task')
             # print(task)
             # task = Task(mapping[task])
-            print(fineTunedParam == "")
             file = request.files['file']
             if not (submitName and modelDesc and paramDesc):
-                return {"msg": "Column Missing."}, HTTPStatus.FORBIDDEN
+                return {"message": "Column Missing."}, HTTPStatus.FORBIDDEN
 
             if file.filename == "":
-                return {"msg": "No file selected."}, HTTPStatus.FORBIDDEN
+                return {"message": "No file selected."}, HTTPStatus.FORBIDDEN
             if not file_upload.zipfile_check(file):
-                return {"msg": "Wrong file format."}, HTTPStatus.FORBIDDEN
+                return {"message": "Wrong file format."}, HTTPStatus.FORBIDDEN
 
             upload_count = FileModel.get_upload_count_by_mail(
                 email=user_mail) + 1
@@ -104,12 +103,12 @@ class Result(Resource):
                                                                           "submitUUID": submitUUID})
                 thread.start()
 
-                return {"msg": "Upload Success!"}, HTTPStatus.OK
+                return {"message": "Upload Success!"}, HTTPStatus.OK
             except Exception as e:
                 fileObj.delete_from_db()  # Rollback
-                return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+                return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
         except Exception as e:
-            return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+            return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
     @classmethod
     @jwt_required()
@@ -129,18 +128,18 @@ class Result(Resource):
                 # set the "show" of all the same task submission to "NO"
                 FileModel.reset_same_task_show_attribute(
                     email=user_mail, task=Task(task_id))
-                return {"msg": "Remove from the leaderboard!", "submitID": submitID}, HTTPStatus.OK
+                return {"message": "Remove from the leaderboard!", "submitID": submitID}, HTTPStatus.OK
 
             else:
                 # set the "show" of all the same task submission to "NO"
                 FileModel.reset_same_task_show_attribute(
                     email=user_mail, task=Task(task_id))
                 FileModel.set_show_attribute_by_submitID(submitUUID=submitID)
-                return {"msg": "Shown on the leaderboard!", "submitID": submitID}, HTTPStatus.OK
+                return {"message": "Shown on the leaderboard!", "submitID": submitID}, HTTPStatus.OK
 
         except Exception as e:
             print(e)
-            return {"msg": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+            return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 class LeaderBoard(Resource):

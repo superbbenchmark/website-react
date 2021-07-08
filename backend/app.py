@@ -2,8 +2,8 @@ from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
-import os
 from flask_restx import Api
+
 from db import db
 from resources.user import UserInfo, UserLogin
 from resources.result import LeaderBoard, Result
