@@ -326,8 +326,6 @@ function Profile(props) {
         })
             .then((res) => {
                 setUsername(res.data.newUserName);
-                setDailyCounts(res.data.daily_counts);
-                setMonthlyCounts(res.data.monthly_counts);
                 swal({
                     text: `Reset to ${res.data.newUserName}!`,
                     icon: "success",
@@ -391,7 +389,7 @@ function Profile(props) {
             },
         })
             .then((res) => {
-                swal({ text: res.data.msg, icon: "success" });
+                swal({ text: res.data.message, icon: "success" });
                 getIndividualSubmission();
             })
             .catch((error) => {
@@ -482,7 +480,7 @@ function Profile(props) {
             <Section anchorKey="personal-submission">
                 <Title
                     title="Submission history"
-                    description="You can chick the checkbox to show your submission result on the leaderboard."
+                    description="You can check the checkbox to show your submission result on the leaderboard."
                 />
                 <TrackSelect task={task} onTaskChange={onTaskChange} />
                 <Table columns={memoColumns} data={shownData} {...props} />

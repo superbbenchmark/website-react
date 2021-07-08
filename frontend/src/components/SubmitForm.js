@@ -101,15 +101,14 @@ export default function SubmitForm(props) {
                     console.log(res.data.msg);
                     swal({
                         title: "Susscess",
-                        text: res.data.msg,
+                        text: res.data.message,
                         icon: "success",
                     });
                 })
                 .catch((err) => {
-                    console.log(err.response.data.msg);
                     swal({
                         title: "Error",
-                        text: err.response.data.msg,
+                        text: err.response.data.message,
                         icon: "error",
                     });
                 });
