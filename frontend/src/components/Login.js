@@ -15,10 +15,9 @@ const Login = () => {
         console.log(res);
         console.log(res.tokenId);
         try {
-            const responseData = await axios.post(
-                "/api/login",
-                { id_token: res.tokenId }
-            );
+            const responseData = await axios.post("/api/user/login", {
+                id_token: res.tokenId,
+            });
             auth.login(responseData.data.access_token);
             history.push("/");
         } catch (err) {

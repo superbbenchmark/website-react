@@ -1,3 +1,9 @@
+# Google Login related
+GOOGLE_CLIENT_ID: "796679159105-6335p2q2ub5pr15lnf3g2cqkhnucmvkl.apps.googleusercontent.com"
+
+#Upload Related
+UPLOAD_DIR: "./upload"
+
 # Submission related
 DAILY_SUBMIT_LIMIT: 2
 MONTHLY_SUBMIT_LIMIT: 6
@@ -8,65 +14,62 @@ GROUND_TRUTH_ROOT: "./inference/truth/"
 
 # Individual submission info
 INDIVIDUAL_SUBMISSION_INFO:
-  FILE:
-    - aoeTimeUpload
-    - task
-    - showOnLeaderboard
-    - submitName
-    - modelURL
-    - modelDesc
-    - stride
-    - inputFormat
-    - corpus
-    - paramDesc
-    - paramShared
-    - fineTunedParam
-    - taskSpecParam
-    - state
-    - stateInfo
-    - submitUUID
-  SCORE:
-    - PR_per_public
-    - KS_acc_public
-    - IC_acc_public
-    - SID_acc_public
-    - ER_acc_public
-    - ASR_wer_public
-    - ASR_LM_wer_public
-    - QbE_mtwv_public
-    - SF_f1_public
-    - SF_cer_public
-    - SV_eer_public
-    - SD_der_public
+    FILE:
+        - aoeTimeUpload
+        - task
+        - showOnLeaderboard
+        - submitName
+        - modelURL
+        - modelDesc
+        - stride
+        - inputFormat
+        - corpus
+        - paramDesc
+        - paramShared
+        - fineTunedParam
+        - taskSpecParam
+        - state
+        - stateInfo
+        - submitUUID
+    SCORE:
+        - PR_per_public
+        - KS_acc_public
+        - IC_acc_public
+        - SID_acc_public
+        - ER_acc_public
+        - ASR_wer_public
+        - ASR_LM_wer_public
+        - QbE_mtwv_public
+        - SF_f1_public
+        - SF_cer_public
+        - SV_eer_public
+        - SD_der_public
 
 # Leaderboard shown data
 LEADERBOARD_INFO:
-  FILE:
-    - aoeTimeUpload
-    - task
-    - submitName
-    - modelURL
-    - modelDesc
-    - stride
-    - inputFormat
-    - corpus
-    - paramDesc
-    - paramShared
-    - fineTunedParam
-    - taskSpecParam
-  SCORE:
-    - PR_per_public
-    - KS_acc_public
-    - IC_acc_public
-    - SID_acc_public
-    - ER_acc_public
-    - ASR_wer_public
-    - ASR_LM_wer_public
-    - QbE_mtwv_public
-    - SF_f1_public
-    - SF_cer_public
-    - SV_eer_public
-    - SD_der_public
-
-
-
+    FILE:
+        - aoeTimeUpload
+        - task
+        - submitName
+        - modelURL
+        - modelDesc
+        - stride
+        - inputFormat
+        - corpus
+        - paramDesc
+        - paramShared
+        - fineTunedParam
+        - taskSpecParam
+    SCORE:
+        - PR_per_public
+        - KS_acc_public
+        - IC_acc_public
+        - SID_acc_public
+        - ER_acc_public
+        - ASR_wer_public
+        - ASR_LM_wer_public
+        - QbE_mtwv_public
+        - SF_f1_public
+        - SF_cer_public
+        - SV_eer_public
+        - SD_der_public

@@ -53,7 +53,21 @@ export default function SubmitForm(props) {
         formState: { errors },
         setValue,
         watch,
-    } = useForm({ defaultValues: { task: "constrained" } });
+    } = useForm({
+        defaultValues: {
+            submitName: "",
+            modeURL: "",
+            modelDesc: "",
+            stride: "",
+            inputFormat: "",
+            corpus: "",
+            paramDesc: "",
+            paramShared: "",
+            fineTunedParam: "",
+            taskSpecParam: "",
+            task: "1",
+        },
+    });
 
     const { ref, ...rest } = register("file", formVal.file);
 
@@ -77,7 +91,7 @@ export default function SubmitForm(props) {
             formData.append("file", data?.file[0]);
             const res = await axios({
                 method: "post",
-                url: "/api/result/upload",
+                url: "/api/result",
                 data: formData,
                 headers: {
                     Authorization: "Bearer " + auth.token,
@@ -87,15 +101,14 @@ export default function SubmitForm(props) {
                     console.log(res.data.msg);
                     swal({
                         title: "Susscess",
-                        text: res.data.msg,
+                        text: res.data.message,
                         icon: "success",
                     });
                 })
                 .catch((err) => {
-                    console.log(err.response.data.msg);
                     swal({
                         title: "Error",
-                        text: err.response.data.msg,
+                        text: err.response.data.message,
                         icon: "error",
                     });
                 });
@@ -307,32 +320,40 @@ export default function SubmitForm(props) {
                         style={{ marginTop: "2%" }}
                     >
                         <FormLabel component="legend">Task</FormLabel>
-                        <RadioGroup
-                            row
-                            aria-label="position"
+                        <Controller
+                            control={control}
                             name="task"
-                            defaultValue="constrained"
-                            {...register("task")}
-                        >
-                            {tracks.map((track) => {
-                                return (
-                                    <ThemeProvider theme={track.theme}>
-                                        <FormControlLabel
-                                            value={track.name}
-                                            control={<Radio color="primary" />}
-                                            label={
-                                                <Typography color="primary">
-                                                    {capitalizeFirstLetter(
-                                                        track.name.toLowerCase()
-                                                    )}
-                                                </Typography>
-                                            }
-                                            color="primary"
-                                        />
-                                    </ThemeProvider>
-                                );
-                            })}
-                        </RadioGroup>
+                            render={({ field }) => (
+                                <RadioGroup
+                                    row
+                                    aria-label="position"
+                                    {...field}
+                                >
+                                    {tracks.map((track, index) => {
+                                        return (
+                                            <ThemeProvider theme={track.theme}>
+                                                <FormControlLabel
+                                                    value={(
+                                                        index + 1
+                                                    ).toString()}
+                                                    control={
+                                                        <Radio color="primary" />
+                                                    }
+                                                    label={
+                                                        <Typography color="primary">
+                                                            {capitalizeFirstLetter(
+                                                                track.name.toLowerCase()
+                                                            )}
+                                                        </Typography>
+                                                    }
+                                                    color="primary"
+                                                />
+                                            </ThemeProvider>
+                                        );
+                                    })}
+                                </RadioGroup>
+                            )}
+                        />
                     </FormControl>
                     <input
                         type="file"

@@ -67,17 +67,17 @@ const formVal = {
     paramShared: {
         required: "This field is required",
         validate: {
-            validNum: (input) => input && validNumber(input),
+            validNum: (input) => validNumber(input),
         },
     },
     fineTunedParam: {
         validate: {
-            validNum: (input) => input && validNumber(input),
+            validNum: (input) => validNumber(input),
         },
     },
     taskSpecParam: {
         validate: {
-            validNum: (input) => input && validNumber(input),
+            validNum: (input) => validNumber(input),
         },
     },
     file: {
