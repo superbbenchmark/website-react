@@ -15,7 +15,7 @@ ADD ${column_name} float;
 ```
 - Please mind that `${column_name}` = `${task}_${metric}_${mode}`.
 e.g. `PR_per_public` and `QbE_mtwv_hidden`.
-### backend
+### Backend
 1. Put your ground truth in `./backend/inference/truth/${task}` folder.
 2. Modify `./backend/calculate.py` with the following template:
 ```python
@@ -44,3 +44,27 @@ ${task}_${metric}_${mode} = db.Column(db.Float)
 ${task}_${metric}_${mode} = db.Column(db.Float)
 ```
 5. Modify `./backend/configs.yaml`. Add your new task info to the `SCORE` section of `INDIVIDUAL_SUBMISSION_INFO` and `LEADERBOARD_INFO`.
+
+6. (Optional) Add calcuated scores of your new task/metric for official models by modifying the `get_leaderboard_default()` function defined in `./backend/utils.py`.
+
+### Frontend
+1. Append the `individual_submission_columnInfo` array in `./frontend/src/Data.js` with:
+```js
+${task}_${metric}_${mode}: {
+    header: "${task} ${mode}",
+    width: 100,
+    higherBetter: false,
+    isScore: true,
+    type: "number",
+},
+```
+2. Append the `leaderboard_columnInfo` array in `./frontend/src/Data.js` with:
+```js
+${task}_${metric}_${mode}: {
+    header: "${task} ${mode}",
+    width: 100,
+    higherBetter: false,
+    isScore: true,
+    type: "number",
+},
+```
