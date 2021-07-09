@@ -1,16 +1,20 @@
 from flask_restx import Resource
 from flask import request, jsonify, make_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from marshmallow import ValidationError
 from threading import Thread
 from http import HTTPStatus
 
 from models.file import FileModel, Task, Show
 from models.score import ScoreModel
 from models.user import UserModel
-from utils import submission_records_parser, get_AOE_month, get_AOE_today, get_uuid, get_AOETime, get_leaderboard_default
+from schemas.submission import SubmissionSchema
+from utils import submission_records_parser, get_AOE_month, get_AOE_today,  get_leaderboard_default
 from calculate import metric_calculate_pipeline
 from config import configs
 import file_upload
+
+formSchema = SubmissionSchema()
 
 
 class Result(Resource):
@@ -43,71 +47,46 @@ class Result(Resource):
             if (daily_counts >= configs["DAILY_SUBMIT_LIMIT"]) or (monthly_counts >= configs["MONTHLY_SUBMIT_LIMIT"]):
                 return {"message": f"You have submitted {daily_counts} times today and {monthly_counts} times this month."}, HTTPStatus.FORBIDDEN
 
-            # TODO: Form Validation
-            submitName = request.form.get('submitName')
-            modelURL = request.form.get('modelURL')
-            modelDesc = request.form.get('modelDesc')
-            stride = request.form.get('stride')
-            inputFormat = request.form.get('inputFormat')
-            corpus = request.form.get('corpus')
-            paramDesc = request.form.get('paramDesc')
-            paramShared = request.form.get('paramShared')
-            fineTunedParam = request.form.get('fineTunedParam')
-            taskSpecParam = request.form.get('taskSpecParam')
-            task = request.form.get('task')
-            # print(task)
-            # task = Task(mapping[task])
+            # file validation
             file = request.files['file']
-            if not (submitName and modelDesc and paramDesc):
-                return {"message": "Column Missing."}, HTTPStatus.FORBIDDEN
 
             if file.filename == "":
                 return {"message": "No file selected."}, HTTPStatus.FORBIDDEN
             if not file_upload.zipfile_check(file):
                 return {"message": "Wrong file format."}, HTTPStatus.FORBIDDEN
 
+            # load form data
+            formData = formSchema.load(request.form)
+
+            # get file path
             upload_count = FileModel.get_upload_count_by_mail(
                 email=user_mail) + 1
-
             folder = file_upload.create_folder(user_mail, str(upload_count))
             file_path = file_upload.get_full_path(folder, file.filename)
 
-            submitUUID = get_uuid()
+            # add column for db
+            formData.update({"email": user_mail, "filePath": file_path})
 
-            fileObj = FileModel(
-                email=user_mail,
-                submitUUID=submitUUID,
-                submitName=submitName,
-                modelURL=modelURL,
-                modelDesc=modelDesc,
-                stride=stride,
-                inputFormat=inputFormat,
-                corpus=corpus,
-                paramDesc=paramDesc,
-                paramShared=paramShared,
-                fineTunedParam=fineTunedParam,
-                taskSpecParam=taskSpecParam,
-                task=task,
-                filePath=file_path,
-                aoeTimeUpload=get_AOETime()
-            )
+            fileObj = FileModel(**formData)
             scoreObj = ScoreModel()
             fileObj.scores.append(scoreObj)
             fileObj.save_to_db()
-
             try:
                 file.save(file_path)
 
                 # start processing
                 thread = Thread(target=metric_calculate_pipeline, kwargs={"file_path": file_path,
-                                                                          "submitUUID": submitUUID})
+                                                                          "submitUUID": formData["submitUUID"]})
                 thread.start()
 
                 return {"message": "Upload Success!"}, HTTPStatus.OK
             except Exception as e:
                 fileObj.delete_from_db()  # Rollback
                 return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+        except ValidationError as e:
+            return {"message": "There's something worng with your input!"}, HTTPStatus.BAD_REQUEST
         except Exception as e:
+            print(e)
             return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
     @classmethod
@@ -117,7 +96,7 @@ class Result(Resource):
         try:
             user_mail = get_jwt_identity()
             data = request.get_json()
-            # task = data["task"]
+
             submitID = data["submission_id"]
             submission_record = FileModel.find_by_submitID(submitUUID=submitID)
 
