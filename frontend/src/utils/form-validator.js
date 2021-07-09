@@ -34,6 +34,10 @@ const formVal = {
     },
     stride: {
         required: "This field is required",
+        pattern: {
+            value: /^[0-9]*$/,
+            message: "Invalid number",
+        },
         max: {
             value: 100,
             message: "Invalid number", // JS only: <p>error message</p> TS only support string
