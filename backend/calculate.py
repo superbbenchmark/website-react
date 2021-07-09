@@ -12,7 +12,7 @@ from sqlalchemy import create_engine
 from models.naive_models import UserModel, FileModel, ScoreModel
 from models.file import Status
 from dotenv import load_dotenv
-from utils import is_plaintext
+from utils import is_plaintext, is_csv
 from config import configs
 
 
@@ -128,7 +128,7 @@ def metric_calculate_pipeline(file_path, submitUUID):
         # IC PUBLIC
         if os.path.isdir(os.path.join(predict_root, "ic_public")):
             if os.path.isfile(os.path.join(predict_root, "ic_public", "predict.csv")):
-                if is_plaintext(os.path.join(predict_root, "ic_public", "predict.csv")):
+                if is_csv(os.path.join(predict_root, "ic_public", "predict.csv")):
                     print("[IC PUBLIC]", file=output_log_f)
                     try:
                         truth_file = os.path.join(
