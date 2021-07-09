@@ -12,6 +12,7 @@ from sqlalchemy import create_engine
 from models.naive_models import UserModel, FileModel, ScoreModel
 from models.file import Status
 from dotenv import load_dotenv
+from utils import is_plaintext
 from config import configs
 
 
@@ -68,27 +69,28 @@ def metric_calculate_pipeline(file_path, submitUUID):
         # PR PUBLIC
         if os.path.isdir(os.path.join(predict_root, "pr_public")):
             if os.path.isfile(os.path.join(predict_root, "pr_public", "predict.ark")):
-                print("[PR PUBLIC]", file=output_log_f)
-                try:
-                    truth_file = os.path.join(
-                        ground_truth_root, "pr_public", "truth.ark")
-                    predict_file = os.path.join(
-                        predict_root, "pr_public", "predict.ark")
+                if is_plaintext(os.path.join(predict_root, "pr_public", "predict.ark")):
+                    print("[PR PUBLIC]", file=output_log_f)
+                    try:
+                        truth_file = os.path.join(
+                            ground_truth_root, "pr_public", "truth.ark")
+                        predict_file = os.path.join(
+                            predict_root, "pr_public", "predict.ark")
 
-                    predict = read_file(predict_file)
-                    truth = read_file(truth_file)
+                        predict = read_file(predict_file)
+                        truth = read_file(truth_file)
 
-                    filenames = sorted(predict.keys())
-                    predict_values = [predict[filename]
-                                      for filename in filenames]
-                    truth_values = [truth[filename] for filename in filenames]
+                        filenames = sorted(predict.keys())
+                        predict_values = [predict[filename]
+                                        for filename in filenames]
+                        truth_values = [truth[filename] for filename in filenames]
 
-                    score = wer(predict_values, truth_values)
-                    print(f"PR: per {score}", file=output_log_f)
-                    score_model.PR_per_public = score
-                    session.commit()
-                except Exception as e:
-                    print(e, file=output_log_f)
+                        score = wer(predict_values, truth_values)
+                        print(f"PR: per {score}", file=output_log_f)
+                        score_model.PR_per_public = score
+                        session.commit()
+                    except Exception as e:
+                        print(e, file=output_log_f)
 
         #============================================#
         #                   KS                       #
@@ -96,28 +98,29 @@ def metric_calculate_pipeline(file_path, submitUUID):
         # KS PUBLIC
         if os.path.isdir(os.path.join(predict_root, "ks_public")):
             if os.path.isfile(os.path.join(predict_root, "ks_public", "predict.txt")):
-                print("[KS PUBLIC]", file=output_log_f)
-                try:
-                    truth_file = os.path.join(
-                        ground_truth_root, "ks_public", "truth.txt")
-                    predict_file = os.path.join(
-                        predict_root, "ks_public", "predict.txt")
+                if is_plaintext(os.path.join(predict_root, "ks_public", "predict.txt")):
+                    print("[KS PUBLIC]", file=output_log_f)
+                    try:
+                        truth_file = os.path.join(
+                            ground_truth_root, "ks_public", "truth.txt")
+                        predict_file = os.path.join(
+                            predict_root, "ks_public", "predict.txt")
 
-                    predict = read_file(predict_file)
-                    truth = read_file(truth_file)
+                        predict = read_file(predict_file)
+                        truth = read_file(truth_file)
 
-                    filenames = sorted(predict.keys())
-                    predict_values = [predict[filename]
-                                      for filename in filenames]
-                    truth_values = [truth[filename] for filename in filenames]
-                    match = [1 if p == t else 0 for p,
-                             t in zip(predict_values, truth_values)]
-                    score = np.array(match).mean()
-                    print(f"KS: acc {score}", file=output_log_f)
-                    score_model.KS_acc_public = score
-                    session.commit()
-                except Exception as e:
-                    print(e, file=output_log_f)
+                        filenames = sorted(predict.keys())
+                        predict_values = [predict[filename]
+                                        for filename in filenames]
+                        truth_values = [truth[filename] for filename in filenames]
+                        match = [1 if p == t else 0 for p,
+                                t in zip(predict_values, truth_values)]
+                        score = np.array(match).mean()
+                        print(f"KS: acc {score}", file=output_log_f)
+                        score_model.KS_acc_public = score
+                        session.commit()
+                    except Exception as e:
+                        print(e, file=output_log_f)
 
         #============================================#
         #                   IC                       #
@@ -125,29 +128,30 @@ def metric_calculate_pipeline(file_path, submitUUID):
         # IC PUBLIC
         if os.path.isdir(os.path.join(predict_root, "ic_public")):
             if os.path.isfile(os.path.join(predict_root, "ic_public", "predict.csv")):
-                print("[IC PUBLIC]", file=output_log_f)
-                try:
-                    truth_file = os.path.join(
-                        ground_truth_root, "ic_public", "truth.csv")
-                    predict_file = os.path.join(
-                        predict_root, "ic_public", "predict.csv")
+                if is_plaintext(os.path.join(predict_root, "ic_public", "predict.csv")):
+                    print("[IC PUBLIC]", file=output_log_f)
+                    try:
+                        truth_file = os.path.join(
+                            ground_truth_root, "ic_public", "truth.csv")
+                        predict_file = os.path.join(
+                            predict_root, "ic_public", "predict.csv")
 
-                    predict = read_file(
-                        predict_file, lambda x: x.split(","), ",")
-                    truth = read_file(truth_file, lambda x: x.split(","), ",")
+                        predict = read_file(
+                            predict_file, lambda x: x.split(","), ",")
+                        truth = read_file(truth_file, lambda x: x.split(","), ",")
 
-                    filenames = sorted(predict.keys())
-                    predict_values = [predict[filename]
-                                      for filename in filenames]
-                    truth_values = [truth[filename] for filename in filenames]
-                    match = [1 if p == t else 0 for p,
-                             t in zip(predict_values, truth_values)]
-                    score = np.array(match).mean()
-                    print(f"IC: acc {score}", file=output_log_f)
-                    score_model.IC_acc_public = score
-                    session.commit()
-                except Exception as e:
-                    print(e, file=output_log_f)
+                        filenames = sorted(predict.keys())
+                        predict_values = [predict[filename]
+                                        for filename in filenames]
+                        truth_values = [truth[filename] for filename in filenames]
+                        match = [1 if p == t else 0 for p,
+                                t in zip(predict_values, truth_values)]
+                        score = np.array(match).mean()
+                        print(f"IC: acc {score}", file=output_log_f)
+                        score_model.IC_acc_public = score
+                        session.commit()
+                    except Exception as e:
+                        print(e, file=output_log_f)
 
         #============================================#
         #                   SID                       #
@@ -155,28 +159,29 @@ def metric_calculate_pipeline(file_path, submitUUID):
         # SID PUBLIC
         if os.path.isdir(os.path.join(predict_root, "sid_public")):
             if os.path.isfile(os.path.join(predict_root, "sid_public", "predict.txt")):
-                print("[SID PUBLIC]", file=output_log_f)
-                try:
-                    truth_file = os.path.join(
-                        ground_truth_root, "sid_public", "truth.txt")
-                    predict_file = os.path.join(
-                        predict_root, "sid_public", "predict.txt")
+                if is_plaintext(os.path.join(predict_root, "sid_public", "predict.txt")):
+                    print("[SID PUBLIC]", file=output_log_f)
+                    try:
+                        truth_file = os.path.join(
+                            ground_truth_root, "sid_public", "truth.txt")
+                        predict_file = os.path.join(
+                            predict_root, "sid_public", "predict.txt")
 
-                    predict = read_file(predict_file)
-                    truth = read_file(truth_file)
+                        predict = read_file(predict_file)
+                        truth = read_file(truth_file)
 
-                    filenames = sorted(predict.keys())
-                    predict_values = [predict[filename]
-                                      for filename in filenames]
-                    truth_values = [truth[filename] for filename in filenames]
-                    match = [1 if p == t else 0 for p,
-                             t in zip(predict_values, truth_values)]
-                    score = np.array(match).mean()
-                    print(f"SID: acc {score}", file=output_log_f)
-                    score_model.SID_acc_public = score
-                    session.commit()
-                except Exception as e:
-                    print(e, file=output_log_f)
+                        filenames = sorted(predict.keys())
+                        predict_values = [predict[filename]
+                                        for filename in filenames]
+                        truth_values = [truth[filename] for filename in filenames]
+                        match = [1 if p == t else 0 for p,
+                                t in zip(predict_values, truth_values)]
+                        score = np.array(match).mean()
+                        print(f"SID: acc {score}", file=output_log_f)
+                        score_model.SID_acc_public = score
+                        session.commit()
+                    except Exception as e:
+                        print(e, file=output_log_f)
 
         #============================================#
         #                   ER                       #
@@ -184,28 +189,29 @@ def metric_calculate_pipeline(file_path, submitUUID):
         # ER PUBLIC
         if os.path.isdir(os.path.join(predict_root, "er_public")):
             if os.path.isfile(os.path.join(predict_root, "er_public", "predict.txt")):
-                print("[ER PUBLIC]", file=output_log_f)
-                try:
-                    truth_file = os.path.join(
-                        ground_truth_root, "er_public", "truth.txt")
-                    predict_file = os.path.join(
-                        predict_root, "er_public", "predict.txt")
+                if is_plaintext(os.path.join(predict_root, "er_public", "predict.txt")):
+                    print("[ER PUBLIC]", file=output_log_f)
+                    try:
+                        truth_file = os.path.join(
+                            ground_truth_root, "er_public", "truth.txt")
+                        predict_file = os.path.join(
+                            predict_root, "er_public", "predict.txt")
 
-                    predict = read_file(predict_file)
-                    truth = read_file(truth_file)
+                        predict = read_file(predict_file)
+                        truth = read_file(truth_file)
 
-                    filenames = sorted(predict.keys())
-                    predict_values = [predict[filename]
-                                      for filename in filenames]
-                    truth_values = [truth[filename] for filename in filenames]
-                    match = [1 if p == t else 0 for p,
-                             t in zip(predict_values, truth_values)]
-                    score = np.array(match).mean()
-                    print(f"ER: acc {score}", file=output_log_f)
-                    score_model.ER_acc_public = score
-                    session.commit()
-                except Exception as e:
-                    print(e, file=output_log_f)
+                        filenames = sorted(predict.keys())
+                        predict_values = [predict[filename]
+                                        for filename in filenames]
+                        truth_values = [truth[filename] for filename in filenames]
+                        match = [1 if p == t else 0 for p,
+                                t in zip(predict_values, truth_values)]
+                        score = np.array(match).mean()
+                        print(f"ER: acc {score}", file=output_log_f)
+                        score_model.ER_acc_public = score
+                        session.commit()
+                    except Exception as e:
+                        print(e, file=output_log_f)
 
         #============================================#
         #                   ASR                      #
@@ -213,52 +219,54 @@ def metric_calculate_pipeline(file_path, submitUUID):
         # ASR PUBLIC
         if os.path.isdir(os.path.join(predict_root, "asr_public")):
             if os.path.isfile(os.path.join(predict_root, "asr_public", "predict.ark")):
-                print("[ASR PUBLIC]", file=output_log_f)
-                try:
-                    truth_file = os.path.join(
-                        ground_truth_root, "asr_public", "truth.ark")
-                    predict_file = os.path.join(
-                        predict_root, "asr_public", "predict.ark")
+                if is_plaintext(os.path.join(predict_root, "asr_public", "predict.ark")):
+                    print("[ASR PUBLIC]", file=output_log_f)
+                    try:
+                        truth_file = os.path.join(
+                            ground_truth_root, "asr_public", "truth.ark")
+                        predict_file = os.path.join(
+                            predict_root, "asr_public", "predict.ark")
 
-                    predict = read_file(predict_file)
-                    truth = read_file(truth_file)
+                        predict = read_file(predict_file)
+                        truth = read_file(truth_file)
 
-                    filenames = sorted(predict.keys())
-                    predict_values = [predict[filename]
-                                      for filename in filenames]
-                    truth_values = [truth[filename] for filename in filenames]
+                        filenames = sorted(predict.keys())
+                        predict_values = [predict[filename]
+                                        for filename in filenames]
+                        truth_values = [truth[filename] for filename in filenames]
 
-                    score = wer(predict_values, truth_values)
-                    print(f"ASR: wer {score}", file=output_log_f)
-                    score_model.ASR_wer_public = score
-                    session.commit()
-                except Exception as e:
-                    print(e, file=output_log_f)
+                        score = wer(predict_values, truth_values)
+                        print(f"ASR: wer {score}", file=output_log_f)
+                        score_model.ASR_wer_public = score
+                        session.commit()
+                    except Exception as e:
+                        print(e, file=output_log_f)
 
         # ASR_LM PUBLIC
         if os.path.isdir(os.path.join(predict_root, "asr_lm_public")):
             if os.path.isfile(os.path.join(predict_root, "asr_lm_public", "predict.ark")):
-                print("[ASR LM PUBLIC]", file=output_log_f)
-                try:
-                    truth_file = os.path.join(
-                        ground_truth_root, "asr_public", "truth.ark")
-                    predict_file = os.path.join(
-                        predict_root, "asr_lm_public", "predict.ark")
+                if is_plaintext(os.path.join(predict_root, "asr_lm_public", "predict.ark")):
+                    print("[ASR LM PUBLIC]", file=output_log_f)
+                    try:
+                        truth_file = os.path.join(
+                            ground_truth_root, "asr_public", "truth.ark")
+                        predict_file = os.path.join(
+                            predict_root, "asr_lm_public", "predict.ark")
 
-                    predict = read_file(predict_file)
-                    truth = read_file(truth_file)
+                        predict = read_file(predict_file)
+                        truth = read_file(truth_file)
 
-                    filenames = sorted(predict.keys())
-                    predict_values = [predict[filename]
-                                      for filename in filenames]
-                    truth_values = [truth[filename] for filename in filenames]
+                        filenames = sorted(predict.keys())
+                        predict_values = [predict[filename]
+                                        for filename in filenames]
+                        truth_values = [truth[filename] for filename in filenames]
 
-                    score = wer(predict_values, truth_values)
-                    print(f"ASR LM: wer {score}", file=output_log_f)
-                    score_model.ASR_LM_wer_public = score
-                    session.commit()
-                except Exception as e:
-                    print(e, file=output_log_f)
+                        score = wer(predict_values, truth_values)
+                        print(f"ASR LM: wer {score}", file=output_log_f)
+                        score_model.ASR_LM_wer_public = score
+                        session.commit()
+                    except Exception as e:
+                        print(e, file=output_log_f)
 
         #============================================#
         #                   QbE                      #
@@ -295,31 +303,32 @@ def metric_calculate_pipeline(file_path, submitUUID):
         # SF PUBLIC
         if os.path.isdir(os.path.join(predict_root, "sf_public")):
             if os.path.isfile(os.path.join(predict_root, "sf_public", "predict.ark")):
-                print("[SF PUBLIC]", file=output_log_f)
-                try:
-                    truth_file = os.path.join(
-                        ground_truth_root, "sf_public", "truth.ark")
-                    predict_file = os.path.join(
-                        predict_root, "sf_public", "predict.ark")
+                if is_plaintext(os.path.join(predict_root, "sf_public", "predict.ark")):
+                    print("[SF PUBLIC]", file=output_log_f)
+                    try:
+                        truth_file = os.path.join(
+                            ground_truth_root, "sf_public", "truth.ark")
+                        predict_file = os.path.join(
+                            predict_root, "sf_public", "predict.ark")
 
-                    predict = read_file(predict_file)
-                    truth = read_file(truth_file)
+                        predict = read_file(predict_file)
+                        truth = read_file(truth_file)
 
-                    filenames = sorted(predict.keys())
-                    predict_values = [predict[filename]
-                                      for filename in filenames]
-                    truth_values = [truth[filename] for filename in filenames]
+                        filenames = sorted(predict.keys())
+                        predict_values = [predict[filename]
+                                        for filename in filenames]
+                        truth_values = [truth[filename] for filename in filenames]
 
-                    score = wer(predict_values, truth_values)
-                    f1 = slot_type_f1(predict_values, truth_values)
-                    cer = slot_value_cer(predict_values, truth_values)
-                    print(
-                        f"SF: slot_type_f1 {f1}, slot_value_cer {cer}", file=output_log_f)
-                    score_model.SF_f1_public = f1
-                    score_model.SF_cer_public = cer
-                    session.commit()
-                except Exception as e:
-                    print(e, file=output_log_f)
+                        score = wer(predict_values, truth_values)
+                        f1 = slot_type_f1(predict_values, truth_values)
+                        cer = slot_value_cer(predict_values, truth_values)
+                        print(
+                            f"SF: slot_type_f1 {f1}, slot_value_cer {cer}", file=output_log_f)
+                        score_model.SF_f1_public = f1
+                        score_model.SF_cer_public = cer
+                        session.commit()
+                    except Exception as e:
+                        print(e, file=output_log_f)
 
         #============================================#
         #                   SV                       #
@@ -327,28 +336,29 @@ def metric_calculate_pipeline(file_path, submitUUID):
         # SV PUBLIC
         if os.path.isdir(os.path.join(predict_root, "sv_public")):
             if os.path.isfile(os.path.join(predict_root, "sv_public", "predict.txt")):
-                print("[SV PUBLIC]", file=output_log_f)
-                try:
-                    truth_file = os.path.join(
-                        ground_truth_root, "sv_public", "truth.txt")
-                    predict_file = os.path.join(
-                        predict_root, "sv_public", "predict.txt")
+                if is_plaintext(os.path.join(predict_root, "sv_public", "predict.txt")):
+                    print("[SV PUBLIC]", file=output_log_f)
+                    try:
+                        truth_file = os.path.join(
+                            ground_truth_root, "sv_public", "truth.txt")
+                        predict_file = os.path.join(
+                            predict_root, "sv_public", "predict.txt")
 
-                    predict = read_file(predict_file, lambda x: float(x))
-                    truth = read_file(truth_file, lambda x: float(x))
+                        predict = read_file(predict_file, lambda x: float(x))
+                        truth = read_file(truth_file, lambda x: float(x))
 
-                    pairnames = sorted(predict.keys())
-                    predict_scores = np.array(
-                        [predict[name] for name in pairnames])
-                    truth_scores = np.array([truth[name]
-                                            for name in pairnames])
+                        pairnames = sorted(predict.keys())
+                        predict_scores = np.array(
+                            [predict[name] for name in pairnames])
+                        truth_scores = np.array([truth[name]
+                                                for name in pairnames])
 
-                    eer, *other = EER(truth_scores, predict_scores)
-                    print(f"SV: eer {eer}", file=output_log_f)
-                    score_model.SV_eer_public = eer
-                    session.commit()
-                except Exception as e:
-                    print(e, file=output_log_f)
+                        eer, *other = EER(truth_scores, predict_scores)
+                        print(f"SV: eer {eer}", file=output_log_f)
+                        score_model.SV_eer_public = eer
+                        session.commit()
+                    except Exception as e:
+                        print(e, file=output_log_f)
 
         #============================================#
         #                   SD                       #
