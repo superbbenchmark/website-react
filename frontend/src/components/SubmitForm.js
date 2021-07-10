@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 
@@ -47,6 +47,7 @@ export default function SubmitForm(props) {
     const classes = useStyles();
     const filePickerRef = useRef();
     const history = useHistory();
+    const [isLoading, setIsLoading] = useState(false)
     const {
         control,
         handleSubmit,
@@ -77,6 +78,7 @@ export default function SubmitForm(props) {
 
     const submitHandler = async (data) => {
         try {
+            setIsLoading(true);
             const formData = new FormData();
             formData.append("submitName", data.submitName);
             formData.append("modelURL", data.modelURL);
@@ -100,6 +102,7 @@ export default function SubmitForm(props) {
             })
                 .then((res) => {
                     console.log(res.data.msg);
+                    setIsLoading(false);
                     swal({
                         title: "Susscess",
                         text: res.data.message,
@@ -107,6 +110,7 @@ export default function SubmitForm(props) {
                     });
                 })
                 .catch((err) => {
+                    setIsLoading(false);
                     swal({
                         title: "Error",
                         text: err.response.data.message,
@@ -386,8 +390,9 @@ export default function SubmitForm(props) {
                         variant="contained"
                         color="primary"
                         type="submit"
+                        disabled={isLoading}
                     >
-                        Submit
+                        {isLoading? "Submitting..." : "Submit"}
                     </Button>
                 </form>
             </div>
