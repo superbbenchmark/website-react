@@ -88,7 +88,7 @@ const formVal = {
         required: "No file selected",
         validate: {
             fileType: (fileList) =>
-                fileList[0].type === "application/zip"
+                (fileList[0].type === "application/zip" || fileList[0].type === "application/x-zip-compressed" || fileList[0].type === "application/x-zip")
                     ? true
                     : "Wrong file format",
             fileSize: (fileList) =>

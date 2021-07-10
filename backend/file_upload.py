@@ -3,7 +3,7 @@ import magic
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = {'zip'}
-ALLOWED_MIME_TYPES = {'application/zip'}
+ALLOWED_MIME_TYPES = {'application/zip', 'application/x-zip-compressed', 'application/x-zip'}
 
 
 def zipfile_check(file):
