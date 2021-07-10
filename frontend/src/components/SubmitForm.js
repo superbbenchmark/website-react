@@ -20,6 +20,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
+import Clock from 'react-live-clock';
 import axios from "axios";
 import { formVal } from "../utils/form-validator";
 
@@ -125,6 +126,7 @@ export default function SubmitForm(props) {
                                 <strong>Submission</strong>
                             </span>
                         }
+                        description={<Clock format={'YYYY-MM-DD HH:mm:ss'} ticking={true} timezone={'Etc/GMT+12'}/>}
                         titleColor="primary"
                     />
                 </SubSubSection>
