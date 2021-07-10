@@ -57,7 +57,7 @@ export default function SubmitForm(props) {
     } = useForm({
         defaultValues: {
             submitName: "",
-            modeURL: "",
+            modelURL: "",
             modelDesc: "",
             stride: "",
             inputFormat: "",
