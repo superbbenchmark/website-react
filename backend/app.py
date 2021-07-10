@@ -17,7 +17,7 @@ app.config.from_object("flask_config")
 
 
 jwt = JWTManager(app)
-CORS(app)
+CORS(app, resource={r"/api/*":{"origin":"*"}})
 api = Api(app)
 
 

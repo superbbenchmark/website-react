@@ -1,0 +1,17 @@
+# Default server configuration
+server {
+
+	root /var/www/html;
+
+	index index.html index.htm;
+
+	server_name leaderboard.kaminyou.com;
+
+	location ^~ /api/ {
+		proxy_pass http://127.0.0.1:5000;
+		proxy_set_header Host $host;
+	}
+        
+    client_max_body_size 100m;
+
+}
