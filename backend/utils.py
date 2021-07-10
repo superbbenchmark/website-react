@@ -84,7 +84,7 @@ def get_leaderboard_default():
             "aoeTimeUpload":"official",
             "task":"CONSTRAINED",
             "submitName": "FBANK",
-            "modelURL":"https://github.com/superbbenchmark/website-react/tree/master",
+            "modelURL":"-",
             "modelDesc": "classic feature",
             "stride":10,
             "inputFormat": "waveform",
