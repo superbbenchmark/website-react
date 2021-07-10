@@ -18,3 +18,4 @@ gdown==3.13.0
 scikit-learn==0.24.0
 python-dotenv==0.18.0
 flask-restx==0.4.0
+marshmallow==3.12.2
