@@ -37,6 +37,7 @@ api.add_resource(UserInfo, "/api/user/info")
 api.add_resource(UserLogin, "/api/user/login")
 api.add_resource(Example, "/api/download/example")
 
+db.init_app(app)
+
 if __name__ == '__main__':
-    db.init_app(app)
     app.run(port=5000, debug=True)
