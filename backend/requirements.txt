@@ -19,3 +19,4 @@ scikit-learn==0.24.0
 python-dotenv==0.18.0
 flask-restx==0.4.0
 marshmallow==3.12.2
+uwsgi==2.0.19.1

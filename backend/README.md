@@ -21,7 +21,11 @@ SQLALCHEMY_DATABASE_URI=mysql+pymysql://<user>:<password>@127.0.0.1:3306/superb
 ```
 
 5. In `backend/` run
-
+- For development
 ```bash
 python3 app.py
+```
+- For production
+```bash
+uwsgi --ini app.ini
 ```
