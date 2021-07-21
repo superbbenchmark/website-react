@@ -6,7 +6,7 @@ server {
 	index index.html index.htm;
 
 	server_name leaderboard.kaminyou.com;
-
+	error_page 404 /index.html;
 	location ^~ /api/ {
 		proxy_pass http://127.0.0.1:5000;
 		proxy_set_header Host $host;
