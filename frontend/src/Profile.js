@@ -434,6 +434,13 @@ function Profile(props) {
             data: {
                 submission_id: submission_id,
             },
+        }).then((data) => {
+            let blob = new Blob([data.data],{type:"application.zip"});
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = "predict.zip";
+            link.click();
         })
             .catch((error) => {
                 swal({ text: "Internal server error", icon: "error" });

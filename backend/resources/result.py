@@ -27,7 +27,6 @@ class Result(Resource):
             submission_records = FileModel.find_by_email(email=user_mail).all()
             submission_info = submission_records_parser(
                 submission_records, configs, mode="individual")
-            print(submission_info)
             return make_response(jsonify({"submission_info": submission_info}), HTTPStatus.OK)
         except Exception as e:
             return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
