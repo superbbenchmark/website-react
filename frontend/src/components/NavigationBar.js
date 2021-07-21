@@ -154,10 +154,11 @@ function NavigationBar({ width, tableControlRef, ...props }) {
         ["Tasks", "/tasks"],
         ["Rules", "/rules"],
         // ["Compare", "/compare"],
-        ["Submit", "/submit"],
+        // ["Submit", "/submit"],
         ["Leaderboard", "/leaderboard"],
     ];
     if (auth.isLoggedIn){
+        items.push(["Submit", "/submit"])
         items.push(["Profile", "/profile"]);
         items.push(["Logout", "/logout"]);
     } else {
