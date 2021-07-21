@@ -9,6 +9,7 @@ import {
     useGlobalFilter,
 } from "react-table";
 import { useSticky } from "react-table-sticky";
+import InsertLinkIcon from '@material-ui/icons/InsertLink';
 
 import { useTheme, fade } from "@material-ui/core/styles";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
@@ -401,7 +402,7 @@ function Profile(props) {
             return (
                 <CropSquareIcon
                     className="click-btn"
-                    onClick={() => setShowOnLeaderboard(row.allCells[15].value)}
+                    onClick={() => setShowOnLeaderboard(row.allCells[16].value)}
                 ></CropSquareIcon>
             );
         else
@@ -409,10 +410,40 @@ function Profile(props) {
                 <CheckIcon
                     className="click-btn"
                     style={{ color: green[500] }}
-                    onClick={() => setShowOnLeaderboard(row.allCells[15].value)}
+                    onClick={() => setShowOnLeaderboard(row.allCells[16].value)}
                 ></CheckIcon>
             );
     };
+
+    const parseDownload = ({ row }) => {
+        return(
+            <InsertLinkIcon
+                className="click-btn"
+                onClick={() => downloadPreviousUpload(row.allCells[16].value)}
+            ></InsertLinkIcon>
+        );
+    }
+
+    const downloadPreviousUpload = async (submission_id) => {
+        await axios({
+            method: "post",
+            url: "/api/download/previous",
+            headers: {
+                Authorization: "Bearer " + auth.token,
+            },
+            data: {
+                submission_id: submission_id,
+            },
+        })
+            .catch((error) => {
+                swal({ text: "Internal server error", icon: "error" });
+            });
+    };
+
+    const parseModelURL = ({value}) => {
+        if (value === "-") return String(value)
+        else return <a href={value}><InsertLinkIcon style={{ height: '20px' }}></InsertLinkIcon></a>
+      }
 
     useEffect(() => {
         getIndividualSubmission();
@@ -434,7 +465,9 @@ function Profile(props) {
             Cell:
                 key === "showOnLeaderboard"
                     ? parseShowCell
-                    : ({ value }) => String(value),
+                    : (key ===  "modelURL" 
+                        ? parseModelURL 
+                        : (key === "download" ? parseDownload : ({ value }) => String(value))),
         };
     });
     columns[0]["sticky"] = "left";

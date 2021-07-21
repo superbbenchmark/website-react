@@ -1,5 +1,5 @@
 from flask_restx import Resource
-from flask import request, jsonify, make_response
+from flask import request, jsonify, make_response, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
 from threading import Thread
@@ -116,6 +116,25 @@ class Result(Resource):
                 FileModel.set_show_attribute_by_submitID(submitUUID=submitID)
                 return {"message": "Shown on the leaderboard!", "submitID": submitID}, HTTPStatus.OK
 
+        except Exception as e:
+            print(e)
+            return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+class OwnUpload(Resource):
+    @classmethod
+    @jwt_required()
+    def post(cls):
+        '''Download previous upload file'''
+        try:
+            user_mail = get_jwt_identity()
+            data = request.get_json()
+
+            submitID = data["submission_id"]
+            submission_record = FileModel.find_by_submitID(submitUUID=submitID)
+            assert submission_record.email == user_mail
+            download_path = submission_record.filePath 
+
+            return send_file(download_path, as_attachment=True)
         except Exception as e:
             print(e)
             return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR

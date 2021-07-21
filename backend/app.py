@@ -7,7 +7,7 @@ from marshmallow import ValidationError
 
 from db import db
 from resources.user import UserInfo, UserLogin
-from resources.result import LeaderBoard, Result
+from resources.result import LeaderBoard, Result, OwnUpload
 from resources.dowload import Example
 
 app = Flask(__name__)
@@ -36,6 +36,7 @@ api.add_resource(LeaderBoard, "/api/result/leaderboard")
 api.add_resource(UserInfo, "/api/user/info")
 api.add_resource(UserLogin, "/api/user/login")
 api.add_resource(Example, "/api/download/example")
+api.add_resource(OwnUpload, "/api/download/previous")
 
 db.init_app(app)
 

@@ -19,7 +19,6 @@ INDIVIDUAL_SUBMISSION_INFO:
         - task
         - showOnLeaderboard
         - submitName
-        - filePath
         - modelURL
         - modelDesc
         - stride

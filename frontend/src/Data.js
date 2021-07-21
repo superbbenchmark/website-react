@@ -240,6 +240,12 @@ const individual_submission_columnInfo = {
         higherBetter: undefined,
         type: "alphanumeric",
     },
+    download: {
+        header: "Download",
+        width: 100,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
     modelURL: {
         header: "Model URL",
         width: 100,
