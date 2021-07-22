@@ -31,7 +31,11 @@ export default function Landing(props) {
             <Box maxWidth={800} margin="auto" textAlign="left">
                 <SubSection>
                     <SubSubSection>
-                        <Typography variant="body1" color="textSecondary">
+                        <Typography
+                            component={"span"}
+                            variant="body1"
+                            color="textSecondary"
+                        >
                             SUPERB is a collection of benchmarking resources to
                             evaluate the capability of a universal shared
                             representation for speech processing. SUPERB
