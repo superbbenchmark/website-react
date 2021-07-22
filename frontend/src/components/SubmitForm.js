@@ -156,8 +156,8 @@ export default function SubmitForm(props) {
                         className={classes.textField}
                         name="submitName"
                         label="Submission Name*"
-                        description="A short name for your system, which will be displayed in
-                        leaderboard. (Required)"
+                        description="A short name for your system, which will be displayed on
+                        the leaderboard. (Required)"
                         rules={formVal.submitName}
                         error={errors.submitName}
                         helperText={
