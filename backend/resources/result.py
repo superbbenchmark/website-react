@@ -17,18 +17,21 @@ import file_upload
 formSchema = SubmissionSchema()
 
 
-class Result(Resource):
+class Submission(Resource):
     @classmethod
     @jwt_required()
-    def get(cls):
-        '''Get User submission info'''
+    def get(cls, submitID):
+        '''Get submission by submit uuid'''
         try:
             user_mail = get_jwt_identity()
-            submission_records = FileModel.find_by_email(email=user_mail).all()
-            submission_info = submission_records_parser(
-                submission_records, configs, mode="individual")
-            return make_response(jsonify({"submission_info": submission_info}), HTTPStatus.OK)
+
+            submission_record = FileModel.find_by_submitID(submitUUID=submitID)
+            assert submission_record.email == user_mail
+            download_path = submission_record.filePath
+
+            return send_file(download_path, as_attachment=True)
         except Exception as e:
+            print(e)
             return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
     @classmethod
@@ -90,13 +93,11 @@ class Result(Resource):
 
     @classmethod
     @jwt_required()
-    def patch(cls):
-        '''Change user submission show on leaderboard or not'''
+    def patch(cls, submitID):
+        '''Change user submission show on leaderboard or not by uuid'''
         try:
             user_mail = get_jwt_identity()
-            data = request.get_json()
 
-            submitID = data["submission_id"]
             submission_record = FileModel.find_by_submitID(submitUUID=submitID)
 
             assert submission_record.email == user_mail
@@ -119,23 +120,19 @@ class Result(Resource):
             print(e)
             return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
-class OwnUpload(Resource):
+
+class SubmissionList(Resource):
     @classmethod
     @jwt_required()
-    def post(cls):
-        '''Download previous upload file'''
+    def get(cls):
+        '''Get user all submission info'''
         try:
             user_mail = get_jwt_identity()
-            data = request.get_json()
-
-            submitID = data["submission_id"]
-            submission_record = FileModel.find_by_submitID(submitUUID=submitID)
-            assert submission_record.email == user_mail
-            download_path = submission_record.filePath 
-
-            return send_file(download_path, as_attachment=True)
+            submission_records = FileModel.find_by_email(email=user_mail).all()
+            submission_info = submission_records_parser(
+                submission_records, configs, mode="individual")
+            return make_response(jsonify({"submission_info": submission_info}), HTTPStatus.OK)
         except Exception as e:
-            print(e)
             return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
