@@ -20,9 +20,10 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import Clock from 'react-live-clock';
+import Clock from "react-live-clock";
 import axios from "axios";
 import { formVal } from "../utils/form-validator";
+import FormTextField from "./FormTextfield";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,7 +48,7 @@ export default function SubmitForm(props) {
     const classes = useStyles();
     const filePickerRef = useRef();
     const history = useHistory();
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
     const {
         control,
         handleSubmit,
@@ -107,7 +108,7 @@ export default function SubmitForm(props) {
                         title: "Susscess",
                         text: res.data.message,
                         icon: "success",
-                    });
+                    }).then(() => history.push("/profile"));
                 })
                 .catch((err) => {
                     setIsLoading(false);
@@ -130,7 +131,13 @@ export default function SubmitForm(props) {
                                 <strong>Submission</strong>
                             </span>
                         }
-                        description={<Clock format={'YYYY-MM-DD HH:mm:ss'} ticking={true} timezone={'Etc/GMT+12'}/>}
+                        description={
+                            <Clock
+                                format={"YYYY-MM-DD HH:mm:ss"}
+                                ticking={true}
+                                timezone={"Etc/GMT+12"}
+                            />
+                        }
                         titleColor="primary"
                     />
                 </SubSubSection>
@@ -144,181 +151,124 @@ export default function SubmitForm(props) {
                     autoComplete="off"
                     onSubmit={handleSubmit(submitHandler)}
                 >
-                    <Controller
+                    <FormTextField
                         control={control}
+                        className={classes.textField}
                         name="submitName"
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className={classes.textField}
-                                label="Submission Name*"
-                                fullWidth
-                                error={errors.submitName}
-                                helperText={
-                                    errors.submitName &&
-                                    errors.submitName.message
-                                }
-                            />
-                        )}
+                        label="Submission Name*"
+                        description="A short name for your system, which will be displayed on
+                        the leaderboard. (Required)"
                         rules={formVal.submitName}
+                        error={errors.submitName}
+                        helperText={
+                            errors.submitName && errors.submitName.message
+                        }
                     />
-                    <Controller
+                    <FormTextField
                         control={control}
+                        className={classes.textField}
                         name="modelURL"
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className={classes.textField}
-                                label="Model URL/Github"
-                                fullWidth
-                                error={errors.modelURL}
-                                helperText={
-                                    errors.modelURL && errors.modelURL.message
-                                }
-                            />
-                        )}
+                        label="Model URL/Github"
+                        description="A Github URL for your model code repository. (Optional)"
                         rules={formVal.modelURL}
+                        error={errors.modelURL}
+                        helperText={errors.modelURL && errors.modelURL.message}
                     />
-                    <Controller
+                    <FormTextField
                         control={control}
+                        className={classes.textField}
                         name="modelDesc"
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className={classes.textField}
-                                label="Model Description*"
-                                fullWidth
-                                error={errors.modelDesc}
-                                helperText={
-                                    errors.modelDesc && errors.modelDesc.message
-                                }
-                            />
-                        )}
+                        label="Model Description*"
+                        description="A sentence or two describing your system. Make sure to mention any outside data you use. (Required)"
                         rules={formVal.modelDesc}
+                        error={errors.modelDesc}
+                        helperText={
+                            errors.modelDesc && errors.modelDesc.message
+                        }
                     />
-                    <Controller
+                    <FormTextField
                         control={control}
+                        className={classes.textField}
                         name="stride"
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className={classes.textField}
-                                label="Stride*"
-                                fullWidth
-                                error={errors.stride}
-                                helperText={
-                                    errors.stride && errors.stride.message
-                                }
-                            />
-                        )}
+                        label="Stride*"
+                        description="Your stride width (ms). (Required)"
                         rules={formVal.stride}
+                        error={errors.stride}
+                        helperText={errors.stride && errors.stride.message}
                     />
-                    <Controller
+                    <FormTextField
                         control={control}
+                        className={classes.textField}
                         name="inputFormat"
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className={classes.textField}
-                                label="Input Format*"
-                                fullWidth
-                                error={errors.inputFormat}
-                                helperText={
-                                    errors.inputFormat &&
-                                    errors.inputFormat.message
-                                }
-                            />
-                        )}
+                        label="Input Format*"
+                        description="The type of input format you use. e.g., waveform, FBANK. (Required) "
                         rules={formVal.inputFormat}
+                        error={errors.inputFormat}
+                        helperText={
+                            errors.inputFormat && errors.inputFormat.message
+                        }
                     />
-                    <Controller
+
+                    <FormTextField
                         control={control}
+                        className={classes.textField}
                         name="corpus"
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className={classes.textField}
-                                label="Corpus*"
-                                fullWidth
-                                error={errors.corpus}
-                                helperText={
-                                    errors.corpus && errors.corpus.message
-                                }
-                            />
-                        )}
+                        label="Corpus*"
+                        description="The type of corpus you use. e.g., LS 50 hr, LL 60k hr. (Required)"
                         rules={formVal.corpus}
+                        error={errors.corpus}
+                        helperText={errors.corpus && errors.corpus.message}
                     />
-                    <Controller
+
+                    <FormTextField
                         control={control}
+                        className={classes.textField}
                         name="paramDesc"
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                hintText="Enter Your Product Name"
-                                className={classes.textField}
-                                label="Parameter Description*"
-                                fullWidth
-                                error={errors.paramDesc}
-                                helperText={
-                                    errors.paramDesc && errors.paramDesc.message
-                                }
-                            />
-                        )}
+                        label="Parameter Description*"
+                        description="A sentence or explaining how you share parameters accross tasks (or stating that you don't share parameters). (Required)"
                         rules={formVal.paramDesc}
+                        error={errors.paramDesc}
+                        helperText={
+                            errors.paramDesc && errors.paramDesc.message
+                        }
                     />
-                    <Controller
+
+                    <FormTextField
                         control={control}
+                        className={classes.textField}
                         name="paramShared"
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className={classes.textField}
-                                label="Parameter shared without fine-tuning*"
-                                fullWidth
-                                error={errors.paramShared}
-                                helperText={
-                                    errors.paramShared &&
-                                    errors.paramShared.message
-                                }
-                            />
-                        )}
+                        label="Parameter shared without fine-tuning*"
+                        description="The total number of parameters in your model which don't require task spesific fine-tuning (only numeric numbers allowed). (Required)"
                         rules={formVal.paramShared}
+                        error={errors.paramShared}
+                        helperText={
+                            errors.paramShared && errors.paramShared.message
+                        }
                     />
-                    <Controller
+                    <FormTextField
                         control={control}
+                        className={classes.textField}
                         name="fineTunedParam"
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className={classes.textField}
-                                label="Fine-tuned parameters"
-                                fullWidth
-                                error={errors.fineTunedParam}
-                                helperText={
-                                    errors.fineTunedParam &&
-                                    errors.fineTunedParam.message
-                                }
-                            />
-                        )}
+                        label="Fine-tuned parameters"
+                        description="The number of parameters in your model which are common but require task specific fine-tuning (only numeric numbers allowed). (Optional)"
                         rules={formVal.fineTunedParam}
+                        error={errors.fineTunedParam}
+                        helperText={
+                            errors.fineTunedParam &&
+                            errors.fineTunedParam.message
+                        }
                     />
-                    <Controller
+                    <FormTextField
                         control={control}
+                        className={classes.textField}
                         name="taskSpecParam"
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className={classes.textField}
-                                label="Task-Specific parameters"
-                                fullWidth
-                                error={errors.taskSpecParam}
-                                helperText={
-                                    errors.taskSpecParam &&
-                                    errors.taskSpecParam.message
-                                }
-                            />
-                        )}
+                        label="Task-Specific parameters"
+                        description="The number of parameters in your model which are task specific and not used by any other tasks (only numeric numbers allowed). (Optional)"
                         rules={formVal.taskSpecParam}
+                        error={errors.taskSpecParam}
+                        helperText={
+                            errors.taskSpecParam && errors.taskSpecParam.message
+                        }
                     />
 
                     <FormControl
@@ -392,7 +342,7 @@ export default function SubmitForm(props) {
                         type="submit"
                         disabled={isLoading}
                     >
-                        {isLoading? "Submitting..." : "Submit"}
+                        {isLoading ? "Submitting..." : "Submit"}
                     </Button>
                 </form>
             </div>

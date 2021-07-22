@@ -9,7 +9,7 @@ import {
     useGlobalFilter,
 } from "react-table";
 import { useSticky } from "react-table-sticky";
-import InsertLinkIcon from '@material-ui/icons/InsertLink';
+import InsertLinkIcon from "@material-ui/icons/InsertLink";
 
 import { useTheme, fade } from "@material-ui/core/styles";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
@@ -416,13 +416,13 @@ function Profile(props) {
     };
 
     const parseDownload = ({ row }) => {
-        return(
+        return (
             <InsertLinkIcon
                 className="click-btn"
                 onClick={() => downloadPreviousUpload(row.allCells[16].value)}
             ></InsertLinkIcon>
         );
-    }
+    };
 
     const downloadPreviousUpload = async (submission_id) => {
         await axios({
@@ -434,23 +434,29 @@ function Profile(props) {
             data: {
                 submission_id: submission_id,
             },
-        }).then((data) => {
-            let blob = new Blob([data.data],{type:"application.zip"});
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.href = url;
-            link.download = "predict.zip";
-            link.click();
         })
+            .then((data) => {
+                let blob = new Blob([data.data], { type: "application.zip" });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.href = url;
+                link.download = "predict.zip";
+                link.click();
+            })
             .catch((error) => {
                 swal({ text: "Internal server error", icon: "error" });
             });
     };
 
-    const parseModelURL = ({value}) => {
-        if (value === "-") return String(value)
-        else return <a href={value}><InsertLinkIcon style={{ height: '20px' }}></InsertLinkIcon></a>
-      }
+    const parseModelURL = ({ value }) => {
+        if (value === "-") return String(value);
+        else
+            return (
+                <a href={value}>
+                    <InsertLinkIcon style={{ height: "20px" }}></InsertLinkIcon>
+                </a>
+            );
+    };
 
     useEffect(() => {
         getIndividualSubmission();
@@ -472,9 +478,11 @@ function Profile(props) {
             Cell:
                 key === "showOnLeaderboard"
                     ? parseShowCell
-                    : (key ===  "modelURL" 
-                        ? parseModelURL 
-                        : (key === "download" ? parseDownload : ({ value }) => String(value))),
+                    : key === "modelURL"
+                    ? parseModelURL
+                    : key === "download"
+                    ? parseDownload
+                    : ({ value }) => String(value),
         };
     });
     columns[0]["sticky"] = "left";
@@ -520,7 +528,7 @@ function Profile(props) {
             <Section anchorKey="personal-submission">
                 <Title
                     title="Submission history"
-                    description="You can check the checkbox to show your submission result on the leaderboard."
+                    description="You can check the checkbox to show your submission result(s) on the leaderboard."
                 />
                 <TrackSelect task={task} onTaskChange={onTaskChange} />
                 <Table columns={memoColumns} data={shownData} {...props} />
