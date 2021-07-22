@@ -52,7 +52,7 @@ def metric_calculate_pipeline(file_path, submitUUID):
     output_log = os.path.join(os.path.dirname(file_path), "metrics.log")
     with open(output_log, "w") as output_log_f:
         #state = os.system(f"timeout {configs['UNZIP_TIMEOUT']} unzip {file_path} -d {os.path.dirname(file_path)}")
-        state = os.system(f"unzip {file_path} -d {os.path.dirname(file_path)}")
+        state = os.system(f"unzip -qq {file_path} -d {os.path.dirname(file_path)}")
         # timeout!
         # if (state != 0):
         #    print("Unzip timeout")
