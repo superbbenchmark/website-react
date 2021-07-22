@@ -108,7 +108,7 @@ export default function SubmitForm(props) {
                         title: "Susscess",
                         text: res.data.message,
                         icon: "success",
-                    });
+                    }).then(() => history.push("/profile"));
                 })
                 .catch((err) => {
                     setIsLoading(false);
