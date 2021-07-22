@@ -157,8 +157,8 @@ function NavigationBar({ width, tableControlRef, ...props }) {
         // ["Submit", "/submit"],
         ["Leaderboard", "/leaderboard"],
     ];
-    if (auth.isLoggedIn){
-        items.push(["Submit", "/submit"])
+    if (auth.isLoggedIn) {
+        items.push(["Submit", "/submit"]);
         items.push(["Profile", "/profile"]);
         items.push(["Logout", "/logout"]);
     } else {
@@ -169,6 +169,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
             color="textSecondary"
             variant="overline"
             className={classes.navlink}
+            key={text}
         >
             {text}
         </Typography>,
@@ -208,9 +209,10 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                                     </Grid>
                                     {(location.pathname.includes(
                                         "leaderboard"
-                                    ) || location.pathname.includes(
-                                        "profile"
-                                    )) && (
+                                    ) ||
+                                        location.pathname.includes(
+                                            "profile"
+                                        )) && (
                                         <Grid item>
                                             <AdaptiveLink link={null}>
                                                 <Button
@@ -238,7 +240,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                                 >
                                     <Hidden smDown>
                                         {items.map(([content, link]) => (
-                                            <Grid item>
+                                            <Grid item key={link}>
                                                 <AdaptiveLink link={link}>
                                                     <LiftingBarButton>
                                                         {content}
