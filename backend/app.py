@@ -7,7 +7,7 @@ from marshmallow import ValidationError
 
 from db import db
 from resources.user import UserInfo, UserLogin
-from resources.result import LeaderBoard, Submission, SubmissionList
+from resources.submission import LeaderBoard, Submission, SubmissionList
 from resources.download import Example
 
 app = Flask(__name__)
