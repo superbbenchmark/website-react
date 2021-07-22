@@ -7,7 +7,7 @@ from marshmallow import ValidationError
 
 from db import db
 from resources.user import UserInfo, UserLogin
-from resources.result import LeaderBoard, Result, OwnUpload
+from resources.result import LeaderBoard, Submission, SubmissionList
 from resources.download import Example
 
 app = Flask(__name__)
@@ -31,12 +31,14 @@ def handle_marshmallow_validation(err):
     return jsonify(err.messages), 400
 
 
-api.add_resource(Result, "/api/result")
-api.add_resource(LeaderBoard, "/api/result/leaderboard")
+api.add_resource(Submission, "/api/submission", methods=["POST"])
+api.add_resource(Submission, "/api/submission/<string:submitID>",
+                 methods=["GET", "PATCH"])
+api.add_resource(SubmissionList, "/api/submissions")
+api.add_resource(LeaderBoard, "/api/submission/leaderboard")
 api.add_resource(UserInfo, "/api/user/info")
 api.add_resource(UserLogin, "/api/user/login")
 api.add_resource(Example, "/api/download/example")
-api.add_resource(OwnUpload, "/api/download/previous")
 
 db.init_app(app)
 
