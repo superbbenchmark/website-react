@@ -341,7 +341,7 @@ function Profile(props) {
     const getIndividualSubmission = async () => {
         await axios({
             method: "get",
-            url: "/api/result",
+            url: "/api/submissions",
             headers: {
                 Authorization: "Bearer " + auth.token,
             },
@@ -380,13 +380,9 @@ function Profile(props) {
     const setShowOnLeaderboard = async (submission_id) => {
         await axios({
             method: "patch",
-            url: "/api/result",
+            url: "/api/submission/" + submission_id,
             headers: {
                 Authorization: "Bearer " + auth.token,
-            },
-            data: {
-                task: task,
-                submission_id: submission_id,
             },
         })
             .then((res) => {
@@ -426,14 +422,12 @@ function Profile(props) {
 
     const downloadPreviousUpload = async (submission_id) => {
         await axios({
-            method: "post",
-            url: "/api/download/previous",
+            method: "get",
+            url: "/api/submission/" + submission_id,
             headers: {
                 Authorization: "Bearer " + auth.token,
             },
-            data: {
-                submission_id: submission_id,
-            },
+            responseType: "blob",
         })
             .then((data) => {
                 let blob = new Blob([data.data], { type: "application.zip" });
