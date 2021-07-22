@@ -10,7 +10,7 @@ def is_plaintext(file_path):
 
 def is_csv(file_path):
     f = magic.Magic(mime=True)
-    return True if (f.from_file(file_path) == 'application/csv' or f.from_file(file_path) == 'text/csv') else False
+    return True if (f.from_file(file_path) == 'application/csv' or f.from_file(file_path) == 'text/csv' or f.from_file(file_path) == 'text/plain') else False
 
 def get_uuid():
     return str(uuid.uuid4())
