@@ -8,7 +8,7 @@ from marshmallow import ValidationError
 from db import db
 from resources.user import UserInfo, UserLogin
 from resources.result import LeaderBoard, Result, OwnUpload
-from resources.dowload import Example
+from resources.download import Example
 
 app = Flask(__name__)
 load_dotenv()
@@ -17,7 +17,7 @@ app.config.from_object("flask_config")
 
 
 jwt = JWTManager(app)
-CORS(app, resource={r"/api/*":{"origin":"*"}})
+CORS(app, resource={r"/api/*": {"origin": "*"}})
 api = Api(app)
 
 
