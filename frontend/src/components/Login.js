@@ -12,8 +12,8 @@ const Login = () => {
     const history = useHistory();
 
     const onSuccess = async (res) => {
-        console.log(res);
-        console.log(res.tokenId);
+        // console.log(res);
+        // console.log(res.tokenId);
         try {
             const responseData = await axios.post("/api/user/login", {
                 id_token: res.tokenId,
