@@ -9,7 +9,14 @@ const clientId =
 export const useAuth = () => {
     const [token, setToken] = useState(false);
     const [tokenExpirationDate, setTokenExpirationDate] = useState();
-    const { signOut } = useGoogleLogout({ clientId });
+
+    const onFailure = () => {};
+    const onLogoutSuccess = () => {};
+    const { signOut } = useGoogleLogout({
+        clientId,
+        onLogoutSuccess,
+        onFailure,
+    });
 
     const login = useCallback((token, expirationDate) => {
         setToken(token);

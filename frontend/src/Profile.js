@@ -348,7 +348,7 @@ function Profile(props) {
         })
             .then((res) => {
                 setAllSubmissionData(res.data.submission_info);
-                console.log(res.data.submission_info);
+                // console.log(res.data.submission_info);
                 task === "all"
                     ? setShownDate(res.data.submission_info)
                     : setShownDate(
