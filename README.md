@@ -17,7 +17,7 @@ sudo apt install mysql-server
 sudo mysql_secure_installation
 sudo mysql
 ```
-2. Create account
+2. Create an account
 ```sql
 CREATE USER '<username>'@'localhost' IDENTIFIED WITH mysql_native_password BY '<password>';
 GRANT ALL PRIVILEGES ON *.* TO '<username>'@'localhost' WITH GRANT OPTION;
