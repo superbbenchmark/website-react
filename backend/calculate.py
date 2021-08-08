@@ -16,12 +16,17 @@ from utils import is_plaintext, is_csv
 from config import configs
 
 
-def read_file(path, callback=lambda x: x, sep=" "):
+def read_file(path, callback=lambda x: x, sep=" ", default_value=""):
     content = {}
     with open(path, "r") as file:
         lines = file.readlines()
         for line in lines:
-            filename, value = line.strip().split(sep, maxsplit=1)
+            fields = line.strip().split(sep, maxsplit=1)
+            if len(fields) > 1:
+                filename, value = fields
+            else:
+                filename = fields[0]
+                value = default_value
             content[filename] = callback(value)
     return content
 
