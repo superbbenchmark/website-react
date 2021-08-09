@@ -126,6 +126,7 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
             initialState: {
                 hiddenColumns: [
                     "aoeTimeUpload",
+                    "task",
                     "modelDesc",
                     "stride",
                     "inputFormat",
