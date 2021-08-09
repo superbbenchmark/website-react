@@ -80,8 +80,8 @@ def submission_records_parser(submission_records, configs, mode="individual"):
 
 def get_leaderboard_default():
     data = [{
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "FBANK",
             "modelURL":"-",
@@ -107,8 +107,8 @@ def get_leaderboard_default():
             "SD_der_public": 10.05,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "PASE+",
             "modelURL":"-",
@@ -132,8 +132,8 @@ def get_leaderboard_default():
             "SD_der_public": 8.68,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "APC",
             "modelURL":"-",
@@ -157,8 +157,8 @@ def get_leaderboard_default():
             "SD_der_public": 10.53,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "VQ-APC",
             "modelURL":"-",
@@ -182,8 +182,8 @@ def get_leaderboard_default():
             "SD_der_public": 10.45,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "NPC",
             "modelURL":"-",
@@ -207,8 +207,8 @@ def get_leaderboard_default():
             "SD_der_public": 9.34,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "Mockingjay",
             "modelURL":"-",
@@ -232,8 +232,8 @@ def get_leaderboard_default():
             "SD_der_public": 10.54,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "TERA",
             "modelURL":"-",
@@ -257,8 +257,8 @@ def get_leaderboard_default():
             "SD_der_public": 9.96,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "modified CPC",
             "modelURL":"-",
@@ -282,8 +282,8 @@ def get_leaderboard_default():
             "SD_der_public": 10.38,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "wav2vec",
             "modelURL":"-",
@@ -307,8 +307,8 @@ def get_leaderboard_default():
             "SD_der_public": 9.9,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "vq-wav2vec",
             "modelURL":"-",
@@ -332,8 +332,8 @@ def get_leaderboard_default():
             "SD_der_public": 9.93,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "wav2vec 2.0 Base",
             "modelURL":"-",
@@ -357,8 +357,8 @@ def get_leaderboard_default():
             "SD_der_public": 6.08,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "wav2vec 2.0 Large",
             "modelURL":"-",
@@ -382,8 +382,8 @@ def get_leaderboard_default():
             "SD_der_public": 5.62,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "HuBERT Base",
             "modelURL":"-",
@@ -407,8 +407,8 @@ def get_leaderboard_default():
             "SD_der_public": 5.88,
         },
         {
-            "name":"official",
-            "aoeTimeUpload":"official",
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
             "submitName": "HuBERT Large",
             "modelURL":"-",
