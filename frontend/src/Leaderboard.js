@@ -16,6 +16,7 @@ import InsertLinkIcon from "@material-ui/icons/InsertLink";
 import { leaderboard_columnInfo } from "./Data";
 import Model from "./components/Modal";
 import TrackSelect from "./components/TrackSelect";
+import { Box } from "@material-ui/core";
 
 const Styles = styled.div`
   .table {
@@ -332,7 +333,9 @@ function LeaderBoard(props) {
 
     return (
         <>
-            <TrackSelect task={task} onTaskChange={onTaskChange} />
+            <Box margin={theme.spacing(2, "auto", 1)}>
+                <TrackSelect task={task} onTaskChange={onTaskChange} />
+            </Box>
             <Table
                 columns={memoColumns}
                 data={LeaderboardShownData}
