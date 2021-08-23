@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
 import { Typography, Link, Grid } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
@@ -6,11 +6,29 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import { Section, SubSection, SubSubSection } from "./components/Sections";
 import { DescriptionButton } from "./components/Buttons";
+import YouTube from 'react-youtube';
 
 export default function Landing(props) {
     const theme = useTheme();
+    const ref = useRef(null);
+    const [width, setWidth] = useState(0);
+
+    useEffect(() => {
+        setWidth(ref.current.offsetWidth)
+    }, []);
+
+    const videoWidth = Math.min(width, 700)
+    const opts = {
+        height: videoWidth / 1920 * 1080,
+        width: videoWidth,
+        playerVars: {
+          // https://developers.google.com/youtube/player_parameters
+          autoplay: 1,
+        },
+      };
+
     return (
-        <Box margin={theme.spacing(0, 0, 8)}>
+        <Box ref={ref} margin={theme.spacing(0, 0, 8)}>
             <Box margin={theme.spacing(8, "auto", 1)}>
                 <Typography variant="h2" color="textPrimary">
                     <strong>SUPERB</strong>
@@ -28,6 +46,7 @@ export default function Landing(props) {
                     enchmark
                 </Typography>
             </Box>
+            <YouTube videoId="CLmlkBLZPw8" opts={opts} />
             <Box maxWidth={800} margin="auto" textAlign="left">
                 <SubSection>
                     <SubSubSection>
