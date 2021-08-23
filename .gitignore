@@ -10,6 +10,8 @@
 
 # production
 /build
+/backend/upload
+/backend/inference
 
 # misc
 .DS_Store
