@@ -141,6 +141,7 @@ export default function Landing(props) {
                             ["mit-1000.png", "https://www.mit.edu/"],
                             ["jhu-1000.png", "https://www.jhu.edu/"],
                             ["fair-1000.png", "https://ai.facebook.com/"],
+                            ["lxt-1000.png", "https://www.lxt.ai/"],
                         ].map((filename) => {
                             return (
                                 <Grid
