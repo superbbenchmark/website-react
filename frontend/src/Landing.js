@@ -23,7 +23,7 @@ export default function Landing(props) {
         width: videoWidth,
         playerVars: {
           // https://developers.google.com/youtube/player_parameters
-          autoplay: 1,
+          autoplay: 0,
         },
       };
 
@@ -46,7 +46,7 @@ export default function Landing(props) {
                     enchmark
                 </Typography>
             </Box>
-            <YouTube videoId="CLmlkBLZPw8" opts={opts} />
+            <YouTube videoId="zd9fiVvej0k" opts={opts} />
             <Box maxWidth={800} margin="auto" textAlign="left">
                 <SubSection>
                     <SubSubSection>
