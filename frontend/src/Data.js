@@ -236,7 +236,7 @@ const individual_submission_columnInfo = {
     },
     submitName: {
         header: "Method",
-        width: 100,
+        width: 150,
         higherBetter: undefined,
         type: "alphanumeric",
     },
@@ -461,7 +461,7 @@ const individual_submission_columnInfo = {
     },
     submitName: {
         header: "Method",
-        width: 100,
+        width: 150,
         higherBetter: undefined,
         type: "alphanumeric",
     },
