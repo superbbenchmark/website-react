@@ -192,31 +192,42 @@ def metric_calculate_pipeline(file_path, submitUUID):
         #                   ER                       #
         #============================================#
         # ER PUBLIC
-        if os.path.isdir(os.path.join(predict_root, "er_public")):
-            if os.path.isfile(os.path.join(predict_root, "er_public", "predict.txt")):
-                if is_plaintext(os.path.join(predict_root, "er_public", "predict.txt")):
-                    print("[ER PUBLIC]", file=output_log_f)
-                    try:
-                        truth_file = os.path.join(
-                            ground_truth_root, "er_public", "truth.txt")
-                        predict_file = os.path.join(
-                            predict_root, "er_public", "predict.txt")
+        er_scores = []
+        for foldid in range(1, 6):
+            if os.path.isdir(os.path.join(predict_root, f"er_fold{foldid}_public")):
+                if os.path.isfile(os.path.join(predict_root, f"er_fold{foldid}_public", "predict.txt")):
+                    if is_plaintext(os.path.join(predict_root, f"er_fold{foldid}_public", "predict.txt")):
+                        print(f"[ER FOLD{foldid} PUBLIC]", file=output_log_f)
+                        try:
+                            truth_file = os.path.join(
+                                ground_truth_root, f"er_fold{foldid}_public", "truth.txt")
+                            predict_file = os.path.join(
+                                predict_root, f"er_fold{foldid}_public", "predict.txt")
 
-                        predict = read_file(predict_file)
-                        truth = read_file(truth_file)
+                            predict = read_file(predict_file)
+                            truth = read_file(truth_file)
 
-                        filenames = sorted(predict.keys())
-                        predict_values = [predict[filename]
-                                        for filename in filenames]
-                        truth_values = [truth[filename] for filename in filenames]
-                        match = [1 if p == t else 0 for p,
-                                t in zip(predict_values, truth_values)]
-                        score = np.array(match).mean()
-                        print(f"ER: acc {score}", file=output_log_f)
-                        score_model.ER_acc_public = score
-                        session.commit()
-                    except Exception as e:
-                        print(e, file=output_log_f)
+                            filenames = sorted(predict.keys())
+                            predict_values = [predict[filename]
+                                            for filename in filenames]
+                            truth_values = [truth[filename] for filename in filenames]
+                            match = [1 if p == t else 0 for p,
+                                    t in zip(predict_values, truth_values)]
+                            score = np.array(match).mean()
+                            er_scores.append(score)
+                            print(f"ER FOLD{foldid}: acc {score}", file=output_log_f)
+                            setattr(score_model, f"ERfold{foldid}_acc_public", score)
+                            session.commit()
+                        except Exception as e:
+                            print(e, file=output_log_f)
+        if len(er_scores) == 5:
+            try:
+                score = np.array(er_scores).mean()
+                print(f"ER: acc {score}", file=output_log_f)
+                score_model.ER_acc_public = score
+                session.commit()
+            except Exception as e:
+                print(e, file=output_log_f)
 
         #============================================#
         #                   ASR                      #

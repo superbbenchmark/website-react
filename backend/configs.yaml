@@ -37,6 +37,11 @@ INDIVIDUAL_SUBMISSION_INFO:
         - IC_acc_public
         - SID_acc_public
         - ER_acc_public
+        - ERfold1_acc_public
+        - ERfold2_acc_public
+        - ERfold3_acc_public
+        - ERfold4_acc_public
+        - ERfold5_acc_public
         - ASR_wer_public
         - ASR_LM_wer_public
         - QbE_mtwv_public
@@ -66,6 +71,11 @@ LEADERBOARD_INFO:
         - IC_acc_public
         - SID_acc_public
         - ER_acc_public
+        - ERfold1_acc_public
+        - ERfold2_acc_public
+        - ERfold3_acc_public
+        - ERfold4_acc_public
+        - ERfold5_acc_public
         - ASR_wer_public
         - ASR_LM_wer_public
         - QbE_mtwv_public
