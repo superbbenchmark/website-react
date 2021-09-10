@@ -11,3 +11,12 @@ class Example(Resource):
             return send_file("./examples/predict.zip", as_attachment=True)
         except Exception as e:
             return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+class Expdirs(Resource):
+    @classmethod
+    def get(cls):
+        '''Download examples'''
+        try:
+            return send_file("./examples/expdirs.zip", as_attachment=True)
+        except Exception as e:
+            return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR

@@ -8,7 +8,7 @@ from marshmallow import ValidationError
 from db import db
 from resources.user import UserInfo, UserLogin
 from resources.submission import LeaderBoard, Submission, SubmissionList
-from resources.download import Example
+from resources.download import Example, Expdirs
 
 app = Flask(__name__)
 load_dotenv()
@@ -39,6 +39,7 @@ api.add_resource(LeaderBoard, "/api/submission/leaderboard")
 api.add_resource(UserInfo, "/api/user/info")
 api.add_resource(UserLogin, "/api/user/login")
 api.add_resource(Example, "/api/download/example")
+api.add_resource(Expdirs, "/api/download/expdirs")
 
 db.init_app(app)
 
