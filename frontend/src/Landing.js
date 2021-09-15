@@ -6,6 +6,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import { Section, SubSection, SubSubSection } from "./components/Sections";
 import { DescriptionButton } from "./components/Buttons";
+import { subscribe_link } from "./Data";
 import YouTube from 'react-youtube';
 
 export default function Landing(props) {
@@ -22,10 +23,10 @@ export default function Landing(props) {
         height: videoWidth / 1920 * 1080,
         width: videoWidth,
         playerVars: {
-          // https://developers.google.com/youtube/player_parameters
-          autoplay: 0,
+            // https://developers.google.com/youtube/player_parameters
+            autoplay: 0,
         },
-      };
+    };
 
     return (
         <Box ref={ref} margin={theme.spacing(0, 0, 8)}>
@@ -45,6 +46,9 @@ export default function Landing(props) {
                     niversal <strong>PER</strong>formance <strong>B</strong>
                     enchmark
                 </Typography>
+            </Box>
+            <Box margin={theme.spacing(1, "auto", 6)}>
+                <span><strong><a href={subscribe_link} target="_blank" rel="noopener noreferrer">Subscribe</a></strong> our enews to receive all the latest information about SUPERB.</span>
             </Box>
             <YouTube videoId="zd9fiVvej0k" opts={opts} />
             <Box maxWidth={800} margin="auto" textAlign="left">

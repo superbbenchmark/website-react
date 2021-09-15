@@ -149,6 +149,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
     const auth = useContext(AuthContext);
 
     let items = [
+        ["News", "/news"],
         ["Paper", "https://arxiv.org/abs/2105.01051"],
         ["Code", "https://github.com/s3prl/s3prl"],
         ["Tasks", "/tasks"],
@@ -156,6 +157,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
         // ["Compare", "/compare"],
         // ["Submit", "/submit"],
         ["Leaderboard", "/leaderboard"],
+        ["Challenge", "/challenge"],
     ];
     if (auth.isLoggedIn) {
         items.push(["Submit", "/submit"]);
@@ -213,22 +215,22 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                                         location.pathname.includes(
                                             "profile"
                                         )) && (
-                                        <Grid item>
-                                            <AdaptiveLink link={null}>
-                                                <Button
-                                                    size="small"
-                                                    variant="outlined"
-                                                    onClick={() => {
-                                                        tableControlRef.current.click();
-                                                    }}
-                                                >
-                                                    {largeScreen
-                                                        ? "Help"
-                                                        : "Help"}
-                                                </Button>
-                                            </AdaptiveLink>
-                                        </Grid>
-                                    )}
+                                            <Grid item>
+                                                <AdaptiveLink link={null}>
+                                                    <Button
+                                                        size="small"
+                                                        variant="outlined"
+                                                        onClick={() => {
+                                                            tableControlRef.current.click();
+                                                        }}
+                                                    >
+                                                        {largeScreen
+                                                            ? "Help"
+                                                            : "Help"}
+                                                    </Button>
+                                                </AdaptiveLink>
+                                            </Grid>
+                                        )}
                                 </Grid>
                             </Grid>
                             <Grid item xs={3} md={9}>

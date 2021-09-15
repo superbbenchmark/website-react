@@ -23,7 +23,7 @@ function Tasks(props) {
 
   return (
     <React.Fragment>
-      <Section>
+      <Section margin={theme.spacing(8, "auto", 1)}>
         <Title
           title="Tasks"
           description={
@@ -49,7 +49,7 @@ function Tasks(props) {
       </Section>
       {domains.map(({ name, description, tasks }) => {
         return (
-          <Section anchorKey={name}>
+          <Section anchorKey={name} margin={theme.spacing(8, "auto", 1)}>
             <Title
               title={capitalizeFirstLetter(name.toLowerCase())}
               description={description}

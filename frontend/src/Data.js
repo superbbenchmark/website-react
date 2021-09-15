@@ -11,6 +11,8 @@ import {
 } from "./components/Theme";
 import { Strong } from "./components/Utilies";
 
+const subscribe_link = "https://forms.gle/sVMWx9FHjL4DvK3K8"
+
 const domains = [
     {
         name: "recognition",
@@ -437,10 +439,10 @@ const individual_submission_columnInfo = {
         isScore: true,
         type: "number",
     },
-  };
+};
 
 
-  const leaderboard_columnInfo = {
+const leaderboard_columnInfo = {
     aoeTimeUpload: {
         header: "Upolad Time",
         width: 160,
@@ -638,27 +640,27 @@ const individual_submission_columnInfo = {
         isScore: true,
         type: "number",
     },
-  };
+};
 
 const submission_types = {
-  Method: "string",
-  Description: "string",
-  Parameters: 0,
-  Stride: 0,
-  Input: "string",
-  Corpus: "string",
-  PR: 0,
-  KS: 0,
-  IC: 0,
-  SID: 0,
-  ER: 0,
-  ASR: 0,
-  "ASR-LM": 0,
-  QbE: 0,
-  "SF-F1": 0,
-  "SF-CER": 0,
-  SV: 0,
-  SD: 0,
+    Method: "string",
+    Description: "string",
+    Parameters: 0,
+    Stride: 0,
+    Input: "string",
+    Corpus: "string",
+    PR: 0,
+    KS: 0,
+    IC: 0,
+    SID: 0,
+    ER: 0,
+    ASR: 0,
+    "ASR-LM": 0,
+    QbE: 0,
+    "SF-F1": 0,
+    "SF-CER": 0,
+    SV: 0,
+    SD: 0,
 };
 
 
@@ -945,4 +947,4 @@ const submissions = [
     },
 ];
 
-export { domains, tracks, submissions, submission_types, individual_submission_columnInfo, leaderboard_columnInfo, leaderboard_selections};
+export { subscribe_link, domains, tracks, submissions, submission_types, individual_submission_columnInfo, leaderboard_columnInfo, leaderboard_selections };

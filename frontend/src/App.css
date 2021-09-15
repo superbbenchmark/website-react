@@ -2,6 +2,15 @@ html {
   overflow-y:scroll;
 }
 
+img {
+  width: 100%;
+  height: auto;
+}
+
+a {
+  color: #5DADE2;
+}
+
 .App {
   text-align: center;
   margin: auto;

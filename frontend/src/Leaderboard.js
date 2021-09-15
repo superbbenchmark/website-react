@@ -96,7 +96,7 @@ const Styles = styled.div`
 
     &.isResizing, &:hover {
       background: ${(props) =>
-          `${fade(props.theme.palette.text.primary, 0.6)}`};
+        `${fade(props.theme.palette.text.primary, 0.6)}`};
     }
 `;
 
@@ -174,12 +174,12 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
                             {headerGroup.headers.map((column) => {
                                 let color =
                                     column.isSortedDesc == undefined ||
-                                    column.higherBetter == undefined
+                                        column.higherBetter == undefined
                                         ? theme.palette.text.primary
                                         : column.isSortedDesc ==
-                                          column.higherBetter
-                                        ? green[300]
-                                        : red[300];
+                                            column.higherBetter
+                                            ? green[300]
+                                            : red[300];
 
                                 return (
                                     <div
@@ -217,11 +217,10 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
                                         </div>
                                         <div
                                             {...column.getResizerProps()}
-                                            className={`resizer ${
-                                                column.isResizing
-                                                    ? "isResizing"
-                                                    : ""
-                                            }`}
+                                            className={`resizer ${column.isResizing
+                                                ? "isResizing"
+                                                : ""
+                                                }`}
                                         />
                                     </div>
                                 );
@@ -290,10 +289,10 @@ function LeaderBoard(props) {
         e.target.value === "all"
             ? setLeaderboardShownData(LeaderboardData)
             : setLeaderboardShownData(
-                  LeaderboardData.filter(
-                      (data) => mapping_array[data.task] === e.target.value
-                  )
-              );
+                LeaderboardData.filter(
+                    (data) => mapping_array[data.task] === e.target.value
+                )
+            );
     };
 
     const parseModelURL = ({ value }) => {
@@ -333,7 +332,7 @@ function LeaderBoard(props) {
 
     return (
         <>
-            <Box margin={theme.spacing(2, "auto", 1)}>
+            <Box margin={theme.spacing(8, "auto", 1)}>
                 <TrackSelect task={task} onTaskChange={onTaskChange} />
             </Box>
             <Table

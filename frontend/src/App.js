@@ -6,7 +6,6 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
-import { Box, Typography } from "@material-ui/core";
 import {
     useTheme,
     ThemeProvider,
@@ -15,10 +14,12 @@ import {
 } from "@material-ui/core/styles";
 
 import Landing from "./Landing";
+import News from "./News";
 import Tasks from "./Tasks";
 import Rules from "./Rules";
 import Compare from "./Compare";
 import Leaderboard from "./Leaderboard";
+import Challenge from './Challenge';
 import NavigationBar from "./components/NavigationBar";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
@@ -66,6 +67,11 @@ function App() {
                         <Landing />
                     </div>
                 </Route>
+                <Route path="/news">
+                    <div className={`${classes.narrowViewport}`}>
+                        <News />
+                    </div>
+                </Route>
                 <Route path="/tasks">
                     <div className={`${classes.narrowViewport}`}>
                         <Tasks />
@@ -86,6 +92,11 @@ function App() {
                         height={`${height - navbarHeight}px`}
                         tableControlRef={tableControlRef}
                     />
+                </Route>
+                <Route path="/challenge">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Challenge />
+                    </div>
                 </Route>
                 <Route path="/profile" exact>
                     <Profile tableControlRef={tableControlRef} />
@@ -108,6 +119,11 @@ function App() {
                         <Landing />
                     </div>
                 </Route>
+                <Route path="/news">
+                    <div className={`${classes.narrowViewport}`}>
+                        <News />
+                    </div>
+                </Route>
                 <Route path="/tasks">
                     <div className={`${classes.narrowViewport}`}>
                         <Tasks />
@@ -123,6 +139,11 @@ function App() {
                         height={`${height - navbarHeight}px`}
                         tableControlRef={tableControlRef}
                     />
+                </Route>
+                <Route path="/challenge">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Challenge />
+                    </div>
                 </Route>
                 <Route path="/login">
                     <div

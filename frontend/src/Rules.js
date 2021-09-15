@@ -22,7 +22,7 @@ export default function Submit(props) {
     return (
         <Switch>
             <Route path={`${match.path}`} exact>
-                <Section>
+                <Section margin={theme.spacing(8, "auto", 1)}>
                     <Title
                         title="Rules"
                         description={
@@ -88,7 +88,7 @@ export default function Submit(props) {
                         )}
                     </Grid>
                 </Section>
-                <Section anchorKey="general-rules">
+                <Section anchorKey="general-rules" margin={theme.spacing(8, "auto", 1)}>
                     <Title
                         title="General Rules"
                         description="The general rules applied to all tracks."
@@ -97,7 +97,7 @@ export default function Submit(props) {
                         To be decided.
                     </Typography>
                 </Section>
-                <Section anchorKey="track-rules">
+                <Section anchorKey="track-rules" margin={theme.spacing(8, "auto", 1)}>
                     <Title
                         title="Track Rules"
                         description="The track-specific rules for each of the tracks."
@@ -129,16 +129,16 @@ export default function Submit(props) {
                         }
                     )}
                 </Section>
-                <Section anchorKey="download-example">
+                <Section anchorKey="download-example" margin={theme.spacing(8, "auto", 1)}>
                     <Title
                         title="Submission example"
                         description="Download an example of submission."
                     />
                     <Typography variant="body1" color="textSecondary">
                         The prediction output of each task should be put in seperated folder sepified by the task.
-                        Finally, please put all the task folders in one folder called <Strong>predict</Strong>{" "}  
+                        Finally, please put all the task folders in one folder called <Strong>predict</Strong>{" "}
                         and submit a zip archive. You can download an example for submission from this&nbsp;
-                         <Link href={"/api/download/example"} color="secondary">Link</Link>.
+                        <Link href={"/api/download/example"} color="secondary">Link</Link>.
                     </Typography>
                 </Section>
             </Route>
