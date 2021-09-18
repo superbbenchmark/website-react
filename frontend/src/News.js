@@ -130,7 +130,7 @@ function News(props) {
                 <Title
                     title="News"
                     description={
-                        <span><Strong><a href={subscribe_link} target="_blank" rel="noopener noreferrer">Subscribe</a></Strong> our enews to receive all the latest information about SUPERB.</span>
+                        <span><Strong><a href={subscribe_link} target="_blank" rel="noopener noreferrer">Subscribe</a></Strong> our e-news to receive all the latest information about SUPERB.</span>
                     }
                 />
             </Section>

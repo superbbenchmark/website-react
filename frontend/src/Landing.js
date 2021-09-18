@@ -6,6 +6,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import { Section, SubSection, SubSubSection } from "./components/Sections";
 import { DescriptionButton } from "./components/Buttons";
+import { Strong } from "./components/Utilies";
 import { subscribe_link } from "./Data";
 import YouTube from 'react-youtube';
 
@@ -48,7 +49,7 @@ export default function Landing(props) {
                 </Typography>
             </Box>
             <Box margin={theme.spacing(1, "auto", 6)}>
-                <span><strong><a href={subscribe_link} target="_blank" rel="noopener noreferrer">Subscribe</a></strong> our enews to receive all the latest information about SUPERB.</span>
+                <span><strong><a href={subscribe_link} target="_blank" rel="noopener noreferrer">Subscribe</a></strong> our e-news to receive all the latest information about SUPERB.</span>
             </Box>
             <YouTube videoId="zd9fiVvej0k" opts={opts} />
             <Box maxWidth={800} margin="auto" textAlign="left">
@@ -61,7 +62,7 @@ export default function Landing(props) {
                         >
                             SUPERB is a collection of benchmarking resources to
                             evaluate the capability of a universal shared
-                            representation for speech processing. SUPERB
+                            representation for speech processing.SUPERB
                             consists of the following:
                             <div
                                 style={{
@@ -73,7 +74,7 @@ export default function Landing(props) {
                                 <ol>
                                     <li>
                                         A benchmark of ten speech processing
-                                        tasks [1] built on established public
+                                        tasks[1]built on established public
                                         datasets,
                                     </li>
                                     <li>
@@ -113,12 +114,12 @@ export default function Landing(props) {
                             SUPERB aims to offer the community a standard and
                             comprehensive framework to train, evaluate, and
                             compare the generalizability of universal speech
-                            representations on speech processing tasks. A
+                            representations on speech processing tasks.A
                             universal speech representation can be leveraged to
                             quickly adapt to diverse downstream tasks with
                             minimum architectural change and downstream
                             fine-tuning, so as to reduce the model development
-                            cycle time for new tasks. To emphasize on evaluating
+                            cycle time for new tasks.To emphasize on evaluating
                             the quality of the learned universal representation,
                             SUPERB puts an explicit constraint on the downstream
                             model and limits its parameter size.
@@ -130,10 +131,15 @@ export default function Landing(props) {
                             advancement in speech processing with powerful,
                             generalizable, and reusable speech representations.
                             SUPERB is a long-term maintained and continuously
-                            developing project. As we are gradually releasing
+                            developing project.As we are gradually releasing
                             new tasks and opening new tracks, we invite
                             researchers to participate in the challenge and
                             advance the research frontier together.
+                        </Typography>
+                    </SubSubSection>
+                    <SubSubSection>
+                        <Typography variant="body1" color="textSecondary">
+                            We also want to let you know that <a href="https://signalprocessingsociety.org/blog/ieee-jstsp-special-issue-self-supervised-learning-speech-and-audio-processing" target="_blank" rel="noopener noreferrer">IEEE JSTSP Special Issue on Self-Supervised Learning for Speech and Audio Processing</a> is call-for-paper.The deadline is <Strong>December 31, 2021</Strong>.The research based on SUPERB will be very suitable for the special issue.If you have any questions about the special issue, please feel free to contact Hung-yi Lee (<a href="mailto:hungyilee@ntu.edu.tw" target="_blank" rel="noopener noreferrer">hungyilee@ntu.edu.tw</a>).
                         </Typography>
                     </SubSubSection>
                 </SubSection>
@@ -148,13 +154,7 @@ export default function Landing(props) {
                             ["lxt-1000.png", "https://www.lxt.ai/"],
                         ].map((filename) => {
                             return (
-                                <Grid
-                                    item
-                                    xs={6}
-                                    sm={4}
-                                    md={4}
-                                    key={filename[0]}
-                                >
+                                <Grid item xs={6} sm={4} md={4} key={filename[0]}>
                                     <a target="_blank" href={filename[1]}>
                                         <img src={filename[0]} width="100%" />
                                     </a>
@@ -169,7 +169,7 @@ export default function Landing(props) {
                         <li>
                             The initial release covers 10 discriminative tasks
                             ranging from content, speaker, semantics, to
-                            paralinguistics. The SUPERB team is working on a
+                            paralinguistics.The SUPERB team is working on a
                             follow-up release with generative tasks to come.
                             Stay tuned!
                         </li>

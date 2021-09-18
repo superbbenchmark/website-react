@@ -106,7 +106,7 @@ function App() {
                 </Route>
                 <Route path="/submit">
                     <div className={`${classes.narrowViewport}`}>
-                        <SubmitForm />
+                        <SubmitForm login={true} />
                     </div>
                 </Route>
             </Switch>
@@ -143,6 +143,11 @@ function App() {
                 <Route path="/challenge">
                     <div className={`${classes.narrowViewport}`}>
                         <Challenge />
+                    </div>
+                </Route>
+                <Route path="/submit">
+                    <div className={`${classes.narrowViewport}`}>
+                        <SubmitForm login={false} />
                     </div>
                 </Route>
                 <Route path="/login">

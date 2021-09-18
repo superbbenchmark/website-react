@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
     },
     toolbar: {
         width: "100%",
-        maxWidth: 1000,
+        maxWidth: 1600,
         margin: "auto",
         paddingLeft: 20,
         paddingRight: 20,
@@ -155,12 +155,12 @@ function NavigationBar({ width, tableControlRef, ...props }) {
         ["Tasks", "/tasks"],
         ["Rules", "/rules"],
         // ["Compare", "/compare"],
-        // ["Submit", "/submit"],
         ["Leaderboard", "/leaderboard"],
         ["Challenge", "/challenge"],
+        ["Submit", "/submit"],
     ];
     if (auth.isLoggedIn) {
-        items.push(["Submit", "/submit"]);
+        // items.push(["Submit", "/submit"]);
         items.push(["Profile", "/profile"]);
         items.push(["Logout", "/logout"]);
     } else {
@@ -186,7 +186,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                 <AppBar color="primary">
                     <Toolbar className={classes.toolbar}>
                         <Grid container alignItems="center">
-                            <Grid item xs={9} md={3}>
+                            <Grid item xs={9} md={1}>
                                 <Grid
                                     container
                                     direction="row"
@@ -233,7 +233,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                                         )}
                                 </Grid>
                             </Grid>
-                            <Grid item xs={3} md={9}>
+                            <Grid item xs={3} md={11}>
                                 <Grid
                                     container
                                     direction="row"

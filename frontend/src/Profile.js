@@ -114,7 +114,7 @@ const Styles = styled.div`
 
     &.isResizing, &:hover {
       background: ${(props) =>
-          `${fade(props.theme.palette.text.primary, 0.6)}`};
+        `${fade(props.theme.palette.text.primary, 0.6)}`};
     }
 `;
 
@@ -191,12 +191,12 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
                             {headerGroup.headers.map((column) => {
                                 let color =
                                     column.isSortedDesc == undefined ||
-                                    column.higherBetter == undefined
+                                        column.higherBetter == undefined
                                         ? theme.palette.text.primary
                                         : column.isSortedDesc ==
-                                          column.higherBetter
-                                        ? green[300]
-                                        : red[300];
+                                            column.higherBetter
+                                            ? green[300]
+                                            : red[300];
 
                                 return (
                                     <div
@@ -234,11 +234,10 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
                                         </div>
                                         <div
                                             {...column.getResizerProps()}
-                                            className={`resizer ${
-                                                column.isResizing
+                                            className={`resizer ${column.isResizing
                                                     ? "isResizing"
                                                     : ""
-                                            }`}
+                                                }`}
                                         />
                                     </div>
                                 );
@@ -352,10 +351,10 @@ function Profile(props) {
                 task === "all"
                     ? setShownDate(res.data.submission_info)
                     : setShownDate(
-                          res.data.submission_info.filter(
-                              (data) => mapping_array[data.task] === task
-                          )
-                      );
+                        res.data.submission_info.filter(
+                            (data) => mapping_array[data.task] === task
+                        )
+                    );
             })
             .catch((error) => {
                 console.error(error);
@@ -367,10 +366,10 @@ function Profile(props) {
         e.target.value === "all"
             ? setShownDate(allSubmissionData)
             : setShownDate(
-                  allSubmissionData.filter(
-                      (data) => mapping_array[data.task] === e.target.value
-                  )
-              );
+                allSubmissionData.filter(
+                    (data) => mapping_array[data.task] === e.target.value
+                )
+            );
     };
 
     const handleNameOnChange = (e) => {
@@ -473,10 +472,10 @@ function Profile(props) {
                 key === "showOnLeaderboard"
                     ? parseShowCell
                     : key === "modelURL"
-                    ? parseModelURL
-                    : key === "download"
-                    ? parseDownload
-                    : ({ value }) => String(value),
+                        ? parseModelURL
+                        : key === "download"
+                            ? parseDownload
+                            : ({ value }) => String(value),
         };
     });
     columns[0]["sticky"] = "left";
@@ -489,7 +488,7 @@ function Profile(props) {
 
     return (
         <>
-            <Section anchorKey="personal-profile">
+            <Section anchorKey="personal-profile" margin={theme.spacing(8, "auto", 1)}>
                 <Title
                     title={"Hello " + username}
                     description={

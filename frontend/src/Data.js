@@ -94,6 +94,11 @@ const domains = [
             Following the standard split in SNIPS, US-accent speakers are further selected for training, and others are for validation/testing.\
           ",
             },
+            {
+                name: "ST",
+                description: `Speech Translation (ST) translates utterance into foreign words. To achieve this goal, the model has to perform ASR and MT simultaneously, which increases the difficulty. CoVoST2 En-De dataset is adopted while all the examples containing "REMOVE" are removed. The evaluation metric is case-sensitive detokenized BLEU.
+                `
+            }
         ],
     },
     {
@@ -150,6 +155,22 @@ const domains = [
             },
         ],
     },
+    {
+        name: "generation",
+        description: "generation description",
+        tasks: [
+            {
+                name: "SE",
+                description: `Speech enhancement (SE) is the task of removing background noise from a degraded speech signal and improving the perceived quality and intelligibility of the signal. In SUPERB, we evaluate the speech enhancement problem on the VoiceBank-DEMAND corpus. A three layer BLSTM model is trained to predict the spectral mask for the clean signal. The prediction is transformed back to the time domain using inverse short-time Fourier transform (iSTFT). Our evaluation metrics cover various aspects of the speech enhancement quality. including Perceptual Evaluation of Speech Quality (PESQ),  ShortTime Objective Intelligibility (STOI), MOS predictor of overall signal quality (COVL) and scale-invariant signal-to-distortion ratio improvement (SI-SDRi)
+                `
+            },
+            {
+                name: "SS",
+                description: `Speech Separation (SS) is the task of separating target speech from background interference. It is an important step for speech processing, especially for noisy and multi-talker scenarios. In SUPERB, we investigate speech separation on the Libri2Mix dataset. We use the same 3-layer BLSTM model as the enhancement task, and permutation invariant training (PIT) is performed to optimize the objectives. The evaluation metric for speech separation is scale-invariant signal-to-distortion ratio improvement (SI-SDRi).
+                `
+            },
+        ],
+    }
 ];
 
 const tracks = [
