@@ -139,8 +139,7 @@ const policy = (
                         or phonemes.</span></li>
                     <li><strong><span> audio/tagging pairs:</span></strong><span> speaker labels or sound event
                         labels.</span></li>
-                    <li><strong><span> audio/audio pairs:</span></strong><span> parallel audio with different speakers but
-                        the same content.</span></li>
+                    <li><strong><span> audio/audio pairs:</span></strong><span> audios with the same properties made parallel by human, e.g. audios with same content from different speakers, or the opposite.</span></li>
                 </ul>
             </li>
             <li><span>Any system pre-trained by labeled/parallel data </span><strong><span> cannot</span></strong><span> be
@@ -270,18 +269,7 @@ const policy = (
         </ul>
         <h3 id="Public-set-leaderboard-and-submission" data-id="Public-set-leaderboard-and-submission"><span>Public-set
             leaderboard and submission</span></h3>
-        <ul>
-            <li>
-                <HashLink to="/leaderboard#top">
-                    Leaderboard
-                </HashLink>
-            </li>
-            <li>
-                <a href="https://github.com/s3prl/s3prl/tree/master/s3prl/downstream/docs/superb.md#leaderboard-submission"
-                    target="_blank" rel="noopener"><span>Submission steps</span></a>
-            </li>
-        </ul>
-        <p><span>The public-set leaderboard is online and ready for submissions. Since all the train/dev/test splits are
+        <p><span>The public-set leaderboard will be online and accept submissions on <strong>Sep 30, 2021</strong> and there is no deadline. Since all the train/dev/test splits are
             public available, </span><strong><span> the leaderboard accepts submissions with the inferenced prediction
                 files on each task’s testing split</span></strong><span> which will be auto-generated if you follow the
                     benchmarking steps in </span><a href="https://github.com/s3prl/s3prl" target="_blank"
@@ -396,11 +384,13 @@ const policy = (
                 invited to present their methods in our AAAI workshop.</span></p>
         <h2 id="Timeline" data-id="Timeline"><span>Timeline</span></h2>
         <ul>
-            <li><span>Sep 18, 2021: Challenge announcement &amp; </span><a href="https://superbbenchmark.org/leaderboard"
-                target="_blank" rel="noopener"><span>public-set leaderboard</span></a><span> online &amp; </span><a
-                    href="https://github.com/s3prl/s3prl" target="_blank" rel="noopener"><span>S3PRL</span></a><span> ready
-                        for the challenge</span></li>
-            <li><span>Sep 30, 2021: Overall metrics announcement</span></li>
+            <li><span>Sep 18, 2021: Challenge announcement &amp; </span><a
+                    href="https://github.com/s3prl/s3prl" target="_blank" rel="noopener"><span>S3PRL</span></a><span> released</span></li>
+            <li><span>Sep 30, 2021: Overall metrics announcement &amp; </span>
+                <a href="https://superbbenchmark.org/leaderboard"
+                    target="_blank" rel="noopener"><span>public-set leaderboard</span>
+                </a>
+                <span> is online and accepts submissions</span></li>
             <li><span>Oct 15, 2021: Hidden-set leaderboard is online and accepts submissions</span></li>
             <li><span>Nov 12, 2021: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
                 rel="noopener"><span>AAAI workshop</span></a><span> paper submission deadline (encouraged)</span></li>

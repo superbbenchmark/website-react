@@ -9,6 +9,7 @@ import { DescriptionButton } from "./components/Buttons";
 import { Strong } from "./components/Utilies";
 import { subscribe_link } from "./Data";
 import YouTube from 'react-youtube';
+import { HashLink } from 'react-router-hash-link';
 
 export default function Landing(props) {
     const theme = useTheme();
@@ -50,6 +51,36 @@ export default function Landing(props) {
             </Box>
             <Box margin={theme.spacing(1, "auto", 6)}>
                 <span><strong><a href={subscribe_link} target="_blank" rel="noopener noreferrer">Subscribe</a></strong> our e-news to receive all the latest information about SUPERB.</span>
+            </Box>
+            <Box maxWidth={800} margin={theme.spacing(1, "auto", 6)}>
+                <Typography variant="h6" color="textPrimary">
+                    <strong>2021 SUPERB Challenge Timeline</strong>
+                </Typography>
+                <span align="left">
+                    <HashLink to="/challenge#top">Challenge Policy</HashLink>
+                    <ul>
+                        <li><span><Strong>Sep 18, 2021</Strong>: Challenge announcement &amp; </span><a
+                            href="https://github.com/s3prl/s3prl" target="_blank" rel="noopener"><span>S3PRL</span></a><span> released</span></li>
+                        <li><span><Strong>Sep 30, 2021</Strong>: Overall metrics announcement &amp; </span>
+                            <a href="https://superbbenchmark.org/leaderboard"
+                                target="_blank" rel="noopener"><span>public-set leaderboard</span>
+                            </a>
+                            <span> is online and accepts submissions</span></li>
+                        <li><span><Strong>Oct 15, 2021</Strong>: Hidden-set leaderboard is online and accepts submissions</span></li>
+                        <li><span><Strong>Nov 12, 2021</Strong>: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
+                            rel="noopener"><span>AAAI workshop</span></a><span> paper submission deadline (encouraged)</span></li>
+                        <li><span><Strong>Dec 3, 2021</Strong>: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
+                            rel="noopener"><span>AAAI workshop</span></a><span> paper acceptance / rejection announcement</span>
+                        </li>
+                        <li><span><Strong>Jan 10, 2022</Strong>: Hidden-set leaderboard submission deadline</span></li>
+                        <li><span><Strong>Jan 13, 2022</Strong>: Submission selection &amp; system description paper deadline</span></li>
+                        <li><span><Strong>Jan 20, 2022</Strong>: Winner announcement &amp; reveal hidden-set private scores</span></li>
+                        <li><span><Strong>Jan 22, 2022</Strong>: AAAI late </span><a href="https://aaai.org/Conferences/AAAI-21/registration/"
+                            target="_blank" rel="noopener"><span>registration</span></a><span> deadline</span></li>
+                        <li><span>Feb 28 - Mar 1, 2022: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
+                            rel="noopener"><span>AAAI workshop</span></a><span> presentation</span></li>
+                    </ul>
+                </span>
             </Box>
             <YouTube videoId="zd9fiVvej0k" opts={opts} />
             <Box maxWidth={800} margin="auto" textAlign="left">
