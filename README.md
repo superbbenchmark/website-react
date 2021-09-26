@@ -1,6 +1,11 @@
 # Speech processing Universal PERformance Benchmark (SUPERB)
 ![image](./imgs/logo.png)
 Here are the frontend and backend servers.
+
+## Deployment
+https://superbbenchmark.org/
+
+
 ## Setup Guide
 ### Initial step
 Please install `nginx` and configure its setting. A sample file `nginx_setting` is provided.
