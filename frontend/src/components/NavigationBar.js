@@ -186,7 +186,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                 <AppBar color="primary">
                     <Toolbar className={classes.toolbar}>
                         <Grid container alignItems="center">
-                            <Grid item xs={9} md={1}>
+                            <Grid item xs={9} lg={2}>
                                 <Grid
                                     container
                                     direction="row"
@@ -233,14 +233,14 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                                         )}
                                 </Grid>
                             </Grid>
-                            <Grid item xs={3} md={11}>
+                            <Grid item xs={3} lg={10}>
                                 <Grid
                                     container
                                     direction="row"
                                     justify="flex-end"
                                     alignItems="center"
                                 >
-                                    <Hidden smDown>
+                                    <Hidden mdDown>
                                         {items.map(([content, link]) => (
                                             <Grid item key={link}>
                                                 <AdaptiveLink link={link}>
@@ -251,7 +251,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                                             </Grid>
                                         ))}
                                     </Hidden>
-                                    <Hidden mdUp>
+                                    <Hidden lgUp>
                                         <Grid item>
                                             <Drawer items={items}>
                                                 <LiftingBarButton>

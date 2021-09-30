@@ -59,7 +59,7 @@ export default function Landing(props) {
                 <span align="left">
                     <HashLink to="/challenge#top">Challenge Policy</HashLink>
                     <ul>
-                        <li><span><Strong>Sep 18, 2021</Strong>: Challenge announcement &amp; </span><a
+                        <li><span><Strong>Sep 18, 2021</Strong>: <HashLink to="/news#announcement2021">Challenge announcement</HashLink> &amp; </span><a
                             href="https://github.com/s3prl/s3prl" target="_blank" rel="noopener"><span>S3PRL</span></a><span> released</span></li>
                         <li><span><Strong>Sep 30, 2021</Strong>: Overall metrics announcement &amp; </span>
                             <a href="https://superbbenchmark.org/leaderboard"

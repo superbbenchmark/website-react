@@ -16,6 +16,8 @@ import InsertLinkIcon from "@material-ui/icons/InsertLink";
 import { leaderboard_columnInfo } from "./Data";
 import Model from "./components/Modal";
 import TrackSelect from "./components/TrackSelect";
+import SubsetSelect from "./components/SubsetSelect";
+import { overall_metric_adder } from "./overall_metrics";
 import { Box } from "@material-ui/core";
 
 const Styles = styled.div`
@@ -114,8 +116,8 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
     const randomColumn = scores[Math.floor(Math.random() * scores.length)];
     const defaultSortby = React.useMemo(() => [
         {
-            id: randomColumn.accessor,
-            desc: randomColumn.higherBetter,
+            id: "rank",
+            desc: true,
         },
     ]);
 
@@ -126,6 +128,7 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
             defaultColumn,
             initialState: {
                 hiddenColumns: [
+                    "modelURL",
                     "aoeTimeUpload",
                     "task",
                     "modelDesc",
@@ -257,7 +260,8 @@ function LeaderBoard(props) {
     const theme = useTheme();
     const [LeaderboardData, setLeaderboardData] = useState([]);
     const [LeaderboardShownData, setLeaderboardShownData] = useState([]);
-    const [task, setTask] = useState("all");
+    const [task, setTask] = useState("constrained");
+    const [subset, setSubset] = useState("Public Set");
 
     const memoizedNumericSort = React.useCallback(
         (rowA, rowB, columnId, desc) => {
@@ -315,7 +319,7 @@ function LeaderBoard(props) {
             accessor: key,
             width: leaderboard_columnInfo[key].width,
             sortType:
-                leaderboard_columnInfo[key] == "number"
+                leaderboard_columnInfo[key].isScore
                     ? memoizedNumericSort
                     : "alphanumeric",
             higherBetter: leaderboard_columnInfo[key].higherBetter,
@@ -328,16 +332,26 @@ function LeaderBoard(props) {
     });
     columns[0]["sticky"] = "left";
 
-    const memoColumns = React.useMemo(() => columns);
+    const onSubsetChange = (e) => {
+        setSubset(e.target.value);
+    };
+
+    let trimmedColumns, trimmedLeaderboardShownData
+    [trimmedColumns, trimmedLeaderboardShownData] = overall_metric_adder(["rank", "rank_p", "interpolation", "interpolation_p"],
+        columns, LeaderboardShownData, subset, memoizedNumericSort)
+    const memoColumns = React.useMemo(() => trimmedColumns);
 
     return (
         <>
-            <Box margin={theme.spacing(8, "auto", 1)}>
+            <Box margin={theme.spacing(2, "auto", 0.2)}>
                 <TrackSelect task={task} onTaskChange={onTaskChange} />
+            </Box>
+            <Box margin={theme.spacing(0.2, "auto", 1)}>
+                <SubsetSelect subset={subset} selections={["All tasks", "Paper", "Public Set"]} onChange={onSubsetChange} />
             </Box>
             <Table
                 columns={memoColumns}
-                data={LeaderboardShownData}
+                data={trimmedLeaderboardShownData}
                 {...props}
             />
         </>

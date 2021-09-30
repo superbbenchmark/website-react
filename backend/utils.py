@@ -66,7 +66,10 @@ def submission_records_parser(submission_records, configs, mode="individual"):
     file_info_list = configs[config_mode]["FILE"]
     score_info_list = configs[config_mode]["SCORE"]
 
-    submission_info = []
+    submission_info = []  
+    if mode == "individual":
+        submission_info.append(get_leaderboard_default()[0])  # need FBANK result as baseline
+
     for file_model in submission_records:
         single_info = {}
         score_model = file_model.scores[0]
@@ -110,6 +113,10 @@ def get_leaderboard_default():
             "SF_cer_public": 52.94,
             "SV_eer_public": 9.56,
             "SD_der_public": 10.05,
+            "ST_bleu_public": 2.32,
+            "SE_pesq_public": 2.5529,
+            "SE_stoi_public": 0.9364,
+            "SS_sisdri_public": 9.2341,
         },
         {
             "name":"paper",
@@ -140,6 +147,10 @@ def get_leaderboard_default():
             "SF_cer_public": 60.17,
             "SV_eer_public": 11.61,
             "SD_der_public": 8.68,
+            "ST_bleu_public": 3.16,
+            "SE_pesq_public": None,
+            "SE_stoi_public": None,
+            "SS_sisdri_public": None,
         },
         {
             "name":"paper",
@@ -170,6 +181,10 @@ def get_leaderboard_default():
             "SF_cer_public": 50.89,
             "SV_eer_public": 8.56,
             "SD_der_public": 10.53,
+            "ST_bleu_public": 5.95,
+            "SE_pesq_public": 2.5567,
+            "SE_stoi_public": 0.9338,
+            "SS_sisdri_public": None,
         },
         {
             "name":"paper",
@@ -200,6 +215,10 @@ def get_leaderboard_default():
             "SF_cer_public": 52.91,
             "SV_eer_public": 8.72,
             "SD_der_public": 10.45,
+            "ST_bleu_public": 4.23,
+            "SE_pesq_public": None,
+            "SE_stoi_public": None,
+            "SS_sisdri_public": None,
         },
         {
             "name":"paper",
@@ -230,6 +249,10 @@ def get_leaderboard_default():
             "SF_cer_public": 48.44,
             "SV_eer_public": 9.4,
             "SD_der_public": 9.34,
+            "ST_bleu_public": 4.32,
+            "SE_pesq_public": 2.5211,
+            "SE_stoi_public": 0.931,
+            "SS_sisdri_public": None,
         },
         {
             "name":"paper",
@@ -260,6 +283,10 @@ def get_leaderboard_default():
             "SF_cer_public": 58.89,
             "SV_eer_public": 11.66,
             "SD_der_public": 10.54,
+            "ST_bleu_public": 4.45,
+            "SE_pesq_public": 2.5305,
+            "SE_stoi_public": 0.9344,
+            "SS_sisdri_public": None,
         },
         {
             "name":"paper",
@@ -290,6 +317,10 @@ def get_leaderboard_default():
             "SF_cer_public": 54.17,
             "SV_eer_public": 15.89,
             "SD_der_public": 9.96,
+            "ST_bleu_public": 5.24,
+            "SE_pesq_public": 2.5422,
+            "SE_stoi_public": 0.9362,
+            "SS_sisdri_public": None,
         },
         {
             "name":"paper",
@@ -320,6 +351,10 @@ def get_leaderboard_default():
             "SF_cer_public": 49.91,
             "SV_eer_public": 12.86,
             "SD_der_public": 10.38,
+            "ST_bleu_public": 4.82,
+            "SE_pesq_public": 2.5709,
+            "SE_stoi_public": 0.937,
+            "SS_sisdri_public": 10.3961,
         },
         {
             "name":"paper",
@@ -350,6 +385,10 @@ def get_leaderboard_default():
             "SF_cer_public": 43.71,
             "SV_eer_public": 7.99,
             "SD_der_public": 9.9,
+            "ST_bleu_public": 6.61,
+            "SE_pesq_public": 2.5279,
+            "SE_stoi_public": 0.9381,
+            "SS_sisdri_public": None,
         },
         {
             "name":"paper",
@@ -380,6 +419,10 @@ def get_leaderboard_default():
             "SF_cer_public": 41.54,
             "SV_eer_public": 10.38,
             "SD_der_public": 9.93,
+            "ST_bleu_public": 5.66,
+            "SE_pesq_public": 2.4768,
+            "SE_stoi_public": 0.9355,
+            "SS_sisdri_public": None,
         },
         {
             "name":"paper",
@@ -410,6 +453,10 @@ def get_leaderboard_default():
             "SF_cer_public": 24.77,
             "SV_eer_public": 6.02,
             "SD_der_public": 6.08,
+            "ST_bleu_public": 14.81,
+            "SE_pesq_public": 2.5492,
+            "SE_stoi_public": 0.9387,
+            "SS_sisdri_public": 9.7671,
         },
         {
             "name":"paper",
@@ -422,7 +469,7 @@ def get_leaderboard_default():
             "inputFormat": "waveform",
             "corpus": "LL 60k hr",
             "paramDesc":"-",
-            "paramShared": 95.04e6,
+            "paramShared": 317.38e6,
             "PR_per_public": 4.75,
             "KS_acc_public": 96.66,
             "IC_acc_public": 95.28,
@@ -440,6 +487,10 @@ def get_leaderboard_default():
             "SF_cer_public": 27.31,
             "SV_eer_public": 5.65,
             "SD_der_public": 5.62,
+            "ST_bleu_public": 14.07,
+            "SE_pesq_public": 2.5211,
+            "SE_stoi_public": 0.9404,
+            "SS_sisdri_public": None,
         },
         {
             "name":"paper",
@@ -470,6 +521,10 @@ def get_leaderboard_default():
             "SF_cer_public": 25.20,
             "SV_eer_public": 5.11,
             "SD_der_public": 5.88,
+            "ST_bleu_public": 15.53,
+            "SE_pesq_public": 2.5772,
+            "SE_stoi_public": 0.9394,
+            "SS_sisdri_public": 9.3557,
         },
         {
             "name":"paper",
@@ -500,6 +555,10 @@ def get_leaderboard_default():
             "SF_cer_public": 21.76,
             "SV_eer_public": 5.98,
             "SD_der_public": 5.75,
+            "ST_bleu_public": 20.01,
+            "SE_pesq_public": 2.6421,
+            "SE_stoi_public": 0.9418,
+            "SS_sisdri_public": 10.4514,
         },
         {
             "name":"paper",
@@ -512,7 +571,7 @@ def get_leaderboard_default():
             "inputFormat": "FBANK",
             "corpus": "LS 960 hr",
             "paramDesc":"-",
-            "paramShared": 85.12e6,
+            "paramShared": 89.84e6,
             "PR_per_public": 14.93,
             "KS_acc_public": 94.48,
             "IC_acc_public": 90.80,
@@ -530,6 +589,10 @@ def get_leaderboard_default():
             "SF_cer_public": 34.73,
             "SV_eer_public": 7.16,
             "SD_der_public": 6.59,
+            "ST_bleu_public": 9.94,
+            "SE_pesq_public": None,
+            "SE_stoi_public": None,
+            "SS_sisdri_public": None,
         },
     ]
     return data

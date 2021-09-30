@@ -460,6 +460,34 @@ const individual_submission_columnInfo = {
         isScore: true,
         type: "number",
     },
+    ST_bleu_public: {
+        header: "ST public",
+        width: 110,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    SE_pesq_public: {
+        header: "SE-PESQ public",
+        width: 110,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    SE_stoi_public: {
+        header: "SE-STOI public",
+        width: 110,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    SS_sisdri_public: {
+        header: "SS public",
+        width: 110,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
 };
 
 
@@ -658,6 +686,34 @@ const leaderboard_columnInfo = {
         header: "SD public",
         width: 110,
         higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    ST_bleu_public: {
+        header: "ST public",
+        width: 110,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    SE_pesq_public: {
+        header: "SE-PESQ public",
+        width: 150,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    SE_stoi_public: {
+        header: "SE-STOI public",
+        width: 150,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    SS_sisdri_public: {
+        header: "SS public",
+        width: 110,
+        higherBetter: true,
         isScore: true,
         type: "number",
     },
@@ -968,4 +1024,22 @@ const submissions = [
     },
 ];
 
-export { subscribe_link, domains, tracks, submissions, submission_types, individual_submission_columnInfo, leaderboard_columnInfo, leaderboard_selections };
+const reference_points = {
+    "PR_per_public": [17.99	, 96.47],
+    "KS_acc_public": [41.3826674, 96.66],
+    "IC_acc_public": [9.649354219, 98.76],
+    "SID_acc_public": [20.058174, 9.03e+01],
+    "ER_acc_public": [48.23672168, 67.62],
+    "ASR_wer_public": [76.82, 96.38],
+    "QbE_mtwv_public": [0.0058, 0.0736],
+    "SF_f1_public": [69.64, 89.81],
+    "SF_cer_public": [47.06, 78.24],
+    "SV_eer_public": [90.44, 94.89],
+    "SD_der_public": [89.95, 94.38],
+    "ST_bleu_public": [2.32, 20.01],
+    "SE_pesq_public": [2.5529, 2.6421],
+    "SE_stoi_public": [0.9364, 0.9418],
+    "SS_sisdri_public": [9.2341, 10.4514],
+}
+
+export { reference_points, subscribe_link, domains, tracks, submissions, submission_types, individual_submission_columnInfo, leaderboard_columnInfo, leaderboard_selections };

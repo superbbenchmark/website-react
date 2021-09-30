@@ -30,6 +30,9 @@ import { AuthContext } from "./context/auth-context";
 import swal from "sweetalert";
 import Model from "./components/Modal";
 import TrackSelect from "./components/TrackSelect";
+import SubsetSelect from "./components/SubsetSelect";
+import { overall_metric_adder } from "./overall_metrics";
+import { Box } from "@material-ui/core";
 
 const Styles = styled.div`
   .table {
@@ -280,6 +283,7 @@ function Profile(props) {
     const [resetUserName, setResetUserName] = useState("");
     const [dailyCounts, setDailyCounts] = useState(0);
     const [monthlyCounts, setMonthlyCounts] = useState(0);
+    const [subset, setSubset] = useState("Public Set");
 
     const memoizedNumericSort = React.useCallback(
         (rowA, rowB, columnId, desc) => {
@@ -480,7 +484,13 @@ function Profile(props) {
     });
     columns[0]["sticky"] = "left";
 
-    const memoColumns = React.useMemo(() => columns);
+    const onSubsetChange = (e) => {
+        setSubset(e.target.value);
+    };
+
+    let trimmedColumns, trimmedShownData;
+    [trimmedColumns, trimmedShownData] = overall_metric_adder(["interpolation", "interpolation_p"], columns, shownData, subset, memoizedNumericSort)
+    const memoColumns = React.useMemo(() => trimmedColumns);
 
     const resetbtnstyle = {
         margin: 10,
@@ -523,8 +533,13 @@ function Profile(props) {
                     title="Submission history"
                     description="You can check the checkbox to show your submission result(s) on the leaderboard."
                 />
-                <TrackSelect task={task} onTaskChange={onTaskChange} />
-                <Table columns={memoColumns} data={shownData} {...props} />
+                <Box margin={theme.spacing(2, "auto", 0.2)}>
+                    <TrackSelect task={task} onTaskChange={onTaskChange} />
+                </Box>
+                <Box margin={theme.spacing(0.2, "auto", 1)}>
+                    <SubsetSelect subset={subset} selections={["Paper", "Public Set"]} onChange={onSubsetChange} />
+                </Box>
+                <Table columns={memoColumns} data={trimmedShownData} {...props} />
             </Section>
         </>
     );
