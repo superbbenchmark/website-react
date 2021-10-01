@@ -26,6 +26,7 @@ import Clock from "react-live-clock";
 import axios from "axios";
 import { formVal } from "../utils/form-validator";
 import FormTextField from "./FormTextfield";
+import { leaderboard_selections } from "../Data";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -54,6 +55,7 @@ export default function SubmitForm(props) {
     const filePickerRef = useRef();
     const history = useHistory();
     const [isLoading, setIsLoading] = useState(false);
+    const submit_type = ["hidden", "public"];
     const {
         control,
         handleSubmit,
@@ -366,6 +368,28 @@ export default function SubmitForm(props) {
                         titleColor="primary"
                     />
                 </SubSubSection>
+                <div className="select group" style={{width: "fit-content", maxWidth: "100%", margin: "auto",}}>
+                    <RadioGroup row aria-label="position" name="position" defaultValue="constrained" value="constrained">
+                    {leaderboard_selections.map((leaderboard_selections) => {
+                            return (
+                                <ThemeProvider theme={leaderboard_selections.theme}>
+                                    <FormControlLabel
+                                        value={leaderboard_selections.name}
+                                        control={<Radio color="primary" />}
+                                        label={
+                                            <Typography color="primary">
+                                                {capitalizeFirstLetter(
+                                                    leaderboard_selections.name.toLowerCase()
+                                                )}
+                                            </Typography>
+                                        }
+                                        color="primary"
+                                    />
+                                </ThemeProvider>
+                            );
+                        })}
+                    </RadioGroup>
+                </div>
                 <DifferentPart login={props.login} />
             </div>
         </ThemeProvider>
