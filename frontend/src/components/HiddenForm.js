@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 
@@ -6,7 +6,6 @@ import swal from "sweetalert";
 import axios from "axios";
 
 import { Typography, Button } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -42,54 +41,36 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HiddenForm(){
     const classes = useStyles();
-    const filePickerRef = useRef();
     const history = useHistory();
     const [isLoading, setIsLoading] = useState(false);
 
     const {
         control,
         handleSubmit,
-        register,
         formState: { errors },
-        setValue,
-        watch,
     } = useForm({
         defaultValues: {
             submitName: "",
-            modelURL: "",
-            modelDesc: "",
-            stride: "",
-            inputFormat: "",
-            corpus: "",
-            paramDesc: "",
+            huggingfaceOrganizationName: "",
+            huggingfaceRepoName: "",
+            huggingfaceCommonHash: "",
             paramShared: "",
-            fineTunedParam: "",
-            taskSpecParam: "",
             task: "1",
         },
     });
 
-    const { ref, ...rest } = register("file", formVal.file);
-
     const auth = useContext(AuthContext);
-    const watchFile = watch("file");
-
     const submitHandler = async (data) => {
         try {
             setIsLoading(true);
             const formData = new FormData();
             formData.append("submitName", data.submitName);
-            formData.append("modelURL", data.modelURL);
-            formData.append("modelDesc", data.modelDesc);
-            formData.append("stride", data.stride);
-            formData.append("inputFormat", data.inputFormat);
-            formData.append("corpus", data.corpus);
-            formData.append("paramDesc", data.paramDesc);
+            formData.append("huggingfaceOrganizationName", data.huggingfaceOrganizationName);
+            formData.append("huggingfaceRepoName", data.huggingfaceRepoName);
+            formData.append("huggingfaceCommonHash", data.huggingfaceCommonHash);
             formData.append("paramShared", data.paramShared);
-            formData.append("fineTunedParam", data.fineTunedParam);
-            formData.append("taskSpecParam", data.taskSpecParam);
             formData.append("task", data.task);
-            formData.append("file", data?.file[0]);
+
             const res = await axios({
                 method: "post",
                 url: "/api/submission",
@@ -110,7 +91,7 @@ export default function HiddenForm(){
                 .catch((err) => {
                     setIsLoading(false);
                     swal({
-                        title: "Error",
+                        title: "Preparing...",
                         text: err.response.data.message,
                         icon: "error",
                     });
@@ -144,72 +125,43 @@ export default function HiddenForm(){
                             errors.submitName && errors.submitName.message
                         }
                     />
+
                     <FormTextField
                         control={control}
                         className={classes.textField}
-                        name="modelURL"
-                        label="Model URL/Github"
-                        description="A Github URL for your model code repository. (Optional)"
-                        rules={formVal.modelURL}
-                        error={errors.modelURL}
-                        helperText={errors.modelURL && errors.modelURL.message}
-                    />
-                    <FormTextField
-                        control={control}
-                        className={classes.textField}
-                        name="modelDesc"
-                        label="Model Description*"
-                        description="A sentence or two describing your system. Make sure to mention any outside data you use. (Required)"
-                        rules={formVal.modelDesc}
-                        error={errors.modelDesc}
+                        name="huggingfaceOrganizationName"
+                        label="Huggingface Organization Name*"
+                        description="Organization Name of your huggingface model hub. (Required)"
+                        rules={formVal.huggingfaceOrganizationName}
+                        error={errors.huggingfaceOrganizationName}
                         helperText={
-                            errors.modelDesc && errors.modelDesc.message
-                        }
-                    />
-                    <FormTextField
-                        control={control}
-                        className={classes.textField}
-                        name="stride"
-                        label="Stride*"
-                        description="Your stride width (ms). (Required)"
-                        rules={formVal.stride}
-                        error={errors.stride}
-                        helperText={errors.stride && errors.stride.message}
-                    />
-                    <FormTextField
-                        control={control}
-                        className={classes.textField}
-                        name="inputFormat"
-                        label="Input Format*"
-                        description="The type of input format you use. e.g., waveform, FBANK. (Required) "
-                        rules={formVal.inputFormat}
-                        error={errors.inputFormat}
-                        helperText={
-                            errors.inputFormat && errors.inputFormat.message
+                            errors.huggingfaceOrganizationName && errors.huggingfaceOrganizationName.message
                         }
                     />
 
                     <FormTextField
                         control={control}
                         className={classes.textField}
-                        name="corpus"
-                        label="Corpus*"
-                        description="The type of corpus you use. e.g., LS 50 hr, LL 60k hr. (Required)"
-                        rules={formVal.corpus}
-                        error={errors.corpus}
-                        helperText={errors.corpus && errors.corpus.message}
+                        name="huggingfaceRepoName"
+                        label="Huggingface Repository Name*"
+                        description="Repository Name for your model. (Required)"
+                        rules={formVal.huggingfaceRepoName}
+                        error={errors.huggingfaceRepoName}
+                        helperText={
+                            errors.huggingfaceRepoName && errors.huggingfaceRepoName.message
+                        }
                     />
 
                     <FormTextField
                         control={control}
                         className={classes.textField}
-                        name="paramDesc"
-                        label="Parameter Description*"
-                        description="A sentence or explaining how you share parameters accross tasks (or stating that you don't share parameters). (Required)"
-                        rules={formVal.paramDesc}
-                        error={errors.paramDesc}
+                        name="huggingfaceCommonHash"
+                        label="Huggingface Common Hash*"
+                        description="Common hash of your model. (Required)"
+                        rules={formVal.huggingfaceCommonHash}
+                        error={errors.huggingfaceCommonHash}
                         helperText={
-                            errors.paramDesc && errors.paramDesc.message
+                            errors.huggingfaceCommonHash && errors.huggingfaceCommonHash.message
                         }
                     />
 
@@ -223,31 +175,6 @@ export default function HiddenForm(){
                         error={errors.paramShared}
                         helperText={
                             errors.paramShared && errors.paramShared.message
-                        }
-                    />
-                    <FormTextField
-                        control={control}
-                        className={classes.textField}
-                        name="fineTunedParam"
-                        label="Fine-tuned parameters"
-                        description="The number of parameters in your model which are common but require task specific fine-tuning (only numeric numbers allowed). (Optional)"
-                        rules={formVal.fineTunedParam}
-                        error={errors.fineTunedParam}
-                        helperText={
-                            errors.fineTunedParam &&
-                            errors.fineTunedParam.message
-                        }
-                    />
-                    <FormTextField
-                        control={control}
-                        className={classes.textField}
-                        name="taskSpecParam"
-                        label="Task-Specific parameters"
-                        description="The number of parameters in your model which are task specific and not used by any other tasks (only numeric numbers allowed). (Optional)"
-                        rules={formVal.taskSpecParam}
-                        error={errors.taskSpecParam}
-                        helperText={
-                            errors.taskSpecParam && errors.taskSpecParam.message
                         }
                     />
 
@@ -265,7 +192,7 @@ export default function HiddenForm(){
                                     aria-label="position"
                                     {...field}
                                 >
-                                    {tracks.map((track, index) => {
+                                    {[tracks[0]].map((track, index) => {
                                         return (
                                             <ThemeProvider theme={track.theme}>
                                                 <FormControlLabel
@@ -291,30 +218,6 @@ export default function HiddenForm(){
                             )}
                         />
                     </FormControl>
-                    <input
-                        type="file"
-                        accept=".zip"
-                        style={{ display: "none" }}
-                        name="file"
-                        ref={(e) => {
-                            ref(e);
-                            filePickerRef.current = e;
-                        }}
-                        onChange={(e) => setValue("file", e.target.files)}
-                    />
-                    <Button
-                        className={classes.Button}
-                        variant="contained"
-                        color="primary"
-                        onClick={() => filePickerRef.current.click()}
-                    >
-                        {watchFile && watchFile[0]?.name
-                            ? watchFile[0]?.name
-                            : "Select zip"}
-                    </Button>
-                    <span style={{ color: "red" }}>
-                        {errors.file && errors.file.message}
-                    </span>
                     <Button
                         className={classes.Button}
                         variant="contained"
