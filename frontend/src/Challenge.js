@@ -1,26 +1,17 @@
 import React from "react";
-import { makeStyles, ThemeProvider, useTheme } from "@material-ui/core/styles";
-// import { MarkDownElement } from "@material-ui/docs/MarkDownElement";
-import { Box, Typography, Grid, Button } from "@material-ui/core";
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { atomOneDarkReasonable } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import ReactMarkdown from 'react-markdown';
-
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import remarkGfm from 'remark-gfm';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atomOneLight as colorTheme } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 import { Section } from "./components/Sections";
-import { Title } from "./components/Titles";
-import AdaptiveLink from "./components/AdaptiveLink";
-import { LiftedPaper } from "./components/LiftedOnHover";
-import { capitalizeFirstLetter, Strong } from "./components/Utilies";
+import { HashLink } from 'react-router-hash-link';
 import policy from "./policy";
 
-const markdown = `
-# test
-## test2
-### test3
-* gag
-* ada
-`
+
 
 const useStyles = makeStyles((theme) => ({
     image: {
@@ -31,13 +22,47 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Challenge(props) {
-    const classes = useStyles();
     const theme = useTheme();
 
     return (
         <React.Fragment>
-            <Section margin={theme.spacing(8, "auto", 1)}>
-                {policy}
+            <Section margin={theme.spacing(8, "auto", 1)} align="left">
+                <ReactMarkdown
+                    children={policy}
+                    remarkPlugins={[remarkMath, remarkGfm]}
+                    rehypePlugins={[rehypeKatex]}
+                    components={{
+                        code({ node, inline, className, children, ...props }) {
+                            const match = /language-(\w+)/.exec(className || '')
+                            return !inline && match ? (
+                                <SyntaxHighlighter
+                                    children={String(children).replace(/\n$/, '')}
+                                    language={match[1]}
+                                    PreTag="div"
+                                    style={colorTheme}
+                                    showLineNumbers={true}
+                                    {...props}
+                                />
+                            ) : (
+                                <code className={className} {...props}>
+                                    {children}
+                                </code>
+                            )
+                        },
+                        a({ href, children, ...props }) {
+                            const match = /.*superbbenchmark\.org\/\w+/.exec(href || '')
+                            return match ? (
+                                <HashLink to={match[0].replace(/.*superbbenchmark\.org/, "") + "#top"} {...props}>
+                                    {children}
+                                </HashLink>
+                            ) : (
+                                <a href={href} {...props}>
+                                    {children}
+                                </a>
+                            )
+                        }
+                    }}
+                />
             </Section>
         </React.Fragment >
     );
