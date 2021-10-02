@@ -238,6 +238,17 @@ const leaderboard_selections = [
     },
 ];
 
+const public_hidden_selections = [
+    {
+        name: "public",
+        theme: createMuiTheme(submitFormTheme),
+    },
+    {
+        name: "hidden",
+        theme: createMuiTheme(submitFormTheme),
+    },
+];
+
 const individual_submission_columnInfo = {
     aoeTimeUpload: {
         header: "Upolad Time",
@@ -968,4 +979,4 @@ const submissions = [
     },
 ];
 
-export { subscribe_link, domains, tracks, submissions, submission_types, individual_submission_columnInfo, leaderboard_columnInfo, leaderboard_selections };
+export { subscribe_link, domains, tracks, submissions, submission_types, individual_submission_columnInfo, leaderboard_columnInfo, leaderboard_selections, public_hidden_selections };
