@@ -95,6 +95,31 @@ const formVal = {
                 fileList[0]?.size < 50 * 1024 * 1024 ? true : "File too large",
         },
     },
+    huggingfaceOrganizationName: {
+        required: "This field is requied.",
+        maxLength: {
+            value: 30,
+            message: "Huggingface Organization Name should be over 30 charaters",
+        },
+    },
+    huggingfaceRepoName: {
+        required: "This field is requied.",
+        maxLength: {
+            value: 30,
+            message: "Huggingface Repository Name should be over 30 charaters",
+        },
+    },
+    huggingfaceCommonHash: {
+        required: "This field is requied.",
+        maxLength: {
+            value: 6,
+            message: "Huggingface Common Hash should be equal to 6 charaters",
+        },
+        minLength: {
+            value: 6,
+            message: "Huggingface Common Hash should be equal to 6 charaters",
+        },
+    },
 };
 
 export { formVal };
