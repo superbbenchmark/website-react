@@ -1053,4 +1053,4 @@ const reference_points = {
     "SS_sisdri_public": [9.2341, 10.4514],
 }
 
-export { reference_points, subscribe_link, domains, tracks, submissions, submission_types, individual_submission_columnInfo, leaderboard_columnInfo, leaderboard_selections };
+export { reference_points, subscribe_link, domains, tracks, submissions, submission_types, individual_submission_columnInfo, leaderboard_columnInfo, leaderboard_selections, public_hidden_selections};
