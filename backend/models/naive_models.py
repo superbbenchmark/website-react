@@ -43,6 +43,30 @@ class FileModel(Base):
 
     scores = relationship("ScoreModel",  backref="files")
 
+class HiddenFileModel(Base):
+    __tablename__ = "hiddenfiles"
+
+    id = Column(Integer, primary_key=True)
+    email = Column(ForeignKey('users.email'), nullable=False)
+    submitUUID = Column(String(36),  nullable=False)
+
+    # upload froms
+    submitName = Column(String(80),  nullable=False)
+    huggingfaceOrganizationName = Column(String(80))
+    huggingfaceRepoName = Column(String(80))
+    huggingfaceCommonHash = Column(String(80))
+    paramShared = Column(String(80))
+    task = Column(Enum(Task),  nullable=False)
+
+    # others
+    state = Column(Enum(Status),  nullable=False)
+    stateInfo = Column(String(80))
+    aoeTimeUpload = Column(DateTime, nullable=False)
+    dateUpload = Column(DateTime)
+    showOnLeaderboard = Column(Enum(Show),  nullable=False)
+
+    scores = relationship("HiddenScoreModel",  backref="hiddenfiles")
+
 class ScoreModel(Base):
     __tablename__ = "scores"
 
@@ -67,3 +91,48 @@ class ScoreModel(Base):
     SF_cer_public = Column(Float)
     SV_eer_public = Column(Float)
     SD_der_public = Column(Float)
+
+class HiddenScoreModel(Base):
+    __tablename__ = "hiddenscores"
+
+    id = Column(Integer, primary_key=True)
+    fileId = Column(Integer, ForeignKey('files.id'), nullable=False)
+
+    # metrics
+    ## hidden dev set
+    PR_per_hidden_dev = Column(Float)
+    KS_acc_hidden_dev = Column(Float)
+    IC_acc_hidden_dev = Column(Float)
+    SID_acc_hidden_dev = Column(Float)
+    ER_acc_hidden_dev = Column(Float)
+    ERfold1_acc_hidden_dev = Column(Float)
+    ERfold2_acc_hidden_dev = Column(Float)
+    ERfold3_acc_hidden_dev = Column(Float)
+    ERfold4_acc_hidden_dev = Column(Float)
+    ERfold5_acc_hidden_dev = Column(Float)
+    ASR_wer_hidden_dev = Column(Float)
+    ASR_LM_wer_hidden_dev = Column(Float)
+    QbE_mtwv_hidden_dev = Column(Float)
+    SF_f1_hidden_dev = Column(Float)
+    SF_cer_hidden_dev = Column(Float)
+    SV_eer_hidden_dev = Column(Float)
+    SD_der_hidden_dev = Column(Float)
+
+    ## hidden test set
+    PR_per_hidden_test = Column(Float)
+    KS_acc_hidden_test = Column(Float)
+    IC_acc_hidden_test = Column(Float)
+    SID_acc_hidden_test = Column(Float)
+    ER_acc_hidden_test = Column(Float)
+    ERfold1_acc_hidden_test = Column(Float)
+    ERfold2_acc_hidden_test = Column(Float)
+    ERfold3_acc_hidden_test = Column(Float)
+    ERfold4_acc_hidden_test = Column(Float)
+    ERfold5_acc_hidden_test = Column(Float)
+    ASR_wer_hidden_test = Column(Float)
+    ASR_LM_wer_hidden_test = Column(Float)
+    QbE_mtwv_hidden_test = Column(Float)
+    SF_f1_hidden_test = Column(Float)
+    SF_cer_hidden_test = Column(Float)
+    SV_eer_hidden_test = Column(Float)
+    SD_der_hidden_test = Column(Float)
