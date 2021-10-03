@@ -6,16 +6,18 @@ from threading import Thread
 from http import HTTPStatus
 
 from models.file import FileModel, Task, Show
+from models.hiddenfile import HiddenFileModel
 from models.score import ScoreModel
+from models.hiddenscore import HiddenScoreModel
 from models.user import UserModel
-from schemas.submission import SubmissionSchema
-from utils import submission_records_parser, get_AOE_month, get_AOE_today,  get_leaderboard_default
+from schemas.submission import SubmissionPublicSchema, SubmissionHiddenSchema
+from utils import submission_records_parser, get_AOE_month, get_AOE_today,  get_leaderboard_default, get_hidden_leaderboard_default
 from calculate import metric_calculate_pipeline
 from config import configs
 import file_upload
 
-formSchema = SubmissionSchema()
-
+publicFormSchema = SubmissionPublicSchema()
+hiddenFormSchema = SubmissionHiddenSchema()
 
 class Submission(Resource):
     @classmethod
@@ -58,7 +60,7 @@ class Submission(Resource):
                 return {"message": "Wrong file format."}, HTTPStatus.FORBIDDEN
 
             # load form data
-            formData = formSchema.load(request.form)
+            formData = publicFormSchema.load(request.form)
 
             # get file path
             upload_count = FileModel.get_upload_count_by_mail(
@@ -149,6 +151,109 @@ class LeaderBoard(Resource):
                     UserModel.find_by_email(email=user_data.email).name)
             submission_info = submission_records_parser(
                 leaderboard_user_data, configs, mode="leaderboard")
+
+            for single_info, name in zip(submission_info, submission_names):
+                single_info.update({"name": name})
+
+            leaderboard_default_data += submission_info
+
+            return {"leaderboard": leaderboard_default_data}, HTTPStatus.OK
+
+        except Exception as e:
+            print(e)
+            return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+class HiddenSubmission(Resource):
+    @classmethod
+    @jwt_required()
+    def post(cls):
+        '''Upload user submission'''
+        try:
+            user_mail = get_jwt_identity()
+
+            # check current submission counts
+            daily_counts = HiddenFileModel.get_interval_upload_count_by_mail(
+                email=user_mail, AOEtime=get_AOE_today(to_str=False))
+            monthly_counts = HiddenFileModel.get_interval_upload_count_by_mail(
+                email=user_mail, AOEtime=get_AOE_month(to_str=False))
+            if (daily_counts >= configs["HIDDEN_DAILY_SUBMIT_LIMIT"]) or (monthly_counts >= configs["HIDDEN_MONTHLY_SUBMIT_LIMIT"]):
+                return {"message": f"You have submitted {daily_counts} times today and {monthly_counts} times this month."}, HTTPStatus.FORBIDDEN
+
+            # load form data
+            formData = hiddenFormSchema.load(request.form)
+
+            # add column for db
+            formData.update({"email": user_mail})
+
+            fileObj = HiddenFileModel(**formData)
+            scoreObj = HiddenScoreModel()
+            fileObj.scores.append(scoreObj)
+            fileObj.save_to_db()
+
+        except ValidationError as e:
+            return {"message": "There's something worng with your input!"}, HTTPStatus.BAD_REQUEST
+        except Exception as e:
+            print(e)
+            return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+    @classmethod
+    @jwt_required()
+    def patch(cls, submitID):
+        '''Change user submission show on leaderboard or not by uuid'''
+        try:
+            user_mail = get_jwt_identity()
+
+            submission_record = HiddenFileModel.find_by_submitID(submitUUID=submitID)
+
+            assert submission_record.email == user_mail
+            task_id = submission_record.task.value  # == mapping[task]
+
+            if submission_record.showOnLeaderboard == Show.YES:
+                # set the "show" of all the same task submission to "NO"
+                HiddenFileModel.reset_same_task_show_attribute(
+                    email=user_mail, task=Task(task_id))
+                return {"message": "Remove from the leaderboard!", "submitID": submitID}, HTTPStatus.OK
+
+            else:
+                # set the "show" of all the same task submission to "NO"
+                HiddenFileModel.reset_same_task_show_attribute(
+                    email=user_mail, task=Task(task_id))
+                HiddenFileModel.set_show_attribute_by_submitID(submitUUID=submitID)
+                return {"message": "Shown on the leaderboard!", "submitID": submitID}, HTTPStatus.OK
+
+        except Exception as e:
+            print(e)
+            return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+class HiddenSubmissionList(Resource):
+    @classmethod
+    @jwt_required()
+    def get(cls):
+        '''Get user all submission info'''
+        try:
+            user_mail = get_jwt_identity()
+            submission_records = HiddenFileModel.find_by_email(email=user_mail).all()
+            submission_info = submission_records_parser(
+                submission_records, configs, mode="individual", competition_type="hidden")
+            return make_response(jsonify({"submission_info": submission_info}), HTTPStatus.OK)
+        except Exception as e:
+            return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+class HiddenLeaderBoard(Resource):
+    @classmethod
+    def get(cls):
+        '''Get hidden leaderboard data'''
+        try:
+            leaderboard_default_data = get_hidden_leaderboard_default()
+            leaderboard_user_data = HiddenFileModel.find_show_on_leaderboard()
+            submission_names = []
+            for user_data in leaderboard_user_data:
+                submission_names.append(
+                    UserModel.find_by_email(email=user_data.email).name)
+            submission_info = submission_records_parser(
+                leaderboard_user_data, configs, mode="leaderboard", competition_type="hidden")
 
             for single_info, name in zip(submission_info, submission_names):
                 single_info.update({"name": name})

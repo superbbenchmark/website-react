@@ -37,7 +37,7 @@ def get_AOE_month(to_str=True):
         return aoe_time
 
 
-def submission_records_parser(submission_records, configs, mode="individual"):
+def submission_records_parser(submission_records, configs, mode="individual", competition_type="public"):
 
     def __submission_records_parser(attribute, key_name):
         if attribute is None:
@@ -60,14 +60,21 @@ def submission_records_parser(submission_records, configs, mode="individual"):
         else:
             return attribute
     if mode == "individual":
-        config_mode = "INDIVIDUAL_SUBMISSION_INFO"
+        if competition_type == "public":
+            config_mode = "INDIVIDUAL_SUBMISSION_INFO"
+        elif competition_type == "hidden":
+            config_mode = "INDIVIDUAL_HIDDEN_SUBMISSION_INFO"
+
     elif mode == "leaderboard":
-        config_mode = "LEADERBOARD_INFO"
+        if competition_type == "public":
+            config_mode = "LEADERBOARD_INFO"
+        elif competition_type == "hidden":
+            config_mode = "LEADERBOARD_HIDDEN_INFO"
     file_info_list = configs[config_mode]["FILE"]
     score_info_list = configs[config_mode]["SCORE"]
 
     submission_info = []  
-    if mode == "individual":
+    if (mode == "individual") and (competition_type == "public"):
         submission_info.append(get_leaderboard_default()[0])  # need FBANK result as baseline
 
     for file_model in submission_records:
@@ -593,6 +600,62 @@ def get_leaderboard_default():
             "SE_pesq_public": None,
             "SE_stoi_public": None,
             "SS_sisdri_public": None,
+        },
+    ]
+    return data
+
+def get_hidden_leaderboard_default():
+    data = [{
+            "name":"paper",
+            "aoeTimeUpload":"Interspeech2021",
+            "task":"CONSTRAINED",
+            "submitName": "FBANK",
+            "huggingfaceOrganizationName":"-",
+            "huggingfaceRepoName": "-",
+            "huggingfaceCommonHash": "-",
+            "paramShared": 0,
+            "PR_per_hidden_dev": 82.01,
+            "KS_acc_hidden_dev": 8.63,
+            "IC_acc_hidden_dev": 9.10,
+            "SID_acc_hidden_dev": 8.5e-4,
+            "ER_acc_hidden_dev": 35.39,
+            "ERfold1_acc_hidden_dev": "-",
+            "ERfold2_acc_hidden_dev": "-",
+            "ERfold3_acc_hidden_dev": "-",
+            "ERfold4_acc_hidden_dev": "-",
+            "ERfold5_acc_hidden_dev": "-",
+            "ASR_wer_hidden_dev": 23.18,
+            "ASR_LM_wer_hidden_dev": 15.21,
+            "QbE_mtwv_hidden_dev": 0.0058,
+            "SF_f1_hidden_dev": 69.64,
+            "SF_cer_hidden_dev": 52.94,
+            "SV_eer_hidden_dev": 9.56,
+            "SD_der_hidden_dev": 10.05,
+            "ST_bleu_hidden_dev": 2.32,
+            "SE_pesq_hidden_dev": 2.5529,
+            "SE_stoi_hidden_dev": 0.9364,
+            "SS_sisdri_hidden_dev": 9.2341,
+            "PR_per_hidden_test": 82.01,
+            "KS_acc_hidden_test": 8.63,
+            "IC_acc_hidden_test": 9.10,
+            "SID_acc_hidden_test": 8.5e-4,
+            "ER_acc_hidden_test": 35.39,
+            "ERfold1_acc_hidden_test": "-",
+            "ERfold2_acc_hidden_test": "-",
+            "ERfold3_acc_hidden_test": "-",
+            "ERfold4_acc_hidden_test": "-",
+            "ERfold5_acc_hidden_test": "-",
+            "ASR_wer_hidden_test": 23.18,
+            "ASR_LM_wer_hidden_test": 15.21,
+            "QbE_mtwv_hidden_test": 0.0058,
+            "SF_f1_hidden_test": 69.64,
+            "SF_cer_hidden_test": 52.94,
+            "SV_eer_hidden_test": 9.56,
+            "SD_der_hidden_test": 10.05,
+            "ST_bleu_hidden_test": 2.32,
+            "SE_pesq_hidden_test": 2.5529,
+            "SE_stoi_hidden_test": 0.9364,
+            "SS_sisdri_hidden_test": 9.2341,
         },
     ]
     return data

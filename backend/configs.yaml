@@ -7,12 +7,15 @@ UPLOAD_DIR: "./upload"
 # Submission related
 DAILY_SUBMIT_LIMIT: 2
 MONTHLY_SUBMIT_LIMIT: 6
+HIDDEN_DAILY_SUBMIT_LIMIT: 2
+HIDDEN_MONTHLY_SUBMIT_LIMIT: 6
 
 # Metrics related
 UNZIP_TIMEOUT: "30s"
 GROUND_TRUTH_ROOT: "./inference/truth/"
 
-# Individual submission info
+# Public
+## Individual submission info
 INDIVIDUAL_SUBMISSION_INFO:
     FILE:
         - aoeTimeUpload
@@ -50,7 +53,7 @@ INDIVIDUAL_SUBMISSION_INFO:
         - SV_eer_public
         - SD_der_public
 
-# Leaderboard shown data
+## Leaderboard shown data
 LEADERBOARD_INFO:
     FILE:
         - aoeTimeUpload
@@ -83,3 +86,99 @@ LEADERBOARD_INFO:
         - SF_cer_public
         - SV_eer_public
         - SD_der_public
+
+
+# Hidden
+INDIVIDUAL_HIDDEN_SUBMISSION_INFO:
+    FILE:
+        - aoeTimeUpload
+        - task
+        - showOnLeaderboard
+        - submitName
+        - huggingfaceOrganizationName
+        - huggingfaceRepoName
+        - huggingfaceCommonHash
+        - paramShared
+        - state
+        - stateInfo
+        - submitUUID
+    SCORE:
+        - PR_per_hidden_dev
+        - KS_acc_hidden_dev
+        - IC_acc_hidden_dev
+        - SID_acc_hidden_dev
+        - ER_acc_hidden_dev
+        - ERfold1_acc_hidden_dev
+        - ERfold2_acc_hidden_dev
+        - ERfold3_acc_hidden_dev
+        - ERfold4_acc_hidden_dev
+        - ERfold5_acc_hidden_dev
+        - ASR_wer_hidden_dev
+        - ASR_LM_wer_hidden_dev
+        - QbE_mtwv_hidden_dev
+        - SF_f1_hidden_dev
+        - SF_cer_hidden_dev
+        - SV_eer_hidden_dev
+        - SD_der_hidden_dev
+        - PR_per_hidden_test
+        - KS_acc_hidden_test
+        - IC_acc_hidden_test
+        - SID_acc_hidden_test
+        - ER_acc_hidden_test
+        - ERfold1_acc_hidden_test
+        - ERfold2_acc_hidden_test
+        - ERfold3_acc_hidden_test
+        - ERfold4_acc_hidden_test
+        - ERfold5_acc_hidden_test
+        - ASR_wer_hidden_test
+        - ASR_LM_wer_hidden_test
+        - QbE_mtwv_hidden_test
+        - SF_f1_hidden_test
+        - SF_cer_hidden_test
+        - SV_eer_hidden_test
+        - SD_der_hidden_test
+
+LEADERBOARD_HIDDEN_INFO:
+    FILE:
+        - aoeTimeUpload
+        - task
+        - submitName
+        - huggingfaceOrganizationName
+        - huggingfaceRepoName
+        - huggingfaceCommonHash
+        - paramShared
+    SCORE:
+        - PR_per_hidden_dev
+        - KS_acc_hidden_dev
+        - IC_acc_hidden_dev
+        - SID_acc_hidden_dev
+        - ER_acc_hidden_dev
+        - ERfold1_acc_hidden_dev
+        - ERfold2_acc_hidden_dev
+        - ERfold3_acc_hidden_dev
+        - ERfold4_acc_hidden_dev
+        - ERfold5_acc_hidden_dev
+        - ASR_wer_hidden_dev
+        - ASR_LM_wer_hidden_dev
+        - QbE_mtwv_hidden_dev
+        - SF_f1_hidden_dev
+        - SF_cer_hidden_dev
+        - SV_eer_hidden_dev
+        - SD_der_hidden_dev
+        - PR_per_hidden_test
+        - KS_acc_hidden_test
+        - IC_acc_hidden_test
+        - SID_acc_hidden_test
+        - ER_acc_hidden_test
+        - ERfold1_acc_hidden_test
+        - ERfold2_acc_hidden_test
+        - ERfold3_acc_hidden_test
+        - ERfold4_acc_hidden_test
+        - ERfold5_acc_hidden_test
+        - ASR_wer_hidden_test
+        - ASR_LM_wer_hidden_test
+        - QbE_mtwv_hidden_test
+        - SF_f1_hidden_test
+        - SF_cer_hidden_test
+        - SV_eer_hidden_test
+        - SD_der_hidden_test

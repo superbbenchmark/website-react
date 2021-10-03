@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 from utils import get_AOETime, get_uuid
 
 
-class SubmissionSchema(Schema):
+class SubmissionPublicSchema(Schema):
     submitName = fields.Str(required=True, validate=Length(max=60))
     modelURL = fields.Str(required=True)  # Not required
     modelDesc = fields.Str(required=True, validate=Length(max=300))
@@ -31,6 +31,24 @@ class SubmissionSchema(Schema):
     def isValidnumber(self, num):
         if num != "" and not num.isnumeric():
             raise ValidationError("Invalid Number!")
+
+    @post_load
+    def add_uuid(self, data, **kwargs):
+        data["submitUUID"] = get_uuid()
+        return data
+
+    @post_load
+    def add_aoetime(self, data, **kwargs):
+        data["aoeTimeUpload"] = get_AOETime()
+        return data
+
+class SubmissionHiddenSchema(Schema):
+    submitName = fields.Str(required=True, validate=Length(max=60))
+    huggingfaceOrganizationName = fields.Str(required=True, validate=Length(max=300))
+    huggingfaceRepoName = fields.Str(required=True, validate=Length(max=300))
+    huggingfaceCommonHash = fields.Str(required=True, validate=Length(max=300))
+    paramShared = fields.Str(required=True, validate=Length(max=300))
+    task = fields.Str(required=True, validate=OneOf(["1", "2", "3"]))
 
     @post_load
     def add_uuid(self, data, **kwargs):
