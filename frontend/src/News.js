@@ -1,40 +1,19 @@
 import React from "react";
 import { makeStyles, ThemeProvider, useTheme } from "@material-ui/core/styles";
 import { Box, Typography } from "@material-ui/core";
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { atomOneDarkReasonable } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { HashLink } from 'react-router-hash-link';
+import 'katex/dist/katex.min.css'
 
 import { Section } from "./components/Sections";
 import { Title } from "./components/Titles";
-import { capitalizeFirstLetter, Strong } from "./components/Utilies";
+import { Strong } from "./components/Utilies";
 import { subscribe_link } from "./Data";
 
-const code = '\
-print("Hello world!")\n\
-for x in range(10):\n\
-    print("Hello world!")\
-'
-
-// const markdown = (
-//     <MarkDownElement>
-//         #test
-//     </MarkDownElement>
-// )
 
 const news = [
     // {
-    //     title: "This is a code block",
-    //     date: new Date(2021, 9, 15),
-    //     content: (
-    //         <SyntaxHighlighter language="python" style={atomOneDarkReasonable} showLineNumbers="ture" align="left">
-    //             {code}
-    //         </SyntaxHighlighter>
-    //     ),
-    // },
-    // {
     //     title: "This is a markdown block",
-    //     date: new Date(2021, 9, 15),
+    //     date: new Date(2021, 8, 2),
     //     content: (
     //         markdown
     //     ),
@@ -87,14 +66,6 @@ const news = [
             </span >
         ),
     },
-    // {
-    //     title: "This is a title",
-    //     date: new Date(yyyy, m, d),
-    //     content: (
-    //         <span>
-    //             Your content
-    //         </span>),
-    // },
 ]
 
 const useStyles = makeStyles((theme) => ({

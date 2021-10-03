@@ -1,19 +1,104 @@
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { atomOneLight as codeStyle } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import { HashLink } from 'react-router-hash-link';
+const policy = `
+# SUPERB Challenge
 
-const code1 = `\
+## Evaluation Framework
+
+### Background
+
+![](https://i.imgur.com/LMN9902.png)
+*Fig 1.*
+
+SUPERB Challenge follows the similar evaluation framework introduced in [SUPERB Benchmark](https://arxiv.org/abs/2105.01051), which benchmarks the **generalizability** of Self-Supervised Learning (SSL) on speech. SSL models are termed **Upstream** and are evaluated with various **Downstream** tasks. The framework extract **multiple frozen hidden states** from a single upstream model and trains a learnable **weighted-sum** over the hidden states along with the downstream model task-by-task.
+
+### Overview
+
+![](https://i.imgur.com/n7Ib3Xe.png)
+*Fig 2.*
+
+Fig 2. illustrates the evaluation framework of the challenge. The challenge evaluates SSL models' generalizability on 10 tasks. Each of the tasks has a corresponding public dataset (**public-set**) that is publicly available, and a hidden dataset (**hidden-set**) that will not be released. Participants can practice on the public-set to understand the performance of their upstream models, and choose the best one for submission as they wish. Then, participants **submit the upstream model** (model definition & pre-trained weights) publicly or privately to the hidden-set leaderboard. **We finetune the downstream models on the hidden-set** without releasing any audio/label. Both public-set and hidden-set have leaderboards and welcome submissions to share more results with the community. **The winners of the challenge will be solely determined by the ranking on the hidden-set leaderboard.** Finally, there will be **overall metrics** for ranking all upstreams.
+
+All the participants are encouraged to submit papers to [*AAAI workshop: The 2nd Self-supervised Learning for Audio and Speech Processing*](https://aaai-sas-2022.github.io/). The winners of the challenge will be invited to present their methods in the workshop. We plan to collaborate with more conferences for participants to present their works and papers.
+
+### Tasks
+
+10 evaluation tasks are included in this challenge:
+
+- **Content**
+    - Phoneme Recognition (PR)
+    - Automatic Speech Recognition (ASR)
+    - Query-by-example Spoken Term Detection (QbE)
+- **Speaker**
+    - Speaker Identification (SID)
+    - Automatic Speaker Verification (ASV)
+    - Speaker Diarization (SD)
+- **Paralinguistics**
+    - Emotion Recognition (ER)
+- **Semantics**
+    - Speech Translation (ST)
+- **Generation**
+    - Speech Enhancement (SE)
+    - Speech Separation (SS)
+
+More task descriptions for the public-set can be found in [TASKS](https://superbbenchmark.org/tasks), and we implement the evaluation scripts for public-set in [S3PRL](https://github.com/s3prl/s3prl) for reference. The task design and evaluation pipeline will be the same between public-set & hidden-set unless otherwise mentioned.
+
+### Secret tasks
+
+Secret tasks evaluate SSL models' generalizability on completely unseen tasks. Secret tasks are only present in the hidden-set, and the task design will not be revealed until the final winner announcement. 
+
+### What is new
+
+Compared with SUPERB Benchmark, SUPERB Challenge extends the framework with the following:
+
+- **New Tasks**: Speech Translation, Speech Enhancement, Source Separation and secret tasks.
+- **New Data Domains**: A challenging and newly recorded hidden-set with unseen (to upstream) text/audio domain.
+- **New Overall Metrics**: The metrics to rank upstreams.
+
+
+## Upstream Specification
+
+### Unlabeled data only: Focus on SSL
+
+- Any labeled/parallel data made by human annotators are **not allowed** to used for both model training and data preprocessing, e.g.
+    - **audio/text pairs:** transcriptions in English, foreign languages, or phonemes.
+    - **audio/tagging pairs:** speaker labels or sound event labels.
+    - **audio/audio pairs:** audios with the same properties made parallel by human, e.g. audios with same content from different speakers, or the opposite.
+- Any system pre-trained by labeled/parallel data **cannot** be used to help with the SSL pre-training, like pre-trained ASR.
+- Any unlabeled/unparallel data is allowed, including the downstream datasets in the public-set. The nature alignments (not made by human annotators) bettwen audio and other modalities are also allowed, e.g. videos.
+- If it is hard to define whether your data is labeled/parallel, please [contact us](mailto:superb.announcement@gmail.com)!
+
+### Programming Language
+
+- We currently support:
+    - **Python >= 3.6**
+    - **Pytorch >= 1.7**
+
+- We expect the upstream submission can pass the following check:
+\`\`\`python =
 upstream = YourModel.cuda()
-assert isinstance(upstream, torch.nn.Module)`
+assert isinstance(upstream, torch.nn.Module)
+\`\`\`
 
-const code2 = `\
+Please [contact us](mailto:superb.announcement@gmail.com) if you wish to use other language or framework.
+
+### Interface functions
+
+#### forward
+
+Extract features from waveforms.
+
+- **Input:** A list of waveforms in 16000 Hz
+
+\`\`\`python =
 SAMPLE_RATE = 16000
 BATCH_SIZE = 8
 EXAMPLE_SEC = 10
 wavs = [torch.randn(SAMPLE_RATE * EXAMPLE_SEC).cuda() for _ in range(BATCH_SIZE)]
-results = upstream(wavs)`
+results = upstream(wavs)
+\`\`\`
 
-const code3 = `\
+- **Output:** A dictionary with a key for each task, and a single key for all secret tasks. If any task-specific key is not presented, a "hidden_states" key should be provided as the default key. The value for each key is **a list** of padded sequences in the same shape of **(batch_size, max_sequence_length_of_batch, hidden_size)** for weighted-sum to work. It is welcomed to perform some preprocessing on the upstream's raw hidden-sets, including upsampling and downsampling. However, all the values must come from **a single upstream model**:
+
+\`\`\`python =
 assert isinstance(results, dict)
 tasks = ["PR", "SID", "ER", "ASR", "ASV", "SD", "QbE", "ST", "SS", "SE", "secret"]
 for task in tasks:
@@ -23,431 +108,292 @@ for task in tasks:
     for state in hidden_states:
         assert isinstance(state, torch.Tensor)
         assert state.dim() == 3, "(batch_size, max_sequence_length_of_batch, hidden_size)"
-        assert state.shape == hidden_states[0].shape`
+        assert state.shape == hidden_states[0].shape
+\`\`\`
 
-const code4 = `\
+#### get_downsample_rates
+
+Provide the downsample rate **from 16000 Hz waveforms** for each task's representation in the dict. For the standard 10ms stride representation, the downsample rate is 160.
+
+\`\`\`python =
 SAMPLE_RATE = 16000
 MSEC_PER_SEC = 1000
-downsample_rate = SAMPLE_RATE * 10 / MSEC_PER_SEC  # 160`
+downsample_rate = SAMPLE_RATE * 10 / MSEC_PER_SEC  # 160
+\`\`\`
 
-const code5 = `\
+The downsample rate will be used to:
+
+1. Calculate the valid representation length of each utterance in the output padded representation.
+2. Prepare the training materials according to the representation's downsample rate for frame-level tasks: SD, SE, SS.
+
+- **Input:** the task key (str)
+- **Output:** the downsample rate (int) of the representation for that task
+
+\`\`\`python =
 for task in tasks:
     assert isinstance(task, str)
     downsample_rate = upstream.get_downsample_rate(task)
     assert isinstance(downsample_rate, int)
     print("The upstream's representation for {task}"
-        f" has the downsample rate of {downsample_rate}.")`
+        f" has the downsample rate of {downsample_rate}.")
+\`\`\`
 
-const policy = (
-    <div id="doc" class="markdown-body container-fluid comment-enabled" data-hard-breaks="true" align='left'>
-        <h1 id="SUPERB-Challenge" data-id="SUPERB-Challenge"><span>SUPERB Challenge</span></h1>
-        <h2 id="Evaluation-Framework" data-id="Evaluation-Framework"><span>Evaluation Framework</span></h2>
-        <h3 id="Background" data-id="Background"><span>Background</span></h3>
-        <p><img src="https://i.imgur.com/LMN9902.png" alt="" loading="lazy" /><br />
-            <em><span>Fig 1.</span></em>
-        </p>
-        <p><span>SUPERB Challenge follows the similar evaluation framework introduced in </span><a
-            href="https://arxiv.org/abs/2105.01051" target="_blank" rel="noopener"><span>SUPERB
-                Benchmark</span></a><span>, which benchmarks the
-            </span><strong><span> generalizability</span></strong><span> of Self-Supervised Learning (SSL) on speech. SSL
-                models are termed </span><strong><span> Upstream</span></strong><span> and are evaluated with various
-            </span><strong><span> Downstream</span></strong><span> tasks. The framework extract </span><strong><span> multiple
-                frozen hidden states</span></strong><span> from a single upstream model and trains a learnable
-            </span><strong><span> weighted-sum</span></strong><span> over the hidden states along with the downstream model
-                task-by-task.</span></p>
-        <h3 id="Overview" data-id="Overview"><span>Overview</span></h3>
-        <p><img src="https://i.imgur.com/n7Ib3Xe.png" alt="" loading="lazy" /><br />
-            <em><span>Fig 2.</span></em>
-        </p>
-        <p><span>Fig 2. illustrates the evaluation framework of the challenge. The challenge evaluates SSL models’
-            generalizability on 10 tasks. Each of the tasks has a corresponding public dataset
-            (</span><strong><span>public-set</span></strong><span>) that is publicly available, and a hidden dataset
-                (</span><strong><span>hidden-set</span></strong><span>) that will not be released. Participants can practice
-                    on the public-set to understand the performance of their upstream models, and choose the best one for
-                    submission as they wish. Then, participants </span><strong><span> submit the upstream
-                        model</span></strong><span> (model definition &amp; pre-trained weights) publicly or privately to the
-                            hidden-set leaderboard. </span><strong><span> We finetune the downstream models on the
-                                hidden-set</span></strong><span> without releasing any audio/label. Both public-set and hidden-set have
-                                    leaderboards and welcome submissions to share more results with the community. </span><strong><span> The
-                                        winners of the challenge will be solely determined by the ranking on the hidden-set
-                                        leaderboard.</span></strong><span> Finally, there will be </span><strong><span> overall
-                                            metrics</span></strong><span> for ranking all upstreams.</span></p>
-        <p><span>All the participants are encouraged to submit papers to </span><a href="https://aaai-sas-2022.github.io/"
-            target="_blank" rel="noopener"><em><span>AAAI workshop: The 2nd Self-supervised Learning for Audio and
-                Speech Processing</span></em></a><span>. The winners of the challenge will be invited to present
-                    their methods in the workshop. We plan to collaborate with more conferences for participants to present
-                    their works and papers.</span></p>
-        <h3 id="Tasks" data-id="Tasks"><span>Tasks</span></h3>
-        <p><span>10 evaluation tasks are included in this challenge:</span></p>
-        <ul>
-            <li><strong><span> Content</span></strong>
-                <ul>
-                    <li><span>Phoneme Recognition (PR)</span></li>
-                    <li><span>Automatic Speech Recognition (ASR)</span></li>
-                    <li><span>Query-by-example Spoken Term Detection (QbE)</span></li>
-                </ul>
-            </li>
-            <li><strong><span> Speaker</span></strong>
-                <ul>
-                    <li><span>Speaker Identification (SID)</span></li>
-                    <li><span>Automatic Speaker Verification (ASV)</span></li>
-                    <li><span>Speaker Diarization (SD)</span></li>
-                </ul>
-            </li>
-            <li><strong><span> Paralinguistics</span></strong>
-                <ul>
-                    <li><span>Emotion Recognition (ER)</span></li>
-                </ul>
-            </li>
-            <li><strong><span> Semantics</span></strong>
-                <ul>
-                    <li><span>Speech Translation (ST)</span></li>
-                </ul>
-            </li>
-            <li><strong><span> Generation</span></strong>
-                <ul>
-                    <li><span>Speech Enhancement (SE)</span></li>
-                    <li><span>Speech Separation (SS)</span></li>
-                </ul>
-            </li>
-        </ul>
-        <p><span>More task descriptions for the public-set can be found in </span><HashLink to="/tasks#top">TASKS</HashLink><span>, and we
-            implement the evaluation scripts for public-set in </span><a href="https://github.com/s3prl/s3prl"
-                target="_blank" rel="noopener"><span>S3PRL</span></a><span> for reference. The task design and evaluation
-                    pipeline will be the same between public-set &amp; hidden-set unless otherwise mentioned.</span></p>
-        <h3 id="Secret-tasks" data-id="Secret-tasks"><span>Secret tasks</span></h3>
-        <p><span>Secret tasks evaluate SSL models’ generalizability on completely unseen tasks. Secret tasks are only
-            present in the hidden-set, and the task design will not be revealed until the final winner
-            announcement.</span></p>
-        <h3 id="What-is-new" data-id="What-is-new"><span>What is new</span></h3>
-        <p><span>Compared with SUPERB Benchmark, SUPERB Challenge extends the framework with the following:</span></p>
-        <ul>
-            <li><strong><span> New Tasks</span></strong><span>: Speech Translation, Speech Enhancement, Source Separation and
-                secret tasks.</span></li>
-            <li><strong><span> New Data Domains</span></strong><span>: A challenging and newly recorded hidden-set with
-                unseen (to upstream) text/audio domain.</span></li>
-            <li><strong><span> New Overall Metrics</span></strong><span>: The metrics to rank upstreams.</span></li>
-        </ul>
-        <h2 id="Upstream-Specification" data-id="Upstream-Specification"><span>Upstream Specification</span></h2>
-        <h3 id="Unlabeled-data-only-Focus-on-SSL" data-id="Unlabeled-data-only-Focus-on-SSL"><span>Unlabeled data only:
-            Focus on SSL</span></h3>
-        <ul>
-            <li><span>Any labeled/parallel data made by human annotators are </span><strong><span> not
-                allowed</span></strong><span> to used for both model training and data preprocessing, e.g.</span>
-                <ul>
-                    <li><strong><span> audio/text pairs:</span></strong><span> transcriptions in English, foreign languages,
-                        or phonemes.</span></li>
-                    <li><strong><span> audio/tagging pairs:</span></strong><span> speaker labels or sound event
-                        labels.</span></li>
-                    <li><strong><span> audio/audio pairs:</span></strong><span> audios with the same properties made parallel by human, e.g. audios with same content from different speakers, or the opposite.</span></li>
-                </ul>
-            </li>
-            <li><span>Any system pre-trained by labeled/parallel data </span><strong><span> cannot</span></strong><span> be
-                used to help with the SSL pre-training, like pre-trained ASR.</span></li>
-            <li><span>Any unlabeled/unparallel data is allowed, including the downstream datasets in the public-set. The
-                nature alignments (not made by human annotators) bettwen audio and other modalities are also allowed,
-                e.g. videos.</span></li>
-            <li><span>If it is hard to define whether your data is labeled/parallel, please </span><a
-                href="#Contact"><span>contact us</span></a><span>!</span></li>
-        </ul>
-        <h3 id="Programming-Language" data-id="Programming-Language"><span>Programming Language</span></h3>
-        <ul>
-            <li>
-                <p><span>We currently support:</span></p>
-                <ul>
-                    <li><strong><span> Python &gt;= 3.6</span></strong></li>
-                    <li><strong><span> Pytorch &gt;= 1.7</span></strong></li>
-                </ul>
-            </li>
-            <li>
-                <p><span>We expect the upstream submission can pass the following check:</span></p>
-                <pre>
-                    <SyntaxHighlighter style={codeStyle} showLineNumbers={true}>
-                        {code1}
-                    </SyntaxHighlighter>
-                </pre>
-            </li>
-        </ul>
-        <p><span>Please </span><a href="#Contact"><span>contact us</span></a><span> if you wish to use other language or
-            framework.</span></p>
-        <h3 id="Interface-functions" data-id="Interface-functions"><span>Interface functions</span></h3>
-        <h4 id="forward" data-id="forward"><span>forward</span></h4>
-        <p><span>Extract features from waveforms.</span></p>
-        <ul>
-            <li>
-                <p><strong><span> Input:</span></strong><span> A list of waveforms in 16000 Hz</span></p>
-                <pre>
-                    <SyntaxHighlighter style={codeStyle} showLineNumbers={true}>
-                        {code2}
-                    </SyntaxHighlighter>
-                </pre>
-            </li>
-            <li>
-                <p><strong><span> Output:</span></strong><span> A dictionary with a key for each task, and a single key for
-                    all secret tasks. If any task-specific key is not presented, a “hidden_states” key should be
-                    provided as the default key. The value for each key is </span><strong><span> a
-                        list</span></strong><span> of padded sequences in the same shape of
-                    </span><strong><span> (batch_size, max_sequence_length_of_batch, hidden_size)</span></strong><span> for
-                        weighted-sum to work. It is welcomed to perform some preprocessing on the upstream’s raw
-                        hidden-sets, including upsampling and downsampling. However, all the values must come from
-                    </span><strong><span> a single upstream model</span></strong><span>:</span></p>
-                <pre>
-                    <SyntaxHighlighter style={codeStyle} showLineNumbers={true}>
-                        {code3}
-                    </SyntaxHighlighter>
-                </pre>
-            </li>
-        </ul>
-        <h4 id="get_downsample_rates" data-id="get_downsample_rates"><span>get_downsample_rates</span></h4>
-        <p><span>Provide the downsample rate </span><strong><span> from 16000 Hz waveforms</span></strong><span> for each
-            task’s representation in the dict. For the standard 10ms stride representation, the downsample rate is
-            160.</span></p>
-        <pre>
-            <SyntaxHighlighter style={codeStyle} showLineNumbers={true}>
-                {code4}
-            </SyntaxHighlighter>
-        </pre>
-        <p><span>The downsample rate will be used to:</span></p>
-        <ol>
-            <li><span>Calculate the valid representation length of each utterance in the output padded
-                representation.</span></li>
-            <li><span>Prepare the training materials according to the representation’s downsample rate for frame-level
-                tasks: SD, SE, SS.</span></li>
-        </ol>
-        <ul>
-            <li><strong><span> Input:</span></strong><span> the task key (str)</span></li>
-            <li><strong><span> Output:</span></strong><span> the downsample rate (int) of the representation for that
-                task</span></li>
-        </ul>
-        <pre>
-            <SyntaxHighlighter style={codeStyle} showLineNumbers={true}>
-                {code5}
-            </SyntaxHighlighter>
-        </pre>
-        <h4 data-id="" id=""></h4>
-        <h2 id="Public-set-and-S3PRL-toolkit" data-id="Public-set-and-S3PRL-toolkit"><span>Public-set and S3PRL
-            toolkit</span></h2>
-        <h3 id="As-the-task-definition-and-demonstration" data-id="As-the-task-definition-and-demonstration"><span>As the
-            task definition and demonstration</span></h3>
-        <p><span>The public-set serves as the demonstration of the task design: including the data preprocessing, tasks’
-            input/output formats and task-specific metrics. The datasets used in the public-set are all chosen to be
-            public available for everyone to participate. Please refer to </span><HashLink to="/tasks#top">TASKS</HashLink><span> and the
-                implementation in </span><a href="https://github.com/s3prl/s3prl" target="_blank"
-                    rel="noopener"><span>S3PRL</span></a><span> for details.</span></p>
-        <h3 id="As-the-platform-for-developing-upstreams-for-the-hidden-set"
-            data-id="As-the-platform-for-developing-upstreams-for-the-hidden-set"><span>As the platform for developing
-                upstreams for the hidden-set</span></h3>
-        <p><span>The differences between the public-set and the hidden-set are controlled to be only the following:</span>
-        </p>
-        <ol>
-            <li><span>Recording conditions</span></li>
-            <li><span>Spoken content / text scripts</span></li>
-            <li><span>Speakers</span></li>
-            <li><span>Fewer labeled data</span></li>
-        </ol>
-        <p><span>In this way, the public-set is still a good indicator of the hidden-set performance to some degree. We
-            follow the same (unless mentioned otherwise) implementation in the public-set for the hidden-set, and hence
-            encourage participants to use </span><a href="https://github.com/s3prl/s3prl" target="_blank"
-                rel="noopener"><span>S3PRL</span></a><span> to benchmark their upstream models (optional) on the public-set.
-                    The winners of the challenge will be decided solely on the hidden-set, and the public-set and </span><a
-                        href="https://github.com/s3prl/s3prl" target="_blank" rel="noopener"><span>S3PRL</span></a><span>
-                implementations can serve as the start-kit.</span></p>
-        <h3 id="Provide-baselines-for-comparison" data-id="Provide-baselines-for-comparison"><span>Provide baselines for
-            comparison</span></h3>
-        <h4 id="Baselines" data-id="Baselines"><span>Baselines</span></h4>
-        <p><span>We collected most of the well-known SSL baseline models in </span><a href="https://github.com/s3prl/s3prl"
-            target="_blank" rel="noopener"><span>S3PRL</span></a><span>, including TERA, wav2vec2, Hubert, DeCoAR 2.0,
-                and more. You can easily benchmark different upstreams by specifying in the command line arguments.</span>
-        </p>
-        <h4 id="Comparison" data-id="Comparison"><span>Comparison</span></h4>
-        <p><span>Since the full benchmarking on the public-set can take some time for the training to converge. We released
-            the training artifacts of the top baseline systems (e.g. wav2vec2, HuBERT) for participants to quickly
-            compare with them. The artifacts include:</span></p>
-        <ul>
-            <li><span>Tensorboard logs</span></li>
-            <li><span>Trained downstream weights (the best on public dev set)</span></li>
-        </ul>
-        <h3 id="Public-set-leaderboard-and-submission" data-id="Public-set-leaderboard-and-submission"><span>Public-set
-            leaderboard and submission</span></h3>
-        <p><span>The public-set leaderboard will be online and accept submissions on <strong>Sep 30, 2021</strong> and there is no deadline. Since all the train/dev/test splits are
-            public available, </span><strong><span> the leaderboard accepts submissions with the inferenced prediction
-                files on each task’s testing split</span></strong><span> which will be auto-generated if you follow the
-                    benchmarking steps in </span><a href="https://github.com/s3prl/s3prl" target="_blank"
-                        rel="noopener"><span>S3PRL</span></a><span>.</span></p>
-        <h2 id="Hidden-set" data-id="Hidden-set"><span>Hidden-set</span></h2>
-        <h3 id="Fairness-amp-prevent-overfitting" data-id="Fairness-amp-prevent-overfitting"><span>Fairness &amp; prevent
-            overfitting</span></h3>
-        <p><span>Since all the train/dev/test splits are public in the public-set, it is possible to cheat by directly
-            reporting the best results on the testing split, and the results are thus overfit on the testing split.
-            Hence, the hidden-set is collected and prepared to follow the same task design as that in the public-set but
-            with the newly created data. All the splits will </span><strong><span> NOT be released in both audio and
-                labels</span></strong><span>. The members involved in the hidden-set preparation should
-            </span><strong><span>  NOT</span></strong><span> participate the challenge. These members are listed in the
-            </span><strong><span>  Hidden-set Committee</span></strong><span> below.</span></p>
-        <h3 id="Hidden-set-leaderboard-and-submission" data-id="Hidden-set-leaderboard-and-submission"><span>Hidden-set
-            leaderboard and submission</span></h3>
-        <h4 id="How-to-submit" data-id="How-to-submit"><span>How to submit</span></h4>
-        <p><span>The hidden-set leaderboard will be online and ready for submissions on </span><strong><span> Oct 15,
-            2021</span></strong><span>. It will accept submissions until </span><strong><span> Jan 10,
-                2022</span></strong><span>. The detailed submission steps will be announced on </span><strong><span> Oct
-                    15, 2021</span></strong><span>. The following describes the conceptual pipeline.</span></p>
-        <h4 id="Submission-type" data-id="Submission-type"><span>Submission type</span></h4>
-        <p><span>The leaderboard accepts </span><strong><span> submissions with the upstream model
-            only</span></strong><span>, including </span><strong><span>  model definition</span></strong><span> and
-            </span><strong><span>  pre-trained weights</span></strong><span>. The upstream model should follow the
-                specification detailed at </span><a href="#Upstream-Specification"><span>Upstream
-                    Specification</span></a><span>. The submission can be done publicly or privately. Only the
-            </span><strong><span>  Hidden-set Committee</span></strong><span> members can access the privately submitted
-                upstreams and the models will be used solely for this challenge.</span></p>
-        <h4 id="Finetuning-on-submission" data-id="Finetuning-on-submission"><span>Finetuning on submission</span></h4>
-        <p><span>After the upstream model is submitted, we </span><strong><span> benchmark the submitted upstream by
-            finetuning each task’s downstream model for participants</span></strong><span>. </span><strong><span> The
-                quota for submissions per week is limited</span></strong><span> but will be dynamically adjusted based
-                    on the number of participants. The weekly quota will be announced at </span><HashLink to="/news#top">NEWS</HashLink><span>.
-                        Participants can </span><a href="#Contact"><span>contact us</span></a><span> to acquire the finetuning
-                            artifacts of their own submissions for sanity checks, including:</span></p>
-        <ul>
-            <li><span>Tensorboard logs</span></li>
-            <li><span>Testing results</span></li>
-            <li><span>Trained downstream weights</span></li>
-        </ul>
-        <h4 id="Practice-dev--Private-test-scores" data-id="Practice-dev--Private-test-scores"><span>Practice (dev) /
-            Private (test) scores</span></h4>
-        <p><span>After training the downstream model for all tasks, we show the best performance on the hidden-set’s
-            development splits as the </span><strong><span> practice scores</span></strong><span> (one score per task).
-                The true performance on the testing splits, termed </span><strong><span> private
-                    scores</span></strong><span>, will be revealed along with the final winner announcement. The final team
-                        ranking will depend only on the hidden-set’s </span><strong><span> private
-                            scores</span></strong><span>.</span></p>
-        <h2 id="Overall-Metrics" data-id="Overall-Metrics"><span>Overall Metrics</span></h2>
-        <p><span>The overall metrics will be announced on </span><strong><span> Sep 30, 2021</span></strong><span>. There
-            will be parameter-agnostic metrics and parameter-panelized metrics. </span><strong><span> Parameter-agnostic
-                metrics</span></strong><span> demonstrate the best performance SSL can achieve, and encourages
-                    participants to explore any possibility to push the limits. </span><strong><span> Parameter-panelized
-                        metrics</span></strong><span> encourage the development of SSL algorithms on small models, where
-                            participants can focus more on the learning algorithm solely including SSL objectives, model architectures
-                            and pre-training data. </span><strong><span> Both types of metrics will be used to rank all submissions and
-                                produce multiple lists of winners</span></strong><span>.</span></p>
-        <h4 id="Note-1" data-id="Note-1"><span>Note 1.</span></h4>
-        <p><span>We do not divide submissions into different tracks. All submissions need to provide their pre-training
-            parameter size and we compute all metrics for the submission. Hence, the winners for different metrics might
-            overlap.</span></p>
-        <h2 id="Winner-Minimum-Requirements" data-id="Winner-Minimum-Requirements"><span>Winner Minimum Requirements</span>
-        </h2>
-        <p><span>The following describes the minimum requirements for a team to win the challenge.</span></p>
-        <h3 id="Submit-an-upstream-model-to-the-hidden-set-leaderboard"
-            data-id="Submit-an-upstream-model-to-the-hidden-set-leaderboard"><span>Submit an upstream model to the
-                hidden-set leaderboard</span></h3>
-        <p><span>The public-set is for the upstream development purpose. You can pre-train your upstream and evaluate it
-            with any method you like. You are required to submit at least one upstream model to the hidden-set
-            leaderboard. The hidden-set leaderboard submission deadline is </span><strong><span> Jan 10,
-                2022</span></strong><span>.</span></p>
-        <h3 id="Submission-selection" data-id="Submission-selection"><span>Submission selection</span></h3>
-        <p><span>A team can </span><strong><span> select at most 2 submissions</span></strong><span> among its previous
-            submissions for the final team ranking: one for the parameter-agnostic metrics and another for the
-            parameter-panelized metrics. However, these 2 submissions </span><strong><span> must come from the same
-                method</span></strong><span> and only differ in parameter size. The deadline for the submission
-                    selection is </span><strong><span> Jan 13, 2022</span></strong><span>.</span></p>
-        <h3 id="System-description-paper" data-id="System-description-paper"><span>System description paper</span></h3>
-        <p><span>To verify the submitted upstream follows the challenge policy, we require each team to submit a system
-            description paper in </span><strong><span> AAAI submission format</span></strong><span> without the page
-                limit. The paper should describe the method </span><strong><span> for the selected
-                    submissions</span></strong><span>, containing at least the following materials:</span></p>
-        <ul>
-            <li><span>SSL objectives</span></li>
-            <li><span>Model architecture</span></li>
-            <li><span>Pre-training data</span></li>
-            <li><span>Parameter size for each submission</span></li>
-        </ul>
-        <p><span>Since all the selected submissions come from the same method, the above materials should be almost
-            identical between submissions except for the parameter size.</span></p>
-        <p><span>The submission should follow the challenge policy and the paper is expected to be well-written. The
-            deadline for the system description paper is </span><strong><span> Jan 13, 2022</span></strong><span>.</span>
-        </p>
-        <h4 id="Note-11" data-id="Note-1"><span>Note 1.</span></h4>
-        <p><span>The system description paper is for the challenge review only and is not considered as our AAAI workshop
-            paper by default, since the </span><a href="https://aaai.org/Conferences/AAAI-22/ws22call/" target="_blank"
-                rel="noopener"><span>AAAI workshop has the early hard deadlines</span></a><span> for both paper submission
-                    (</span><strong><span>Nov 12, 2021</span></strong><span>) and acceptance/rejection announcement
-                        (</span><strong><span>Dec 3, 2021</span></strong><span>). Hence, </span><strong><span> we encourage
-                            participants to submit their methods’ papers early to our AAAI workshop</span></strong><span> before Nov
-                                12, 2021. If the method turns out to be similar to that used for the final selected submissions, the same
-                                paper can be used as the system description paper.</span></p>
-        <h4 id="Note-2" data-id="Note-2"><span>Note 2.</span></h4>
-        <p><span>We plan to work with other conferences and offer presentation &amp; paper submission opportunities.</span>
-        </p>
-        <h2 id="Winner-Announcement-and-Presentation" data-id="Winner-Announcement-and-Presentation"><span>Winner
-            Announcement and Presentation</span></h2>
-        <p><span>After review the system description papers and compare their performance with the hidden-set
-        </span><strong><span> private scores</span></strong><span>. We will reveal all the private scores and announce
-            the final winners on </span><strong><span> January 20, 2022</span></strong><span>. The winners will be
-                invited to present their methods in our AAAI workshop.</span></p>
-        <h2 id="Timeline" data-id="Timeline"><span>Timeline</span></h2>
-        <ul>
-            <li><span>Sep 18, 2021: Challenge announcement &amp; </span><a
-                    href="https://github.com/s3prl/s3prl" target="_blank" rel="noopener"><span>S3PRL</span></a><span> released</span></li>
-            <li><span>Sep 30, 2021: Overall metrics announcement &amp; </span>
-                <a href="https://superbbenchmark.org/leaderboard"
-                    target="_blank" rel="noopener"><span>public-set leaderboard</span>
-                </a>
-                <span> is online and accepts submissions</span></li>
-            <li><span>Oct 15, 2021: Hidden-set leaderboard is online and accepts submissions</span></li>
-            <li><span>Nov 12, 2021: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
-                rel="noopener"><span>AAAI workshop</span></a><span> paper submission deadline (encouraged)</span></li>
-            <li><span>Dec 3, 2021: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
-                rel="noopener"><span>AAAI workshop</span></a><span> paper acceptance / rejection announcement</span>
-            </li>
-            <li><span>Jan 10, 2022: Hidden-set leaderboard submission deadline</span></li>
-            <li><span>Jan 13, 2022: Submission selection &amp; system description paper deadline</span></li>
-            <li><span>Jan 20, 2022: Winner announcement &amp; reveal hidden-set private scores</span></li>
-            <li><span>Jan 22, 2022: AAAI late </span><a href="https://aaai.org/Conferences/AAAI-21/registration/"
-                target="_blank" rel="noopener"><span>registration</span></a><span> deadline</span></li>
-            <li><span>Feb 28 - Mar 1, 2022: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
-                rel="noopener"><span>AAAI workshop</span></a><span> presentation</span></li>
-        </ul>
-        <h2 id="Organizers" data-id="Organizers"><span>Organizers</span></h2>
-        <p><span>Hung-yi Lee</span><br />
-            <span>Shinji Watanabe</span><br />
-            <span>Abdelrahman Mohamed</span><br />
-            <span>Shang-Wen Li</span><br />
-            <span>Shuyan Dong</span><br />
-            <span>Heng-Jui Chang</span><br />
-            <span>Hsuan-Jui Chen</span><br />
-            <span>Po-Han Chi</span><br />
-            <span>Xuankai Chang</span><br />
-            <span>Yung-Sung Chuang</span><br />
-            <span>Tzu-Hsun Feng</span><br />
-            <span>Tzu-Hsien Huang</span><br />
-            <span>Wen-Chin Huang</span><br />
-            <span>Zili Huang</span><br />
-            <span>Andy T. Liu</span><br />
-            <span>Cheng-I Jeff Lai</span><br />
-            <span>Guan-Ting Lin</span><br />
-            <span>Kushal Lakhotia</span><br />
-            <span>Yist Y. Lin</span><br />
-            <span>Yassin Omar</span><br />
-            <span>Jiatong Shi</span><br />
-            <span>Hsiang-Sheng Tsai</span><br />
-            <span>Lewis Tunstall</span><br />
-            <span>Wei-Cheng Tseng</span><br />
-            <span>Shu-wen Yang</span>
-        </p>
-        <h2 id="Hidden-set-Committee" data-id="Hidden-set-Committee"><span>Hidden-set Committee</span></h2>
-        <p><span>Xuankai Chang</span><br />
-            <span>Hsuan-Jui Chen</span><br />
-            <span>Yung-Sung Chuang</span><br />
-            <span>Zili Huang</span><br />
-            <span>Shang-Wen Li</span><br />
-            <span>Guan-Ting Lin</span><br />
-            <span>Yassin Omar</span><br />
-            <span>Jiatong Shi</span><br />
-            <span>Hsiang-Sheng Tsai</span><br />
-            <span>Shu-wen Yang</span>
-        </p>
-        <h1 id="Contact" data-id="Contact"><span>Contact</span></h1>
-        <p><a href="mailto:superb.announcement@gmail.com" target="_blank"
-            rel="noopener"><span>superb.announcement@gmail.com</span></a></p>
-    </div>
-)
+####
+
+## Public-set and S3PRL toolkit
+
+### As the task definition and demonstration
+
+The public-set serves as the demonstration of the task design: including the data preprocessing, tasks' input/output formats and task-specific metrics. The datasets used in the public-set are all chosen to be public available for everyone to participate. Please refer to [TASKS](https://superbbenchmark.org/tasks) and the implementation in [S3PRL](https://github.com/s3prl/s3prl) for details.
+
+### As the platform for developing upstreams for the hidden-set
+
+The differences between the public-set and the hidden-set are controlled to be only the following:
+
+1. Recording conditions
+2. Spoken content / text scripts
+3. Speakers
+4. Fewer labeled data
+
+In this way, the public-set is still a good indicator of the hidden-set performance to some degree. We follow the same (unless mentioned otherwise) implementation in the public-set for the hidden-set, and hence encourage participants to use [S3PRL](https://github.com/s3prl/s3prl) to benchmark their upstream models (optional) on the public-set. The winners of the challenge will be decided solely on the hidden-set, and the public-set and [S3PRL](https://github.com/s3prl/s3prl) implementations can serve as the start-kit.
+
+### Provide baselines for comparison
+
+#### Baselines
+
+We collected most of the well-known SSL baseline models in [S3PRL](https://github.com/s3prl/s3prl), including TERA, wav2vec2, Hubert, DeCoAR 2.0, and more. You can easily benchmark different upstreams by specifying in the command line arguments.
+
+#### Comparison
+
+Since the full benchmarking on the public-set can take some time for the training to converge. We released the training artifacts of the top baseline systems (e.g. wav2vec2, HuBERT) for participants to quickly compare with them. The artifacts include:
+
+- Tensorboard logs
+- Trained downstream weights (the best on public dev set)
+
+### Public-set leaderboard and submission
+
+The public-set leaderboard will be online and accept submissions on **Sep 30, 2021** and there is no deadline. Since all the train/dev/test splits are public available, **the leaderboard accepts submissions with the inferenced prediction files on each task's testing split** which will be auto-generated if you follow the benchmarking steps in [S3PRL](https://github.com/s3prl/s3prl).
+
+## Hidden-set
+
+### Fairness & prevent overfitting
+
+Since all the train/dev/test splits are public in the public-set, it is possible to cheat by directly reporting the best results on the testing split, and the results are thus overfit on the testing split. Hence, the hidden-set is collected and prepared to follow the same task design as that in the public-set but with the newly created data. All the splits will **NOT be released in both audio and labels**. The members involved in the hidden-set preparation should **NOT** participate the challenge. These members are listed in the **Hidden-set Committee** below.
+
+### Hidden-set leaderboard and submission
+
+#### How to submit
+
+The hidden-set leaderboard will be online and ready for submissions on **Oct 15, 2021**. It will accept submissions until **Jan 10, 2022**. The detailed submission steps will be announced on **Oct 15, 2021**. The following describes the conceptual pipeline.
+
+#### Submission type
+
+The leaderboard accepts **submissions with the upstream model only**, including **model definition** and **pre-trained weights**. The upstream model should follow the specification detailed at [Upstream Specification](#Upstream-Specification). The submission can be done publicly or privately. Only the **Hidden-set Committee** members can access the privately submitted upstreams and the models will be used solely for this challenge.
+
+#### Finetuning on submission
+
+After the upstream model is submitted, we **benchmark the submitted upstream by finetuning each task's downstream model for participants**. **The quota for submissions per week is limited** but will be dynamically adjusted based on the number of participants. The weekly quota will be announced at [NEWS](https://superbbenchmark.org/news). Participants can [contact us](mailto:superb.announcement@gmail.com) to acquire the finetuning artifacts of their own submissions for sanity checks, including:
+
+- Tensorboard logs
+- Testing results
+- Trained downstream weights
+
+#### Practice (dev) / Private (test) scores
+
+After training the downstream model for all tasks, we show the best performance on the hidden-set's development splits as the **practice scores** (one score per task). The true performance on the testing splits, termed **private scores**, will be revealed along with the final winner announcement. The final team ranking will depend only on the hidden-set's **private scores**.
+
+## Overall Metrics
+
+(Update 10/1/2021 AOE)
+
+We announce two kinds of metrics: **superb-rank** and **superb-score**, each with parameter-agnostic and parameter-panelized versions.
+
+Type|Parameter-agnostic|Parameter-penalized
+-|-|-
+Scoring|$superb_s$|$superb_{sp}$
+Ranking|$superb_r$|$superb_{rp}$
+
+In this challenge, $superb_r$ and $superb_{rp}$ are the primary metrics. When equal rank is found on two different upstreams, $superb_{rp}$ or $superb_{sp}$ is used to break the tie. Hence, there will be only two final lists of winners: **Parameter-agnostic** and **Parameter-penalized**.
+
+### Notation
+
+Suppose each task $t$ in all tasks $T$ has a single metric $s_t$, and the score of an upstream $u$ on task $t$ is $s_t(u)$ which has already been transformed to make higher values represent better performance. Eg. We use WAcc here for ASR instead of the raw WER. The upstream $u$ has $|u|$ millions parameters.
+
+### Parameter-agnostic
+
+Parameter-agnostic metrics demonstrate the best performance SSL can achieve, and encourages participants to explore any possibility to push the limits.
+
+#### $superb_s$
+
+To aggregate all task-specific scores $s_t(u)$ into a single static score, we linearly transform each of them into points so that:
+
+- $s_t(fbank) = 0$, The performance of FBANK maps to 0
+- $s_t(sota) = 1000$, The performance of the existing SOTA upstream *for this task* maps to 1000.
+
+$$
+p_t(u) = \\dfrac{1000}{s_t({sota}) - s_t({fbank})}\\ (\\ s_t(u) - s_t({fbank})\\ )
+$$
+
+Hence, most of the points will sit between 0~1000. The upstream worse than FBANK on this task will get negative points. The upstream better than the task-specific SOTA upstream will get points higher than 1000. The $superb_s$ of the upstream $u$ is the average of $p_t$ over all tasks.
+
+$$
+superb_s = \\dfrac{1}{|T|} \\sum_{t \\in T}\\ p_t(u)
+$$
+
+Intuitively, two reference points: FBANK and SOTA decide the typical interested interval for a task-specific metric and scale the task scores to 0~1000 points accordingly. The similar range of points across tasks can then be averaged. Beyond scaling with the pre-defined metric range, this interval further determines *how hard for a task to improve*. For a harder task, its smaller interval at the denominator give the task more credit for any unit improvement.
+
+#### $superb_r$
+
+To encourage the development on **universal models** instead of models skewed toward a subset of tasks. We use ranking to saturate the improvement when an upstream already become the best for that task. The $superb_r$ for an upstream $u$ is the average number of upstreams which $u$ can win in each task. This metric dynamically depends on all the upsreams $U$ shown on the leaderboard. In the following, $L$ is the number of upstreams which $u$ can win using the metric $x_t$.
+
+$$
+L(x_t, u) = |\\ \\{\\ \\hat{u} \\in U\\ |\\ x_t(u) > x_t(\\hat{u}) \\ \\}\\ |
+$$
+
+$$
+superb_r = \\dfrac{1}{|T|} \\sum_{t \\in T} L(s_t, u) = \\dfrac{1}{|T|} \\sum_{t \\in T} L(p_t, u)
+$$
+
+### Parameter-penalized
+
+To encourage the development of speech SSL on small and green models, we add a metric with penalization on models' parameter size. To gauge the effectiveness and parameter-efficiency of new SSL algorithms, we encourage participants to submit multiple upstreams trained by the same algorithm with the only difference in parameter size.
+
+#### $superb_{sp}$
+
+We penalize the parameter-agnostic scoring by an upstream $u$'s parameter size $|u|$.
+
+$$
+\\hat{p_t}(u) =
+\\left\\{
+    \\begin{array}{lr}
+        \\frac{p_t(u)}{\\ max(|u|,\\ 1)},& \\text{if } p_t(u) \\geq 0\\\\
+        \\ \\ \\ \\ p_t(u),              & \\text{otherwise}
+    \\end{array}
+\\right.
+$$
+
+Since either the point of the baseline FBANK or its parameter size is 0. The above formula measures how many improvement upon FBANK per parameter. The minimum 1 million parameter size is designed to avoid too small upstreams dominating others by receiving too much credit on a single task. When $p_t(u)$ is negative we do not penalize it, since it is already worse than the zero-parameter FBANK.
+
+$$
+superb_{sp} = \\dfrac{1}{|T|} \\sum_{t \\in T}\\ \\hat{p_t}(u)
+$$
+
+#### $superb_{sp}$
+
+Similar to $superb_r$, we rank all upstreams on the leaderboard with $\\hat{p_t}$.
+
+$$
+superb_{rp} = \\dfrac{1}{|T|} \\sum_{t \\in T}\\ L(\\hat{p_t}, u)
+$$
+
+### Conclusion
+
+The ranking metrics are the primary measures in this challenge and are designed to emphasize an upstream's universally usability. When two upstreams tie on the same rank, the scoring metrics take the tasks' variations and improvement difficulty into account to help the final decision. We have updated the [public-set leaderboard](https://superbbenchmark.org/leaderboard) to support the above overal metrics calculation.
+
+#### Reference points
+
+If a task have multiple metrics, each metric is first tranformed into points or ranks as illustrated above. Then, points or ranks are first averaged in intra-task fashion before being averaged with other task.
+
+Task|PR|SID|ER|ASR|QbE|ASV|SD|ST|SE|SE|SS
+-|-|-|-|-|-|-|-|-|-|-|-
+Metrics|PER|ACC|ACC|WER|MTWV|EER|DER|BLEU|PESQ|STOI|SS
+FBANK|82.01|41.38|48.24|23.18|0.58|9.56|10.05|2.32|2.55|0.9364|9.234
+SOTA|3.53|96.66|67.62|3.62|7.36|5.62|5.11|20.01|2.64|0.9418|10.45
+
+## Winner Minimum Requirements
+
+The following describes the minimum requirements for a team to win the challenge.
+
+### Submit an upstream model to the hidden-set leaderboard
+
+The public-set is for the upstream development purpose. You can pre-train your upstream and evaluate it with any method you like. You are required to submit at least one upstream model to the hidden-set leaderboard. The hidden-set leaderboard submission deadline is **Jan 10, 2022**.
+
+### Submission selection
+
+A team can **select at most 2 submissions** among its previous submissions for the final team ranking: one for the parameter-agnostic metrics and another for the parameter-panelized metrics. However, these 2 submissions **must come from the same method** and only differ in parameter size. The deadline for the submission selection is **Jan 13, 2022**.
+
+### System description paper
+
+To verify the submitted upstream follows the challenge policy, we require each team to submit a system description paper in **AAAI submission format** without the page limit. The paper should describe the method **for the selected submissions**, containing at least the following materials:
+
+- SSL objectives
+- Model architecture
+- Pre-training data
+- Parameter size for each submission
+
+Since all the selected submissions come from the same method, the above materials should be almost identical between submissions except for the parameter size.
+
+The submission should follow the challenge policy and the paper is expected to be well-written. The deadline for the system description paper is **Jan 13, 2022**.
+
+#### Note 1.
+
+The system description paper is for the challenge review only and is not considered as our AAAI workshop paper by default, since the [AAAI workshop has the early hard deadlines](https://aaai.org/Conferences/AAAI-22/ws22call/) for both paper submission (**Nov 12, 2021**) and acceptance/rejection announcement (**Dec 3, 2021**). Hence, **we encourage participants to submit their methods' papers early to our AAAI workshop** before Nov 12, 2021. If the method turns out to be similar to that used for the final selected submissions, the same paper can be used as the system description paper.
+
+#### Note 2.
+
+We plan to work with other conferences and offer presentation & paper submission opportunities.
+
+## Winner Announcement and Presentation
+
+After review the system description papers and compare their performance with the hidden-set **private scores**. We will reveal all the private scores and announce the final winners on **January 20, 2022**. The winners will be invited to present their methods in our AAAI workshop.
+
+## Timeline
+
+- Sep 18, 2021: Challenge announcement & [S3PRL](https://github.com/s3prl/s3prl) released
+- Sep 30, 2021: Overall metrics announcement & [public-set leaderboard](https://superbbenchmark.org/leaderboard) is online and accepts submissions
+- Oct 15, 2021: Hidden-set leaderboard is online and accepts submissions
+- Nov 12, 2021: [AAAI workshop](https://aaai-sas-2022.github.io/) paper submission deadline (encouraged)
+- Dec 3, 2021: [AAAI workshop](https://aaai-sas-2022.github.io/) paper acceptance / rejection announcement
+- Jan 10, 2022: Hidden-set leaderboard submission deadline
+- Jan 13, 2022: Submission selection & system description paper deadline
+- Jan 20, 2022: Winner announcement & reveal hidden-set private scores
+- Jan 22, 2022: AAAI late [registration](https://aaai.org/Conferences/AAAI-21/registration/) deadline
+- Feb 28 - Mar 1, 2022: [AAAI workshop](https://aaai-sas-2022.github.io/) presentation
+
+## Organizers
+
+Hung-yi Lee
+Shinji Watanabe
+Abdelrahman Mohamed
+Shang-Wen Li
+Shuyan Dong
+Heng-Jui Chang
+Hsuan-Jui Chen
+Po-Han Chi
+Xuankai Chang
+Yung-Sung Chuang
+Tzu-Hsun Feng
+Tzu-Hsien Huang
+Wen-Chin Huang
+Zili Huang
+Andy T. Liu
+Cheng-I Jeff Lai
+Guan-Ting Lin
+Kushal Lakhotia
+Yist Y. Lin
+Yassin Omar
+Jiatong Shi
+Hsiang-Sheng Tsai
+Lewis Tunstall
+Wei-Cheng Tseng
+Shu-wen Yang
+
+## Hidden-set Committee
+
+Xuankai Chang
+Hsuan-Jui Chen
+Yung-Sung Chuang
+Zili Huang
+Shang-Wen Li
+Guan-Ting Lin
+Yassin Omar
+Jiatong Shi
+Hsiang-Sheng Tsai
+Shu-wen Yang
+
+# Contact
+
+superb.announcement@gmail.com
+`
 
 export default policy
