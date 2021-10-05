@@ -12,6 +12,7 @@ from models.hiddenscore import HiddenScoreModel
 from models.user import UserModel
 from schemas.submission import SubmissionPublicSchema, SubmissionHiddenSchema
 from utils import submission_records_parser, get_AOE_month, get_AOE_today,  get_leaderboard_default, get_hidden_leaderboard_default
+from sendmail import send_email
 from calculate import metric_calculate_pipeline
 from config import configs
 import file_upload
@@ -190,6 +191,8 @@ class HiddenSubmission(Resource):
             scoreObj = HiddenScoreModel()
             fileObj.scores.append(scoreObj)
             fileObj.save_to_db()
+
+            send_email(user_mail)
 
             return {"message": "Submit successfully!"}, HTTPStatus.OK
 
