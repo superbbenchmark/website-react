@@ -73,14 +73,13 @@ export default function HiddenForm(){
 
             const res = await axios({
                 method: "post",
-                url: "/api/submission",
+                url: "/api/hiddensubmission",
                 data: formData,
                 headers: {
                     Authorization: "Bearer " + auth.token,
                 },
             })
                 .then((res) => {
-                    console.log(res.data.msg);
                     setIsLoading(false);
                     swal({
                         title: "Susscess",

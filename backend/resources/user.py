@@ -6,6 +6,7 @@ from http import HTTPStatus
 
 from models.user import UserModel
 from models.file import FileModel
+from models.hiddenfile import HiddenFileModel
 from utils import get_AOE_today, get_AOE_month
 import google_token
 from config import configs
@@ -15,7 +16,7 @@ class UserInfo(Resource):
     @classmethod
     @jwt_required()
     def get(cls):
-        '''Get user personal info (userName, dialy count, monthly counts, daily left, monthly left)'''
+        '''Get user personal info (userName, public dialy count, monthly counts, daily left, monthly left, and hidden ones)'''
         try:
             user_mail = get_jwt_identity()
             user = UserModel.find_by_email(email=user_mail)
@@ -24,9 +25,16 @@ class UserInfo(Resource):
                 email=user_mail, AOEtime=get_AOE_today(to_str=False))
             monthly_counts = FileModel.get_interval_upload_count_by_mail(
                 email=user_mail, AOEtime=get_AOE_month(to_str=False))
+            hidden_daily_counts = HiddenFileModel.get_interval_upload_count_by_mail(
+                email=user_mail, AOEtime=get_AOE_today(to_str=False))
+            hidden_monthly_counts = HiddenFileModel.get_interval_upload_count_by_mail(
+                email=user_mail, AOEtime=get_AOE_month(to_str=False))
             daily_left = configs["DAILY_SUBMIT_LIMIT"] - daily_counts
             monthly_left = configs["MONTHLY_SUBMIT_LIMIT"] - monthly_counts
-            return {"username": user.name, "daily_counts": daily_counts, "monthly_counts": monthly_counts, "daily_left": daily_left, "monthly_left": monthly_left}, HTTPStatus.OK
+            hidden_daily_left = configs["HIDDEN_DAILY_SUBMIT_LIMIT"] - daily_counts
+            hidden_monthly_left = configs["HIDDEN_MONTHLY_SUBMIT_LIMIT"] - monthly_counts
+            return {"username": user.name, "daily_counts": daily_counts, "monthly_counts": monthly_counts, "daily_left": daily_left, "monthly_left": monthly_left,
+                                           "hidden_daily_counts":hidden_daily_counts, "hidden_monthly_counts":hidden_monthly_counts, "hidden_daily_left":hidden_daily_left, "hidden_monthly_left":hidden_monthly_left}, HTTPStatus.OK
 
         except Exception as e:
             print(e)

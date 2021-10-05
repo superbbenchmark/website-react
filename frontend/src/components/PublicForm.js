@@ -98,7 +98,6 @@ export default function PublicForm(){
                 },
             })
                 .then((res) => {
-                    console.log(res.data.msg);
                     setIsLoading(false);
                     swal({
                         title: "Susscess",

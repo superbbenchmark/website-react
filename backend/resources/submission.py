@@ -83,7 +83,7 @@ class Submission(Resource):
                                                                           "submitUUID": formData["submitUUID"]})
                 thread.start()
 
-                return {"message": "Upload Success!"}, HTTPStatus.OK
+                return {"message": "Upload successfully!"}, HTTPStatus.OK
             except Exception as e:
                 fileObj.delete_from_db()  # Rollback
                 return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
@@ -190,6 +190,8 @@ class HiddenSubmission(Resource):
             scoreObj = HiddenScoreModel()
             fileObj.scores.append(scoreObj)
             fileObj.save_to_db()
+
+            return {"message": "Submit successfully!"}, HTTPStatus.OK
 
         except ValidationError as e:
             return {"message": "There's something worng with your input!"}, HTTPStatus.BAD_REQUEST

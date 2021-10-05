@@ -277,12 +277,16 @@ function Profile(props) {
     const theme = useTheme();
     const auth = useContext(AuthContext);
     const [allSubmissionData, setAllSubmissionData] = useState([]);
-    const [shownData, setShownDate] = useState([]);
+    const [allHiddenSubmissionData, setAllHiddenSubmissionData] = useState([]);
+    const [shownData, setShownData] = useState([]);
+    const [shownHiddenData, setShownHiddenData] = useState([]);
     const [task, setTask] = useState("all");
     const [username, setUsername] = useState("");
     const [resetUserName, setResetUserName] = useState("");
     const [dailyCounts, setDailyCounts] = useState(0);
     const [monthlyCounts, setMonthlyCounts] = useState(0);
+    const [hiddenDailyCounts, setHiddenDailyCounts] = useState(0);
+    const [hiddenMonthlyCounts, setHiddenMonthlyCounts] = useState(0);
     const [subset, setSubset] = useState("Public Set");
 
     const memoizedNumericSort = React.useCallback(
@@ -311,6 +315,8 @@ function Profile(props) {
                 setUsername(res.data.username);
                 setDailyCounts(res.data.daily_counts);
                 setMonthlyCounts(res.data.monthly_counts);
+                setHiddenDailyCounts(res.data.hidden_daily_counts);
+                setHiddenMonthlyCounts(res.data.hidden_monthly_counts);
             })
             .catch((error) => {
                 console.error(error);
@@ -353,8 +359,8 @@ function Profile(props) {
                 setAllSubmissionData(res.data.submission_info);
                 // console.log(res.data.submission_info);
                 task === "all"
-                    ? setShownDate(res.data.submission_info)
-                    : setShownDate(
+                    ? setShownData(res.data.submission_info)
+                    : setShownData(
                         res.data.submission_info.filter(
                             (data) => mapping_array[data.task] === task
                         )
@@ -363,13 +369,34 @@ function Profile(props) {
             .catch((error) => {
                 console.error(error);
             });
+        await axios({
+                method: "get",
+                url: "/api/hiddensubmissions",
+                headers: {
+                    Authorization: "Bearer " + auth.token,
+                },
+            })
+                .then((res) => {
+                    setAllHiddenSubmissionData(res.data.submission_info);
+                    console.log(res.data.submission_info);
+                    task === "all"
+                        ? setShownHiddenData(res.data.submission_info)
+                        : setShownHiddenData(
+                            res.data.submission_info.filter(
+                                (data) => mapping_array[data.task] === task
+                            )
+                        );
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
     };
 
     const onTaskChange = (e) => {
         setTask(e.target.value);
         e.target.value === "all"
-            ? setShownDate(allSubmissionData)
-            : setShownDate(
+            ? setShownData(allSubmissionData)
+            : setShownData(
                 allSubmissionData.filter(
                     (data) => mapping_array[data.task] === e.target.value
                 )
@@ -502,11 +529,16 @@ function Profile(props) {
                 <Title
                     title={"Hello " + username}
                     description={
-                        "Your number of daily submission is " +
+                        "Your number of (public) daily submission is " +
                         dailyCounts +
-                        " and monthly submission is " +
+                        ", (public) monthly submission is " +
                         monthlyCounts +
+                        ", (hidden) daily submission is " +
+                        hiddenDailyCounts +
+                        " and (hidden) monthly submission is " +
+                        hiddenMonthlyCounts +
                         "."
+                        
                     }
                 />
                 <TextField

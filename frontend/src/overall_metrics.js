@@ -134,13 +134,19 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
             "ER public", "SD public", "ST public", "SE-PESQ public", "SE-STOI public",
         ].includes(column.Header))
     }
-    else if (subset === "Hidden Practice Set") {
+    else if (subset === "Hidden Dev Set") {
         score_columns = score_columns.filter((column) => [
-            "PR practice", "SID practice", "QbE practice", "ASR practice", "SV practice",
-            "ER practice", "SD practice",
+            "PR hidden dev", "KS hidden dev", "IC hidden dev", "SID hidden dev", "ER hidden dev",
+            "ASR hidden dev", "QbE hidden dev", "SF-CER hidden dev", "SF-F1 hidden dev", "SV hidden dev", "SD hidden dev",
         ].includes(column.Header))
     }
-
+    else if (subset === "Hidden Test Set") {
+        score_columns = score_columns.filter((column) => [
+            "PR hidden test", "KS hidden test", "IC hidden test", "SID hidden test", "ER hidden test",
+            "ASR hidden test", "QbE hidden test", "SF-CER hidden test", "SF-F1 hidden test", "SV hidden test", "SD hidden test",
+        ].includes(column.Header))
+    }
+    
     let new_data;
     if (data.length > 0) {
         let scores = score_normalizer(score_columns, data)
