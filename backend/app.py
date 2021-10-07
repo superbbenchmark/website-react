@@ -7,7 +7,7 @@ from marshmallow import ValidationError
 
 from db import db
 from resources.user import UserInfo, UserLogin
-from resources.submission import LeaderBoard, Submission, SubmissionList, HiddenSubmission, HiddenSubmissionList, HiddenLeaderBoard
+from resources.submission import AdminForHidden, LeaderBoard, Submission, SubmissionList, HiddenSubmission, HiddenSubmissionList, HiddenLeaderBoard
 from resources.download import Example, Expdirs
 
 app = Flask(__name__)
@@ -30,7 +30,9 @@ def create_tables():
 def handle_marshmallow_validation(err):
     return jsonify(err.messages), 400
 
-
+api.add_resource(AdminForHidden, "/api/hiddensearch/", methods=["GET"])
+api.add_resource(AdminForHidden, "/api/hiddenmodify/<string:submitID>",
+                 methods=["PATCH"])
 api.add_resource(Submission, "/api/submission", methods=["POST"])
 api.add_resource(Submission, "/api/submission/<string:submitID>",
                  methods=["GET", "PATCH"])

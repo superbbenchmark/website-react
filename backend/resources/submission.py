@@ -23,8 +23,26 @@ hiddenFormSchema = SubmissionHiddenSchema()
 class AdminForHidden(Resource):
     @classmethod
     @jwt_required()
+    def get(cls):
+        '''Get all hidden submissions'''
+        try:
+            user_mail = get_jwt_identity()
+
+            if check_admin_credential(user_mail):
+                submission_records = HiddenFileModel.find_all()
+                return {"message": submission_records}, HTTPStatus.OK
+            else:
+                return {"message": "You are not admin."}, HTTPStatus.FORBIDDEN
+
+        except Exception as e:
+            print(e)
+            return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+    @classmethod
+    @jwt_required()
     def patch(cls, submitID):
-        '''Change user submission show on leaderboard or not by uuid'''
+        '''Change hidden score'''
         try:
             user_mail = get_jwt_identity()
 
