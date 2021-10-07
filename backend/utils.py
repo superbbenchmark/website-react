@@ -3,6 +3,18 @@ import uuid
 import enum
 import datetime
 import magic
+from dotenv import load_dotenv
+
+def check_admin_credential(admin_email):
+    load_dotenv()
+    ADMIN_EMAIL_LIST = os.getenv(
+        'ADMIN_EMAIL_LIST', default="")
+    ADMIN_EMAIL_LIST = ADMIN_EMAIL_LIST.split(",")
+    if admin_email in ADMIN_EMAIL_LIST:
+        return True
+    else:
+        return False
+
 
 def is_plaintext(file_path):
     f = magic.Magic(mime=True)

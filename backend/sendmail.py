@@ -15,10 +15,11 @@ assert GMAIL_ACCOUNT != ""
 assert GMAIL_PASSWORD != ""
 assert len(RECEIVER_EMAIL_LIST) >= 1
 
-def send_email(participant_email):
+def send_email(participant_email, submitUUID):
 
     mail_content = f'''[Notice] 
     {participant_email} has uploaded their model for hidden set competition.
+    The submission uuid is {submitUUID}
     Thank You
     '''
     #Setup the MIME

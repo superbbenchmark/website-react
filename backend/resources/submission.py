@@ -11,7 +11,7 @@ from models.score import ScoreModel
 from models.hiddenscore import HiddenScoreModel
 from models.user import UserModel
 from schemas.submission import SubmissionPublicSchema, SubmissionHiddenSchema
-from utils import submission_records_parser, get_AOE_month, get_AOE_today,  get_leaderboard_default, get_hidden_leaderboard_default
+from utils import submission_records_parser, get_AOE_month, get_AOE_today,  get_leaderboard_default, get_hidden_leaderboard_default, check_admin_credential
 from sendmail import send_email
 from calculate import metric_calculate_pipeline
 from config import configs
@@ -19,6 +19,24 @@ import file_upload
 
 publicFormSchema = SubmissionPublicSchema()
 hiddenFormSchema = SubmissionHiddenSchema()
+
+class AdminForHidden(Resource):
+    @classmethod
+    @jwt_required()
+    def patch(cls, submitID):
+        '''Change user submission show on leaderboard or not by uuid'''
+        try:
+            user_mail = get_jwt_identity()
+
+            if check_admin_credential(user_mail):
+                submission_record = HiddenFileModel.find_by_submitID(submitUUID=submitID)
+                return {"message": submission_record.scores[0]}, HTTPStatus.OK
+            else:
+                return {"message": "You are not admin."}, HTTPStatus.FORBIDDEN
+
+        except Exception as e:
+            print(e)
+            return {"message": "Internal Server Error!"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 class Submission(Resource):
     @classmethod
@@ -192,7 +210,7 @@ class HiddenSubmission(Resource):
             fileObj.scores.append(scoreObj)
             fileObj.save_to_db()
 
-            send_email(user_mail)
+            send_email(participant_email = user_mail, submitUUID = formData["submitUUID"])
 
             return {"message": "Submit successfully!"}, HTTPStatus.OK
 
