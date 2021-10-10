@@ -7,7 +7,7 @@ from http import HTTPStatus
 from models.user import UserModel
 from models.file import FileModel
 from models.hiddenfile import HiddenFileModel
-from utils import get_AOE_today, get_AOE_month
+from utils import get_AOE_today, get_AOE_month, check_admin_credential
 import google_token
 from config import configs
 
@@ -85,7 +85,8 @@ class UserLogin(Resource):
                 user.save_to_db()
             access_token = create_access_token(
                 identity=identity['email'], expires_delta=datetime.timedelta(hours=1))
-            return {"message": "Login Success", "access_token": access_token}, HTTPStatus.OK
+            isAdmin = check_admin_credential(identity['email'])
+            return {"message": "Login Success", "access_token": access_token, "isAdmin":isAdmin}, HTTPStatus.OK
 
         except Exception as e:
             print(e)
