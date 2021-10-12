@@ -11,7 +11,7 @@ from models.score import ScoreModel
 from models.hiddenscore import HiddenScoreModel
 from models.user import UserModel
 from schemas.submission import SubmissionPublicSchema, SubmissionHiddenSchema
-from utils import submission_records_parser, get_AOE_month, get_AOE_today,  get_leaderboard_default, get_hidden_leaderboard_default, check_admin_credential
+from utils import submission_records_parser, get_AOE_month, get_AOE_today,  get_leaderboard_default, get_hidden_leaderboard_default, check_admin_credential, admin_submission_records_parser
 from sendmail import send_email
 from calculate import metric_calculate_pipeline
 from config import configs
@@ -30,7 +30,9 @@ class AdminForHidden(Resource):
 
             if check_admin_credential(user_mail):
                 submission_records = HiddenFileModel.find_all()
-                return {"message": submission_records}, HTTPStatus.OK
+                submission_info = admin_submission_records_parser(
+                    submission_records, configs)
+                return make_response(jsonify({"submission_info": submission_info}), HTTPStatus.OK)
             else:
                 return {"message": "You are not admin."}, HTTPStatus.FORBIDDEN
 
@@ -41,14 +43,14 @@ class AdminForHidden(Resource):
 
     @classmethod
     @jwt_required()
-    def patch(cls, submitID):
+    def patch(cls, submitID, task, score):
         '''Change hidden score'''
         try:
             user_mail = get_jwt_identity()
 
             if check_admin_credential(user_mail):
-                submission_record = HiddenFileModel.find_by_submitID(submitUUID=submitID)
-                return {"message": submission_record.scores[0]}, HTTPStatus.OK
+                HiddenFileModel.find_by_submitID_task_and_modity_score(submitUUID=submitID, task=task, score=score)
+                return {"message": "good"}, HTTPStatus.OK
             else:
                 return {"message": "You are not admin."}, HTTPStatus.FORBIDDEN
 

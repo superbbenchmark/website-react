@@ -1,12 +1,13 @@
 # Instruction for setting up Backend server
 
-1. Create a `.env` file that contains a variable of `SQLALCHEMY_DATABASE_URI`, `GMAIL_ACCOUNT`, `GMAIL_PASSWORD`, and `RECEIVER_EMAIL_LIST`.
+1. Create a `.env` file that contains a variable of `SQLALCHEMY_DATABASE_URI`, `GMAIL_ACCOUNT`, `GMAIL_PASSWORD`, `RECEIVER_EMAIL_LIST`, and `ADMIN_EMAIL_LIST`.
 
 ```
 SQLALCHEMY_DATABASE_URI=mysql+pymysql://<username>:<password>@127.0.0.1:3306/superb
 GMAIL_ACCOUNT=<sender_account>
 GMAIL_PASSWORD=<sender_password>
 RECEIVER_EMAIL_LIST=<receiver_1>,<receiver_2>,...
+ADMIN_EMAIL_LIST=<admin_1>,<admin_2>,...
 ```
 
 2. Install requirements and unzip required files

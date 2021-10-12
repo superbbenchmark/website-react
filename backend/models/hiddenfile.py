@@ -54,6 +54,12 @@ class HiddenFileModel(db.Model):
     @classmethod
     def find_by_submitID(cls, submitUUID: str) -> "HiddenFileModel":
         return cls.query.filter_by(submitUUID=submitUUID).first()
+    
+    @classmethod
+    def find_by_submitID_task_and_modity_score(cls, submitUUID: str, task: str, score) -> None:
+        submission = cls.query.filter_by(submitUUID=submitUUID).first()
+        setattr(submission.scores[0], task, float(score))
+        db.session.commit()
 
     @classmethod
     def reset_same_task_show_attribute(cls, email: str, task: enum.Enum) -> None:

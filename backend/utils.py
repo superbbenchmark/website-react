@@ -49,6 +49,9 @@ def get_AOE_month(to_str=True):
     else:
         return aoe_time
 
+def admin_submission_records_parser(submission_records, configs):
+    return submission_records_parser(submission_records, configs, mode="individual", competition_type="hidden")
+
 
 def submission_records_parser(submission_records, configs, mode="individual", competition_type="public"):
 

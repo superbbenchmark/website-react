@@ -31,7 +31,7 @@ def handle_marshmallow_validation(err):
     return jsonify(err.messages), 400
 
 api.add_resource(AdminForHidden, "/api/hiddensearch/", methods=["GET"])
-api.add_resource(AdminForHidden, "/api/hiddenmodify/<string:submitID>",
+api.add_resource(AdminForHidden, "/api/hiddenmodify/<string:submitID>&<string:task>&<string:score>",
                  methods=["PATCH"])
 api.add_resource(Submission, "/api/submission", methods=["POST"])
 api.add_resource(Submission, "/api/submission/<string:submitID>",
