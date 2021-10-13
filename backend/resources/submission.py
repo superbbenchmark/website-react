@@ -145,15 +145,10 @@ class Submission(Resource):
             task_id = submission_record.task.value  # == mapping[task]
 
             if submission_record.showOnLeaderboard == Show.YES:
-                # set the "show" of all the same task submission to "NO"
-                FileModel.reset_same_task_show_attribute(
-                    email=user_mail, task=Task(task_id))
+                FileModel.unset_show_attribute_by_submitID(submitUUID=submitID)
                 return {"message": "Remove from the leaderboard!", "submitID": submitID}, HTTPStatus.OK
 
             else:
-                # set the "show" of all the same task submission to "NO"
-                FileModel.reset_same_task_show_attribute(
-                    email=user_mail, task=Task(task_id))
                 FileModel.set_show_attribute_by_submitID(submitUUID=submitID)
                 return {"message": "Shown on the leaderboard!", "submitID": submitID}, HTTPStatus.OK
 

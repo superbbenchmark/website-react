@@ -75,6 +75,12 @@ class FileModel(db.Model):
         db.session.commit()
 
     @classmethod
+    def unset_show_attribute_by_submitID(cls, submitUUID) -> None:
+        submission = cls.query.filter_by(submitUUID=submitUUID).first()
+        submission.showOnLeaderboard = Show.NO
+        db.session.commit()
+
+    @classmethod
     def find_all(cls) -> List["FileModel"]:
         return cls.query.all()
 
