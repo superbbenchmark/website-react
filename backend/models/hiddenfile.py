@@ -2,24 +2,7 @@ from typing import List
 from db import db
 import enum
 import datetime
-
-
-class Status(enum.Enum):
-    UPLOADED = 1
-    COMPUTING = 2
-    DONE = 3
-    ERROR = 4
-
-
-class Task(enum.Enum):
-    CONSTRAINED = 1
-    LESS_CONSTRAINED = 2
-    UNCONSTRAINED = 3
-
-
-class Show(enum.Enum):
-    NO = 0
-    YES = 1
+from .file import Status, Task, Show
 
 
 class HiddenFileModel(db.Model):
@@ -31,6 +14,7 @@ class HiddenFileModel(db.Model):
 
     # upload froms
     submitName = db.Column(db.String(80),  nullable=False)
+    modelDesc = db.Column(db.Text())
     huggingfaceOrganizationName = db.Column(db.String(80))
     huggingfaceRepoName = db.Column(db.String(80))
     huggingfaceCommonHash = db.Column(db.String(80))
@@ -72,6 +56,12 @@ class HiddenFileModel(db.Model):
     def set_show_attribute_by_submitID(cls, submitUUID) -> None:
         submission = cls.query.filter_by(submitUUID=submitUUID).first()
         submission.showOnLeaderboard = Show.YES
+        db.session.commit()
+
+    @classmethod
+    def unset_show_attribute_by_submitID(cls, submitUUID) -> None:
+        submission = cls.query.filter_by(submitUUID=submitUUID).first()
+        submission.showOnLeaderboard = Show.NO
         db.session.commit()
 
     @classmethod

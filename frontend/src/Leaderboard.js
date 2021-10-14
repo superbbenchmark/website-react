@@ -13,12 +13,13 @@ import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
 import InsertLinkIcon from "@material-ui/icons/InsertLink";
-import { leaderboard_columnInfo } from "./Data";
+import { leaderboard_columnInfo, leaderboard_hidden_columnInfo } from "./Data";
 import Model from "./components/Modal";
 import TrackSelect from "./components/TrackSelect";
 import SubsetSelect from "./components/SubsetSelect";
 import { overall_metric_adder } from "./overall_metrics";
-import { Box } from "@material-ui/core";
+import { NumericalSort, is_number_and_not_nan } from "./components/Utilies";
+import { Box, Divider } from "@material-ui/core";
 
 const Styles = styled.div`
   .table {
@@ -131,7 +132,6 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
                     "modelURL",
                     "aoeTimeUpload",
                     "task",
-                    "modelDesc",
                     "stride",
                     "inputFormat",
                     "corpus",
@@ -260,40 +260,48 @@ function LeaderBoard(props) {
     const theme = useTheme();
     const [LeaderboardData, setLeaderboardData] = useState([]);
     const [LeaderboardShownData, setLeaderboardShownData] = useState([]);
+    const [LeaderboardHiddenData, setLeaderboardHiddenData] = useState([]);
+    const [LeaderboardHiddenShownData, setLeaderboardHiddenShownData] = useState([]);
     const [task, setTask] = useState("constrained");
     const [subset, setSubset] = useState("Public Set");
-
-    const memoizedNumericSort = React.useCallback(
-        (rowA, rowB, columnId, desc) => {
-            const valueA = rowA.original[columnId];
-            const valueB = rowB.original[columnId];
-            return valueA > valueB ? 1 : -1;
-        }
-    );
-
-    const getLeaderboard = () => {
-        axios
-            .get("/api/submission/leaderboard")
-            .then((res) => {
-                setLeaderboardData(res.data.leaderboard);
-                setLeaderboardShownData(res.data.leaderboard);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
+    const track = subset.toLowerCase().includes("hidden") ? "hidden" : "public"
+    const memoizedNumericSort = React.useCallback(NumericalSort);
 
     const mapping_array = {
         CONSTRAINED: "constrained",
         LESS_CONSTRAINED: "less-constrained",
         UNCONSTRAINED: "unconstrained",
     };
+
+    const getLeaderboard = async () => {
+        await axios
+            .get("/api/submission/leaderboard")
+            .then((res) => {
+                setLeaderboardData(res.data.leaderboard);
+                setLeaderboardShownData(res.data.leaderboard.filter((data) => mapping_array[data.task] === task));
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        await axios
+            .get("/api/hiddensubmission/leaderboard")
+            .then((res) => {
+                setLeaderboardHiddenData(res.data.leaderboard);
+                setLeaderboardHiddenShownData(res.data.leaderboard.filter((data) => mapping_array[data.task] === task));
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
     const onTaskChange = (e) => {
         setTask(e.target.value);
+        let setShown = track === "hidden" ? setLeaderboardHiddenShownData : setLeaderboardShownData;
+        let allData = track === "hidden" ? LeaderboardHiddenData : LeaderboardData;
         e.target.value === "all"
-            ? setLeaderboardShownData(LeaderboardData)
-            : setLeaderboardShownData(
-                LeaderboardData.filter(
+            ? setShown(allData)
+            : setShown(
+                allData.filter(
                     (data) => mapping_array[data.task] === e.target.value
                 )
             );
@@ -313,21 +321,23 @@ function LeaderBoard(props) {
         getLeaderboard();
     }, []);
 
-    let columns = Object.keys(leaderboard_columnInfo).map((key) => {
+    let columnInfo = track == "hidden" ? leaderboard_hidden_columnInfo : leaderboard_columnInfo;
+    let columns = Object.keys(columnInfo).map((key) => {
+        let isScore = columnInfo[key].isScore
         return {
-            Header: leaderboard_columnInfo[key].header,
+            Header: columnInfo[key].header,
             accessor: key,
-            width: leaderboard_columnInfo[key].width,
+            width: columnInfo[key].width,
             sortType:
-                leaderboard_columnInfo[key].isScore
+                columnInfo[key].isScore
                     ? memoizedNumericSort
                     : "alphanumeric",
-            higherBetter: leaderboard_columnInfo[key].higherBetter,
-            isScore: leaderboard_columnInfo[key].isScore,
+            higherBetter: columnInfo[key].higherBetter,
+            isScore: isScore,
             Cell:
                 key === "modelURL"
                     ? parseModelURL
-                    : ({ value }) => String(value),
+                    : ({ value }) => isScore ? (is_number_and_not_nan(value) ? String(value) : "-") : (value == undefined ? "-" : String(value)),
         };
     });
     columns[0]["sticky"] = "left";
@@ -336,18 +346,28 @@ function LeaderBoard(props) {
         setSubset(e.target.value);
     };
 
+    let data;
+    if (track == "hidden") {
+        data = LeaderboardHiddenShownData;
+    }
+    else {
+        data = LeaderboardShownData;
+    }
     let trimmedColumns, trimmedLeaderboardShownData
     [trimmedColumns, trimmedLeaderboardShownData] = overall_metric_adder(["rank", "rank_p", "interpolation", "interpolation_p"],
-        columns, LeaderboardShownData, subset, memoizedNumericSort)
+        columns, data, subset, memoizedNumericSort)
     const memoColumns = React.useMemo(() => trimmedColumns);
 
     return (
         <>
-            <Box margin={theme.spacing(2, "auto", 0.2)}>
-                <TrackSelect task={task} onTaskChange={onTaskChange} />
-            </Box>
-            <Box margin={theme.spacing(0.2, "auto", 1)}>
-                <SubsetSelect subset={subset} selections={["All tasks", "Paper", "Public Set"]} onChange={onSubsetChange} />
+            <Box width="90%" margin="auto">
+                <Box margin={theme.spacing(2, "auto", 0.2)}>
+                    <TrackSelect task={task} onTaskChange={onTaskChange} />
+                </Box>
+                <Divider style={{width: "600px", maxWidth: "80%", margin: "auto"}}/>
+                <Box margin={theme.spacing(0.2, "auto", 1)}>
+                    <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set"]} onChange={onSubsetChange} />
+                </Box>
             </Box>
             <Table
                 columns={memoColumns}

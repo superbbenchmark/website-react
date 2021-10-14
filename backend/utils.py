@@ -42,8 +42,9 @@ def get_AOE_today(to_str=True):
     else:
         return aoe_time
 
-def get_AOE_month(to_str=True):
-    aoe_time = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=12)).replace(day=1,hour=0,minute=0,second=0,microsecond=0)
+def get_AOE_week(to_str=True):
+    # Sunday is the start
+    aoe_time = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=12)).replace(hour=0,minute=0,second=0,microsecond=0) - datetime.timedelta(days=datetime.datetime.today().weekday() + 1)
     if to_str:
         return aoe_time.strftime("%Y-%m-%d %H:%M:%S")
     else:
@@ -120,10 +121,10 @@ def get_leaderboard_default():
             "fineTunedParam":"-",
             "taskSpecParam":"-",
             "PR_per_public": 82.01,
-            "KS_acc_public": 8.63,
-            "IC_acc_public": 9.10,
-            "SID_acc_public": 8.5e-4,
-            "ER_acc_public": 35.39,
+            "KS_acc_public": 41.3826674,
+            "IC_acc_public": 9.649354219,
+            "SID_acc_public": 20.058174,
+            "ER_acc_public": 48.23672168,
             "ERfold1_acc_public": "-",
             "ERfold2_acc_public": "-",
             "ERfold3_acc_public": "-",
@@ -631,10 +632,10 @@ def get_hidden_leaderboard_default():
             "huggingfaceCommonHash": "-",
             "paramShared": 0,
             "PR_per_hidden_dev": 82.01,
-            "KS_acc_hidden_dev": 8.63,
-            "IC_acc_hidden_dev": 9.10,
-            "SID_acc_hidden_dev": 8.5e-4,
-            "ER_acc_hidden_dev": 35.39,
+            "KS_acc_hidden_dev": 41.3826674,
+            "IC_acc_hidden_dev": 9.649354219,
+            "SID_acc_hidden_dev": 20.058174,
+            "ER_acc_hidden_dev": 48.23672168,
             "ERfold1_acc_hidden_dev": "-",
             "ERfold2_acc_hidden_dev": "-",
             "ERfold3_acc_hidden_dev": "-",

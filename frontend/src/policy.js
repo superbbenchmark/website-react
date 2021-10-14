@@ -132,9 +132,9 @@ The downsample rate will be used to:
 \`\`\`python =
 for task in tasks:
     assert isinstance(task, str)
-    downsample_rate = upstream.get_downsample_rate(task)
+    downsample_rate = upstream.get_downsample_rates(task)
     assert isinstance(downsample_rate, int)
-    print("The upstream's representation for {task}"
+    print(f"The upstream's representation for {task}"
         f" has the downsample rate of {downsample_rate}.")
 \`\`\`
 
@@ -182,10 +182,6 @@ Since all the train/dev/test splits are public in the public-set, it is possible
 
 ### Hidden-set leaderboard and submission
 
-#### How to submit
-
-The hidden-set leaderboard will be online and ready for submissions on **Oct 15, 2021**. It will accept submissions until **Jan 10, 2022**. The detailed submission steps will be announced on **Oct 15, 2021**. The following describes the conceptual pipeline.
-
 #### Submission type
 
 The leaderboard accepts **submissions with the upstream model only**, including **model definition** and **pre-trained weights**. The upstream model should follow the specification detailed at [Upstream Specification](#Upstream-Specification). The submission can be done publicly or privately. Only the **Hidden-set Committee** members can access the privately submitted upstreams and the models will be used solely for this challenge.
@@ -201,6 +197,14 @@ After the upstream model is submitted, we **benchmark the submitted upstream by 
 #### Practice (dev) / Private (test) scores
 
 After training the downstream model for all tasks, we show the best performance on the hidden-set's development splits as the **practice scores** (one score per task). The true performance on the testing splits, termed **private scores**, will be revealed along with the final winner announcement. The final team ranking will depend only on the hidden-set's **private scores**.
+
+#### How to submit
+
+(Update 10/15/2021 AOE)
+
+The [hidden-set leaderboard](https://superbbenchmark.org/leaderboard) is online and accepts submissions. Please follow [the submission steps](https://huggingface.co/superb/superb-submission). We use HuggingFace's Hub to host the submitted upstreams and track the submitted model weights. On the other hand, we use our [submission page](https://superbbenchmark.org/submit) to control the submission limit, where the participants tell us the locations of their models on HuggingFace's Hub. **The submission limit** starts from **2 times/week**. If the participants increse to a certain amount, we will adjust the limit accordingly.
+
+![](https://i.imgur.com/yyE2Kj3.png)
 
 ## Overall Metrics
 
@@ -297,7 +301,7 @@ If a task have multiple metrics, each metric is first tranformed into points or 
 Task|PR|SID|ER|ASR|QbE|ASV|SD|ST|SE|SE|SS
 -|-|-|-|-|-|-|-|-|-|-|-
 Metrics|PER|ACC|ACC|WER|MTWV|EER|DER|BLEU|PESQ|STOI|SS
-FBANK|82.01|41.38|48.24|23.18|0.58|9.56|10.05|2.32|2.55|0.9364|9.234
+FBANK|82.01|20.06|48.24|23.18|0.58|9.56|10.05|2.32|2.55|0.9364|9.234
 SOTA|3.53|96.66|67.62|3.62|7.36|5.62|5.11|20.01|2.64|0.9418|10.45
 
 ## Winner Minimum Requirements

@@ -7,7 +7,7 @@ from http import HTTPStatus
 from models.user import UserModel
 from models.file import FileModel
 from models.hiddenfile import HiddenFileModel
-from utils import get_AOE_today, get_AOE_month, check_admin_credential
+from utils import get_AOE_today, get_AOE_week, check_admin_credential
 import google_token
 from config import configs
 
@@ -16,25 +16,25 @@ class UserInfo(Resource):
     @classmethod
     @jwt_required()
     def get(cls):
-        '''Get user personal info (userName, public dialy count, monthly counts, daily left, monthly left, and hidden ones)'''
+        '''Get user personal info (userName, public dialy count, weekly counts, daily left, weekly left, and hidden ones)'''
         try:
             user_mail = get_jwt_identity()
             user = UserModel.find_by_email(email=user_mail)
 
             daily_counts = FileModel.get_interval_upload_count_by_mail(
                 email=user_mail, AOEtime=get_AOE_today(to_str=False))
-            monthly_counts = FileModel.get_interval_upload_count_by_mail(
-                email=user_mail, AOEtime=get_AOE_month(to_str=False))
+            weekly_counts = FileModel.get_interval_upload_count_by_mail(
+                email=user_mail, AOEtime=get_AOE_week(to_str=False))
             hidden_daily_counts = HiddenFileModel.get_interval_upload_count_by_mail(
                 email=user_mail, AOEtime=get_AOE_today(to_str=False))
-            hidden_monthly_counts = HiddenFileModel.get_interval_upload_count_by_mail(
-                email=user_mail, AOEtime=get_AOE_month(to_str=False))
+            hidden_weekly_counts = HiddenFileModel.get_interval_upload_count_by_mail(
+                email=user_mail, AOEtime=get_AOE_week(to_str=False))
             daily_left = configs["DAILY_SUBMIT_LIMIT"] - daily_counts
-            monthly_left = configs["MONTHLY_SUBMIT_LIMIT"] - monthly_counts
+            weekly_left = configs["WEEKLY_SUBMIT_LIMIT"] - weekly_counts
             hidden_daily_left = configs["HIDDEN_DAILY_SUBMIT_LIMIT"] - daily_counts
-            hidden_monthly_left = configs["HIDDEN_MONTHLY_SUBMIT_LIMIT"] - monthly_counts
-            return {"username": user.name, "daily_counts": daily_counts, "monthly_counts": monthly_counts, "daily_left": daily_left, "monthly_left": monthly_left,
-                                           "hidden_daily_counts":hidden_daily_counts, "hidden_monthly_counts":hidden_monthly_counts, "hidden_daily_left":hidden_daily_left, "hidden_monthly_left":hidden_monthly_left}, HTTPStatus.OK
+            hidden_weekly_left = configs["HIDDEN_WEEKLY_SUBMIT_LIMIT"] - weekly_counts
+            return {"username": user.name, "daily_counts": daily_counts, "weekly_counts": weekly_counts, "daily_left": daily_left, "weekly_left": weekly_left,
+                                           "hidden_daily_counts":hidden_daily_counts, "hidden_weekly_counts":hidden_weekly_counts, "hidden_daily_left":hidden_daily_left, "hidden_weekly_left": hidden_weekly_left}, HTTPStatus.OK
 
         except Exception as e:
             print(e)

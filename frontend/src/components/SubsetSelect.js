@@ -2,29 +2,49 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { capitalizeFirstLetter } from "./Utilies";
-import { Typography } from "@material-ui/core";
+import { Typography, FormControl } from "@material-ui/core";
+import AdaptiveLink from "./AdaptiveLink";
 
 export default function SubsetSelect({ subset, selections, onChange }) {
+    let get_shown_name = (originName) => {
+        let name = originName.toLowerCase();
+        if (name === "paper") {
+            return "Paper";
+        }
+        else if (name === "public set") {
+            return "Public";
+        }
+        else if (name === "hidden dev set") {
+            return "Hidden Dev";
+        }
+        return originName;
+    }
+
     return (
-        <div className="select group" style={{ width: "fit-content", maxWidth: "100%", margin: "auto", }}>
-            <RadioGroup row aria-label="position" name="position" defaultValue="Public Set" value={subset} onChange={onChange}>
-                {selections.map((selection) => {
-                    return (
-                        <FormControlLabel
-                            value={selection}
-                            control={<Radio color="textPrimary" />}
-                            label={
-                                <Typography color="textPrimary">
-                                    {capitalizeFirstLetter(
-                                        selection.toLowerCase()
-                                    )}
-                                </Typography>
-                            }
-                            color="primary"
-                        />
-                    );
-                })}
-            </RadioGroup>
+        <div className="select group" style={{ width: "fit-content", maxWidth: "100%", margin: "10px auto" }}>
+            <FormControl component="fieldset">
+                <AdaptiveLink link="rules">
+                    <span style={{ color: "#4697E1", textDecoration: "underline", textDecorationThickness: 0.5 }}>
+                        Task Collections
+                    </span>
+                </AdaptiveLink>
+                <RadioGroup row aria-label="position" name="position" defaultValue="Public Set" value={subset} onChange={onChange}>
+                    {selections.map((selection) => {
+                        return (
+                            <FormControlLabel
+                                value={selection}
+                                control={<Radio color="textPrimary" />}
+                                label={
+                                    <Typography color="textPrimary">
+                                        {get_shown_name(selection)}
+                                    </Typography>
+                                }
+                                color="primary"
+                            />
+                        );
+                    })}
+                </RadioGroup>
+            </FormControl>
         </div>
     )
 }

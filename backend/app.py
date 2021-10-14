@@ -30,19 +30,24 @@ def create_tables():
 def handle_marshmallow_validation(err):
     return jsonify(err.messages), 400
 
-api.add_resource(AdminForHidden, "/api/hiddensearch/", methods=["GET"])
-api.add_resource(AdminForHidden, "/api/hiddenmodify/<string:submitID>&<string:task>&<string:score>",
-                 methods=["PATCH"])
+# public
 api.add_resource(Submission, "/api/submission", methods=["POST"])
 api.add_resource(Submission, "/api/submission/<string:submitID>",
                  methods=["GET", "PATCH"])
+api.add_resource(SubmissionList, "/api/submissions")
+api.add_resource(LeaderBoard, "/api/submission/leaderboard")
+
+# hidden
 api.add_resource(HiddenSubmission, "/api/hiddensubmission", methods=["POST"])
 api.add_resource(HiddenSubmission, "/api/hiddensubmission/<string:submitID>",
                  methods=["PATCH"])
-api.add_resource(SubmissionList, "/api/submissions")
 api.add_resource(HiddenSubmissionList, "/api/hiddensubmissions")
-api.add_resource(LeaderBoard, "/api/submission/leaderboard")
 api.add_resource(HiddenLeaderBoard, "/api/hiddensubmission/leaderboard")
+api.add_resource(AdminForHidden, "/api/hiddensearch/", methods=["GET"])
+api.add_resource(AdminForHidden, "/api/hiddenmodify/<string:submitID>&<string:task>&<string:score>",
+                 methods=["PATCH"])
+
+# utilities
 api.add_resource(UserInfo, "/api/user/info")
 api.add_resource(UserLogin, "/api/user/login")
 api.add_resource(Example, "/api/download/example")

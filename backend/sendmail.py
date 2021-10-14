@@ -15,11 +15,19 @@ assert GMAIL_ACCOUNT != ""
 assert GMAIL_PASSWORD != ""
 assert len(RECEIVER_EMAIL_LIST) >= 1
 
-def send_email(participant_email, submitUUID):
+def send_email(participant_email, formData):
 
     mail_content = f'''[Notice] 
-    {participant_email} has uploaded their model for hidden set competition.
-    The submission uuid is {submitUUID}
+    {participant_email} has uploaded their model for hidden set competition at {formData["aoeTimeUpload"]} AOE.
+    
+    submitUUID: {formData["submitUUID"]}
+    submitName: {formData["submitName"]}
+    modelDesc: {formData["modelDesc"]}
+    huggingfaceOrganizationName: {formData["huggingfaceOrganizationName"]}
+    huggingfaceRepoName: {formData["huggingfaceRepoName"]}
+    huggingfaceCommonHash: {formData["huggingfaceCommonHash"]}
+    paramShared: {formData["paramShared"]}
+
     Thank You
     '''
     #Setup the MIME

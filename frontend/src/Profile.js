@@ -24,6 +24,7 @@ import Icon from "@material-ui/core/Icon";
 import CropSquareIcon from "@material-ui/icons/CropSquare";
 import {
     individual_submission_columnInfo,
+    individual_submission_hidden_columnInfo,
     leaderboard_selections,
 } from "./Data";
 import { AuthContext } from "./context/auth-context";
@@ -32,7 +33,8 @@ import Model from "./components/Modal";
 import TrackSelect from "./components/TrackSelect";
 import SubsetSelect from "./components/SubsetSelect";
 import { overall_metric_adder } from "./overall_metrics";
-import { Box } from "@material-ui/core";
+import { Box, Divider, FormControl, InputLabel, Select, MenuItem, Input, FormControlLabel, Switch } from "@material-ui/core";
+import { NumericalSort, is_number_and_not_nan } from "./components/Utilies";
 
 const Styles = styled.div`
   .table {
@@ -145,7 +147,6 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
             defaultColumn,
             initialState: {
                 hiddenColumns: [
-                    "modelDesc",
                     "modelURL",
                     "stride",
                     "inputFormat",
@@ -238,8 +239,8 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
                                         <div
                                             {...column.getResizerProps()}
                                             className={`resizer ${column.isResizing
-                                                    ? "isResizing"
-                                                    : ""
+                                                ? "isResizing"
+                                                : ""
                                                 }`}
                                         />
                                     </div>
@@ -280,22 +281,21 @@ function Profile(props) {
     const [allHiddenSubmissionData, setAllHiddenSubmissionData] = useState([]);
     const [shownData, setShownData] = useState([]);
     const [shownHiddenData, setShownHiddenData] = useState([]);
-    const [task, setTask] = useState("all");
+    const [task, setTask] = useState("constrained");
     const [username, setUsername] = useState("");
     const [resetUserName, setResetUserName] = useState("");
     const [dailyCounts, setDailyCounts] = useState(0);
-    const [monthlyCounts, setMonthlyCounts] = useState(0);
+    const [weeklyCounts, setWeeklyCounts] = useState(0);
     const [hiddenDailyCounts, setHiddenDailyCounts] = useState(0);
-    const [hiddenMonthlyCounts, setHiddenMonthlyCounts] = useState(0);
+    const [hiddenWeeklyCounts, setHiddenWeeklyCounts] = useState(0);
     const [subset, setSubset] = useState("Public Set");
+    const track = subset.toLowerCase().includes("hidden") ? "hidden" : "public"
+    const memoizedNumericSort = React.useCallback(NumericalSort);
 
-    const memoizedNumericSort = React.useCallback(
-        (rowA, rowB, columnId, desc) => {
-            const valueA = rowA.original[columnId];
-            const valueB = rowB.original[columnId];
-            return valueA > valueB ? 1 : -1;
-        }
-    );
+    // edit hidden score
+    const [editTask, setEditTask] = useState('');
+    const [entireHiddenSubmissionData, setEntireHiddenSubmissionData] = useState([]);
+    const [showAll, setShowAll] = useState(true);
 
     const mapping_array = {
         CONSTRAINED: "constrained",
@@ -314,9 +314,9 @@ function Profile(props) {
             .then((res) => {
                 setUsername(res.data.username);
                 setDailyCounts(res.data.daily_counts);
-                setMonthlyCounts(res.data.monthly_counts);
+                setWeeklyCounts(res.data.weekly_counts);
                 setHiddenDailyCounts(res.data.hidden_daily_counts);
-                setHiddenMonthlyCounts(res.data.hidden_monthly_counts);
+                setHiddenWeeklyCounts(res.data.hidden_weekly_counts);
             })
             .catch((error) => {
                 console.error(error);
@@ -370,34 +370,51 @@ function Profile(props) {
                 console.error(error);
             });
         await axios({
+            method: "get",
+            url: "/api/hiddensubmissions",
+            headers: {
+                Authorization: "Bearer " + auth.token,
+            },
+        })
+            .then((res) => {
+                setAllHiddenSubmissionData(res.data.submission_info);
+                // console.log(res.data.submission_info);
+                task === "all"
+                    ? setShownHiddenData(res.data.submission_info)
+                    : setShownHiddenData(
+                        res.data.submission_info.filter(
+                            (data) => mapping_array[data.task] === task
+                        )
+                    );
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        if (auth.isAdmin) {
+            await axios({
                 method: "get",
-                url: "/api/hiddensubmissions",
+                url: "/api/hiddensearch/",
                 headers: {
                     Authorization: "Bearer " + auth.token,
                 },
             })
                 .then((res) => {
-                    setAllHiddenSubmissionData(res.data.submission_info);
-                    console.log(res.data.submission_info);
-                    task === "all"
-                        ? setShownHiddenData(res.data.submission_info)
-                        : setShownHiddenData(
-                            res.data.submission_info.filter(
-                                (data) => mapping_array[data.task] === task
-                            )
-                        );
+                    setEntireHiddenSubmissionData(res.data.submission_info)
                 })
                 .catch((error) => {
                     console.error(error);
                 });
+        }
     };
 
     const onTaskChange = (e) => {
         setTask(e.target.value);
+        let setShown = track === "hidden" ? setShownHiddenData : setShownData;
+        let allData = track === "hidden" ? allHiddenSubmissionData : allSubmissionData;
         e.target.value === "all"
-            ? setShownData(allSubmissionData)
-            : setShownData(
-                allSubmissionData.filter(
+            ? setShown(allData)
+            : setShown(
+                allData.filter(
                     (data) => mapping_array[data.task] === e.target.value
                 )
             );
@@ -410,7 +427,7 @@ function Profile(props) {
     const setShowOnLeaderboard = async (submission_id) => {
         await axios({
             method: "patch",
-            url: "/api/submission/" + submission_id,
+            url: (track == "hidden" ? "/api/hiddensubmission/" : "/api/submission/") + submission_id,
             headers: {
                 Authorization: "Bearer " + auth.token,
             },
@@ -428,7 +445,7 @@ function Profile(props) {
             return (
                 <CropSquareIcon
                     className="click-btn"
-                    onClick={() => setShowOnLeaderboard(row.allCells[16].value)}
+                    onClick={() => setShowOnLeaderboard(row.original.submitUUID)}
                 ></CropSquareIcon>
             );
         else
@@ -436,7 +453,7 @@ function Profile(props) {
                 <CheckIcon
                     className="click-btn"
                     style={{ color: green[500] }}
-                    onClick={() => setShowOnLeaderboard(row.allCells[16].value)}
+                    onClick={() => setShowOnLeaderboard(row.original.submitUUID)}
                 ></CheckIcon>
             );
     };
@@ -485,28 +502,51 @@ function Profile(props) {
     useEffect(() => {
         getIndividualSubmission();
         getUserName();
-        // getUserQuota();
-    }, []);
+    }, [auth.isAdmin]);
 
-    let columns = Object.keys(individual_submission_columnInfo).map((key) => {
+    const patchhiddenscore = async () => {
+        if (auth.isAdmin) {
+            let submissionID = document.getElementById("submission-id").value;
+            let editValue = document.getElementById("edit-value").value;
+
+            await axios({
+                method: "patch",
+                url: `/api/hiddenmodify/${submissionID}&${editTask}&${editValue}`,
+                headers: {
+                    Authorization: "Bearer " + auth.token,
+                },
+            })
+                .then((res) => {
+                    swal({ text: res.data.message, icon: "success" });
+                    getIndividualSubmission();
+                })
+                .catch((error) => {
+                    swal({ text: "Internal server error", icon: "error" });
+                });
+        }
+    }
+
+    let columnInfo = track == "hidden" ? individual_submission_hidden_columnInfo : individual_submission_columnInfo;
+    let columns = Object.keys(columnInfo).map((key) => {
+        let isScore = columnInfo[key].isScore
         return {
-            Header: individual_submission_columnInfo[key].header,
+            Header: columnInfo[key].header,
             accessor: key,
-            width: individual_submission_columnInfo[key].width,
+            width: columnInfo[key].width,
             sortType:
-                individual_submission_columnInfo[key] == "number"
+                columnInfo[key] == "number"
                     ? memoizedNumericSort
                     : "alphanumeric",
-            higherBetter: individual_submission_columnInfo[key].higherBetter,
-            isScore: individual_submission_columnInfo[key].isScore,
+            higherBetter: columnInfo[key].higherBetter,
+            isScore: isScore,
             Cell:
                 key === "showOnLeaderboard"
                     ? parseShowCell
                     : key === "modelURL"
                         ? parseModelURL
-                        : key === "download"
+                        : key === "download" && track === "public"
                             ? parseDownload
-                            : ({ value }) => String(value),
+                            : ({ value }) => isScore ? (is_number_and_not_nan(value) ? String(value) : "-") : (value == undefined ? "-" : String(value)),
         };
     });
     columns[0]["sticky"] = "left";
@@ -516,7 +556,19 @@ function Profile(props) {
     };
 
     let trimmedColumns, trimmedShownData;
-    [trimmedColumns, trimmedShownData] = overall_metric_adder(["interpolation", "interpolation_p"], columns, shownData, subset, memoizedNumericSort)
+    let data;
+    if (track == "hidden") {
+        if (showAll && auth.isAdmin) {
+            data = entireHiddenSubmissionData;
+        }
+        else {
+            data = shownHiddenData;
+        }
+    }
+    else {
+        data = shownData
+    }
+    [trimmedColumns, trimmedShownData] = overall_metric_adder(["interpolation", "interpolation_p"], columns, data, subset, memoizedNumericSort)
     const memoColumns = React.useMemo(() => trimmedColumns);
 
     const resetbtnstyle = {
@@ -529,16 +581,10 @@ function Profile(props) {
                 <Title
                     title={"Hello " + username}
                     description={
-                        "Your number of (public) daily submission is " +
-                        dailyCounts +
-                        ", (public) monthly submission is " +
-                        monthlyCounts +
-                        ", (hidden) daily submission is " +
-                        hiddenDailyCounts +
-                        " and (hidden) monthly submission is " +
-                        hiddenMonthlyCounts +
-                        "."
-                        
+                        <div>
+                            <p><span>Public submissions: </span><strong>{`${dailyCounts}/day, ${weeklyCounts}/week`}</strong></p>
+                            <p><span>Hidden submissions: </span><strong>{`${hiddenDailyCounts}/day, ${hiddenWeeklyCounts}/week`}</strong></p>
+                        </div>
                     }
                 />
                 <TextField
@@ -565,13 +611,64 @@ function Profile(props) {
                     title="Submission history"
                     description="You can check the checkbox to show your submission result(s) on the leaderboard."
                 />
-                <Box margin={theme.spacing(2, "auto", 0.2)}>
-                    <TrackSelect task={task} onTaskChange={onTaskChange} />
-                </Box>
-                <Box margin={theme.spacing(0.2, "auto", 1)}>
-                    <SubsetSelect subset={subset} selections={["Paper", "Public Set"]} onChange={onSubsetChange} />
+                <Box width="90%" margin="auto">
+                    {
+                        auth.isAdmin &&
+                        <>
+                            <FormControlLabel
+                                control={<Switch checked={showAll} onChange={(e) => { setShowAll(e.target.checked) }} name="showAll" />}
+                                label="All Submissions"
+                            />
+                            <Divider style={{ width: "600px", maxWidth: "80%", margin: "auto" }} />
+                        </>
+                    }
+                    <Box margin={theme.spacing(2, "auto", 0.2)}>
+                        <TrackSelect task={task} onTaskChange={onTaskChange} />
+                    </Box>
+                    <Divider style={{ width: "600px", maxWidth: "80%", margin: "auto" }} />
+                    <Box margin={theme.spacing(0.2, "auto", 1)}>
+                        <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set"]} onChange={onSubsetChange} />
+                    </Box>
                 </Box>
                 <Table columns={memoColumns} data={trimmedShownData} {...props} />
+                {
+                    auth.isAdmin &&
+                    <Section>
+                        <Box margin="10px">
+                            <Title
+                                title="Edit Hidden Score"
+                                description="Great power comes with great responsibility."
+                            />
+                            <FormControl style={{ margin: "10px" }}>
+                                <InputLabel style={{ color: grey[600] }} htmlFor="submission-id">Submission ID</InputLabel>
+                                <Input id="submission-id" />
+                            </FormControl>
+                            <FormControl style={{ width: "200px", margin: "10px" }}>
+                                <InputLabel id="demo-customized-select-label">Task</InputLabel>
+                                <Select
+                                    labelId="demo-customized-select-label"
+                                    id="demo-customized-select"
+                                    value={editTask}
+                                    onChange={(e) => { setEditTask(e.target.value) }}
+                                >
+                                    {
+                                        Object.keys(individual_submission_hidden_columnInfo).map((key) => {
+                                            return (
+                                                individual_submission_hidden_columnInfo[key].isScore &&
+                                                <MenuItem value={key}>{key}</MenuItem>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            </FormControl>
+                            <FormControl style={{ margin: "10px" }}>
+                                <InputLabel style={{ color: grey[600] }} htmlFor="edit-value">Edit Value</InputLabel>
+                                <Input id="edit-value" />
+                            </FormControl>
+                        </Box>
+                        <Button color="primary" variant="contained" onClick={patchhiddenscore}>Edit</Button>
+                    </Section>
+                }
             </Section>
         </>
     );

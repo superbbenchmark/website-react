@@ -52,6 +52,7 @@ class HiddenFileModel(Base):
 
     # upload froms
     submitName = Column(String(80),  nullable=False)
+    modelDesc = Column(Text())
     huggingfaceOrganizationName = Column(String(80))
     huggingfaceRepoName = Column(String(80))
     huggingfaceCommonHash = Column(String(80))

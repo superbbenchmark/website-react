@@ -65,6 +65,7 @@ export default function HiddenForm(){
             setIsLoading(true);
             const formData = new FormData();
             formData.append("submitName", data.submitName);
+            formData.append("modelDesc", data.modelDesc);
             formData.append("huggingfaceOrganizationName", data.huggingfaceOrganizationName);
             formData.append("huggingfaceRepoName", data.huggingfaceRepoName);
             formData.append("huggingfaceCommonHash", data.huggingfaceCommonHash);
@@ -128,6 +129,19 @@ export default function HiddenForm(){
                     <FormTextField
                         control={control}
                         className={classes.textField}
+                        name="modelDesc"
+                        label="Model Description*"
+                        description="A sentence or two describing your system. Make sure to mention any outside data you use. (Required)"
+                        rules={formVal.modelDesc}
+                        error={errors.modelDesc}
+                        helperText={
+                            errors.modelDesc && errors.modelDesc.message
+                        }
+                    />
+
+                    <FormTextField
+                        control={control}
+                        className={classes.textField}
                         name="huggingfaceOrganizationName"
                         label="Huggingface Organization Name*"
                         description="Organization Name of your huggingface model hub. (Required)"
@@ -155,8 +169,8 @@ export default function HiddenForm(){
                         control={control}
                         className={classes.textField}
                         name="huggingfaceCommonHash"
-                        label="Huggingface Common Hash*"
-                        description="Common hash of your model. (Required)"
+                        label="Huggingface Commit Hash (full 40 characters)*"
+                        description="Commit hash (full 40 characters) of your model. (Required)"
                         rules={formVal.huggingfaceCommonHash}
                         error={errors.huggingfaceCommonHash}
                         helperText={

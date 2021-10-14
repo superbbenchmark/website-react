@@ -44,6 +44,7 @@ class SubmissionPublicSchema(Schema):
 
 class SubmissionHiddenSchema(Schema):
     submitName = fields.Str(required=True, validate=Length(max=60))
+    modelDesc = fields.Str(required=True, validate=Length(max=300))
     huggingfaceOrganizationName = fields.Str(required=True, validate=Length(max=300))
     huggingfaceRepoName = fields.Str(required=True, validate=Length(max=300))
     huggingfaceCommonHash = fields.Str(required=True, validate=Length(max=300))

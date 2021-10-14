@@ -11,7 +11,7 @@ from models.score import ScoreModel
 from models.hiddenscore import HiddenScoreModel
 from models.user import UserModel
 from schemas.submission import SubmissionPublicSchema, SubmissionHiddenSchema
-from utils import submission_records_parser, get_AOE_month, get_AOE_today,  get_leaderboard_default, get_hidden_leaderboard_default, check_admin_credential, admin_submission_records_parser
+from utils import submission_records_parser, get_AOE_week, get_AOE_today,  get_leaderboard_default, get_hidden_leaderboard_default, check_admin_credential, admin_submission_records_parser
 from sendmail import send_email
 from calculate import metric_calculate_pipeline
 from config import configs
@@ -85,10 +85,10 @@ class Submission(Resource):
             # check current submission counts
             daily_counts = FileModel.get_interval_upload_count_by_mail(
                 email=user_mail, AOEtime=get_AOE_today(to_str=False))
-            monthly_counts = FileModel.get_interval_upload_count_by_mail(
-                email=user_mail, AOEtime=get_AOE_month(to_str=False))
-            if (daily_counts >= configs["DAILY_SUBMIT_LIMIT"]) or (monthly_counts >= configs["MONTHLY_SUBMIT_LIMIT"]):
-                return {"message": f"You have submitted {daily_counts} times today and {monthly_counts} times this month."}, HTTPStatus.FORBIDDEN
+            weekly_counts = FileModel.get_interval_upload_count_by_mail(
+                email=user_mail, AOEtime=get_AOE_week(to_str=False))
+            if (daily_counts >= configs["DAILY_SUBMIT_LIMIT"]) or (weekly_counts >= configs["WEEKLY_SUBMIT_LIMIT"]):
+                return {"message": f"Exceed Submission Limit: You have submitted {daily_counts} times today and {weekly_counts} times this week."}, HTTPStatus.FORBIDDEN
 
             # file validation
             file = request.files['file']
@@ -209,10 +209,10 @@ class HiddenSubmission(Resource):
             # check current submission counts
             daily_counts = HiddenFileModel.get_interval_upload_count_by_mail(
                 email=user_mail, AOEtime=get_AOE_today(to_str=False))
-            monthly_counts = HiddenFileModel.get_interval_upload_count_by_mail(
-                email=user_mail, AOEtime=get_AOE_month(to_str=False))
-            if (daily_counts >= configs["HIDDEN_DAILY_SUBMIT_LIMIT"]) or (monthly_counts >= configs["HIDDEN_MONTHLY_SUBMIT_LIMIT"]):
-                return {"message": f"You have submitted {daily_counts} times today and {monthly_counts} times this month."}, HTTPStatus.FORBIDDEN
+            weekly_counts = HiddenFileModel.get_interval_upload_count_by_mail(
+                email=user_mail, AOEtime=get_AOE_week(to_str=False))
+            if (daily_counts >= configs["HIDDEN_DAILY_SUBMIT_LIMIT"]) or (weekly_counts >= configs["HIDDEN_WEEKLY_SUBMIT_LIMIT"]):
+                return {"message": f"Exceed Submission Limit: You have submitted {daily_counts} times today and {weekly_counts} times this week."}, HTTPStatus.FORBIDDEN
 
             # load form data
             formData = hiddenFormSchema.load(request.form)
@@ -225,7 +225,7 @@ class HiddenSubmission(Resource):
             fileObj.scores.append(scoreObj)
             fileObj.save_to_db()
 
-            send_email(participant_email = user_mail, submitUUID = formData["submitUUID"])
+            send_email(participant_email = user_mail, formData = formData)
 
             return {"message": "Submit successfully!"}, HTTPStatus.OK
 
@@ -248,15 +248,9 @@ class HiddenSubmission(Resource):
             task_id = submission_record.task.value  # == mapping[task]
 
             if submission_record.showOnLeaderboard == Show.YES:
-                # set the "show" of all the same task submission to "NO"
-                HiddenFileModel.reset_same_task_show_attribute(
-                    email=user_mail, task=Task(task_id))
+                HiddenFileModel.unset_show_attribute_by_submitID(submitUUID=submitID)
                 return {"message": "Remove from the leaderboard!", "submitID": submitID}, HTTPStatus.OK
-
             else:
-                # set the "show" of all the same task submission to "NO"
-                HiddenFileModel.reset_same_task_show_attribute(
-                    email=user_mail, task=Task(task_id))
                 HiddenFileModel.set_show_attribute_by_submitID(submitUUID=submitID)
                 return {"message": "Shown on the leaderboard!", "submitID": submitID}, HTTPStatus.OK
 

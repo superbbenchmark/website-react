@@ -173,13 +173,14 @@ function App() {
 }
 
 export default () => {
-    const { token, login, logout } = useAuth();
+    const { token, isAdmin, login, logout } = useAuth();
     return (
         <ThemeProvider theme={createMuiTheme(mainTheme)}>
             <AuthContext.Provider
                 value={{
                     isLoggedIn: !!token,
                     token: token,
+                    isAdmin: isAdmin,
                     login: login,
                     logout: logout,
                 }}

@@ -18,7 +18,7 @@ const Login = () => {
             const responseData = await axios.post("/api/user/login", {
                 id_token: res.tokenId,
             });
-            auth.login(responseData.data.access_token);
+            auth.login(responseData.data.access_token, null, responseData.data.isAdmin);
             history.push("/");
         } catch (err) {
             console.log(err.response);
