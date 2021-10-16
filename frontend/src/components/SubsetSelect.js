@@ -12,10 +12,10 @@ export default function SubsetSelect({ subset, selections, onChange }) {
             return "Paper";
         }
         else if (name === "public set") {
-            return "Public";
+            return "Challenge Public";
         }
         else if (name === "hidden dev set") {
-            return "Hidden Dev";
+            return "Challenge Hidden Dev";
         }
         return originName;
     }

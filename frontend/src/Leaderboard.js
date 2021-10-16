@@ -263,7 +263,7 @@ function LeaderBoard(props) {
     const [LeaderboardHiddenData, setLeaderboardHiddenData] = useState([]);
     const [LeaderboardHiddenShownData, setLeaderboardHiddenShownData] = useState([]);
     const [task, setTask] = useState("constrained");
-    const [subset, setSubset] = useState("Public Set");
+    const [subset, setSubset] = useState("Paper");
     const track = subset.toLowerCase().includes("hidden") ? "hidden" : "public"
     const memoizedNumericSort = React.useCallback(NumericalSort);
 

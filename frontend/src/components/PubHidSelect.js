@@ -7,6 +7,16 @@ import { Typography } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core/styles";
 
 export default function PubHidSelect({ type, onTypeChange }) {
+    let getName = (originalName) => {
+        let name = originalName.toLowerCase()
+        if (name === "public") {
+            return "Paper / Challenge Public"
+        }
+        else if (name === "hidden"){
+            return "Challenge Hidden"
+        }
+    }
+
     return (
     <div className="select group" style={{width: "fit-content", maxWidth: "100%", margin: "auto",}}>
         <RadioGroup row aria-label="position" name="position" defaultValue="constrained" value={type} onChange={onTypeChange}>
@@ -18,8 +28,8 @@ export default function PubHidSelect({ type, onTypeChange }) {
                               control={<Radio color="primary" />}
                               label={
                                   <Typography color="primary">
-                                      {capitalizeFirstLetter(
-                                          public_hidden_selection.name.toLowerCase()
+                                      {getName(
+                                          public_hidden_selection.name
                                       )}
                                   </Typography>
                               }

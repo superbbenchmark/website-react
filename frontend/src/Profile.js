@@ -288,7 +288,7 @@ function Profile(props) {
     const [weeklyCounts, setWeeklyCounts] = useState(0);
     const [hiddenDailyCounts, setHiddenDailyCounts] = useState(0);
     const [hiddenWeeklyCounts, setHiddenWeeklyCounts] = useState(0);
-    const [subset, setSubset] = useState("Public Set");
+    const [subset, setSubset] = useState("Paper");
     const track = subset.toLowerCase().includes("hidden") ? "hidden" : "public"
     const memoizedNumericSort = React.useCallback(NumericalSort);
 
