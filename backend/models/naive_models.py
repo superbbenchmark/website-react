@@ -97,7 +97,7 @@ class HiddenScoreModel(Base):
     __tablename__ = "hiddenscores"
 
     id = Column(Integer, primary_key=True)
-    fileId = Column(Integer, ForeignKey('files.id'), nullable=False)
+    fileId = Column(Integer, ForeignKey('hiddenfiles.id'), nullable=False)
 
     # metrics
     ## hidden dev set
