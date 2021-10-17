@@ -204,6 +204,8 @@ After training the downstream model for all tasks, we show the best performance 
 
 The [hidden-set leaderboard](https://superbbenchmark.org/leaderboard) is online and accepts submissions. Please follow [the submission steps](https://huggingface.co/superb/superb-submission). We use HuggingFace's Hub to host the submitted upstreams and track the submitted model weights. On the other hand, we use our [submission page](https://superbbenchmark.org/submit) to control the submission limit, where the participants tell us the locations of their models on HuggingFace's Hub. **The submission limit** starts from **2 times/week**. If the participants increse to a certain amount, we will adjust the limit accordingly.
 
+After submitting via the submission page as shown below, you will see a new entry in your **submission history** under your Profile page (which is private), and the evaluation results on the hidden-set will later be revealed at the entry privately. The participants can decide whether to make it publicly visible on the shared leaderboard, or keep it private in the Profile page. The leaderboard will only reveal the identity of the participants and the submitted models if the participants make the submission publicly visible.
+
 ![](https://i.imgur.com/yyE2Kj3.png)
 
 ## Overall Metrics
