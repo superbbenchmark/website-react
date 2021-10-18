@@ -60,7 +60,28 @@ function Challenge(props) {
                                     {children}
                                 </a>
                             )
+                        },
+                        h1({ level, children, ...props }) {
+                            const id = children.toString().replace(/ /g, '-')
+                            return <h1 id={id}>{children}</h1>
+                        },
+                        h2({ level, children, ...props }) {
+                            const id = children.toString().replace(/ /g, '-')
+                            return <h2 id={id}>{children}</h2>
+                        },
+                        h3({ level, children, ...props }) {
+                            const id = children.toString().replace(/ /g, '-')
+                            return <h3 id={id}>{children}</h3>
+                        },
+                        h4({ level, children, ...props }) {
+                            const id = children.toString().replace(/ /g, '-')
+                            return <h4 id={id}>{children}</h4>
+                        },
+                        h5({ level, children, ...props }) {
+                            const id = children.toString().replace(/ /g, '-')
+                            return <h5 id={id}>{children}</h5>
                         }
+
                     }}
                 />
             </Section>
