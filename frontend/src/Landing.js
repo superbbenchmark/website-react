@@ -61,7 +61,7 @@ export default function Landing(props) {
                     <ul>
                         <li><span><Strong>Sep 18, 2021</Strong>: <HashLink to="/news#announcement2021">Challenge announcement</HashLink> &amp; </span><a
                             href="https://github.com/s3prl/s3prl" target="_blank" rel="noopener"><span>S3PRL</span></a><span> released</span></li>
-                        <li><span><Strong>Sep 30, 2021</Strong>: Overall metrics announcement &amp; </span>
+                        <li><span><Strong>Sep 30, 2021</Strong>: <HashLink to="/challenge#Overall-Metrics">Overall metrics</HashLink> announcement &amp; </span>
                             <HashLink to="/leaderboard?subset=Public+Set&track=constrained">public-set leaderboard</HashLink>
                             <span> is online and <HashLink to="/submit?type=public">accepts submissions</HashLink></span></li>
                         <li><span><Strong>Oct 15, 2021</Strong>: <HashLink to="/leaderboard?subset=Hidden+Dev+Set&track=constrained">Hidden-set leaderboard</HashLink> is online and <HashLink to="/submit?type=hidden">accepts submissions</HashLink></span></li>
