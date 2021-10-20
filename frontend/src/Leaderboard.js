@@ -20,6 +20,7 @@ import SubsetSelect from "./components/SubsetSelect";
 import { overall_metric_adder } from "./overall_metrics";
 import { NumericalSort, is_number_and_not_nan } from "./components/Utilies";
 import { Box, Divider } from "@material-ui/core";
+import { useLocation } from "react-router-dom";
 
 const Styles = styled.div`
   .table {
@@ -256,14 +257,20 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
     );
 }
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
 function LeaderBoard(props) {
+    let query = useQuery();
+
     const theme = useTheme();
     const [LeaderboardData, setLeaderboardData] = useState([]);
     const [LeaderboardShownData, setLeaderboardShownData] = useState([]);
     const [LeaderboardHiddenData, setLeaderboardHiddenData] = useState([]);
     const [LeaderboardHiddenShownData, setLeaderboardHiddenShownData] = useState([]);
-    const [task, setTask] = useState("constrained");
-    const [subset, setSubset] = useState("Paper");
+    const [task, setTask] = useState(query.get("track") || "constrained");
+    const [subset, setSubset] = useState(query.get("subset") || "Paper");
     const track = subset.toLowerCase().includes("hidden") ? "hidden" : "public"
     const memoizedNumericSort = React.useCallback(NumericalSort);
 
@@ -296,6 +303,12 @@ function LeaderBoard(props) {
 
     const onTaskChange = (e) => {
         setTask(e.target.value);
+
+        // push history
+        const url = new URL(window.location);
+        url.searchParams.set("track", e.target.value);
+        window.history.pushState({}, '', url);
+
         let setShown = track === "hidden" ? setLeaderboardHiddenShownData : setLeaderboardShownData;
         let allData = track === "hidden" ? LeaderboardHiddenData : LeaderboardData;
         e.target.value === "all"
@@ -344,6 +357,12 @@ function LeaderBoard(props) {
 
     const onSubsetChange = (e) => {
         setSubset(e.target.value);
+
+        // push history
+        const url = new URL(window.location);
+        url.searchParams.set("subset", e.target.value);
+        window.history.pushState({}, '', url);
+
     };
 
     let data;
