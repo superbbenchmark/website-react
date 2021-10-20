@@ -23,11 +23,9 @@ export default function SubsetSelect({ subset, selections, onChange }) {
     return (
         <div className="select group" style={{ width: "fit-content", maxWidth: "100%", margin: "10px auto" }}>
             <FormControl component="fieldset">
-                <AdaptiveLink link="rules">
-                    <span style={{ color: "#4697E1", textDecoration: "underline", textDecorationThickness: 0.5 }}>
-                        Task Collections
-                    </span>
-                </AdaptiveLink>
+                <span style={{ color: "#4697E1"}}>
+                    Task Collections
+                </span>
                 <RadioGroup row aria-label="position" name="position" defaultValue="Public Set" value={subset} onChange={onChange}>
                     {selections.map((selection) => {
                         return (
