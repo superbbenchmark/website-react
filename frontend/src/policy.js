@@ -224,7 +224,7 @@ Type|Parameter-agnostic|Parameter-penalized
 Scoring|$superb_s$|$superb_{sp}$
 Ranking|$superb_r$|$superb_{rp}$
 
-In this challenge, $superb_r$ and $superb_{rp}$ are the primary metrics. When equal rank is found on two different upstreams, $superb_{rp}$ or $superb_{sp}$ is used to break the tie. Hence, there will be only two final lists of winners: **Parameter-agnostic** and **Parameter-penalized**.
+In this challenge, $superb_r$ and $superb_{rp}$ are the primary metrics. When equal rank is found on two different upstreams, $superb_{s}$ or $superb_{sp}$ is used to break the tie. Hence, there will be only two final lists of winners: **Parameter-agnostic** and **Parameter-penalized**.
 
 ### Notation
 
