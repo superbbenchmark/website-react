@@ -203,12 +203,14 @@ After training the downstream model for all tasks, we show the best performance 
 
 #### How to submit
 
-(Update 10/15/2021 AOE)
+(Update 10/20/2021 AOE)
 
 The [hidden-set leaderboard](leaderboard?subset=Hidden+Dev+Set&track=constrained) is online and accepts submissions. Please follow [the submission steps](https://huggingface.co/superb/superb-submission). We use HuggingFace's Hub to host the submitted upstreams and track the submitted model weights. On the other hand, we use our [submission page](submit?type=hidden) to control the submission limit, where the participants tell us the locations of their models on HuggingFace's Hub.
 
-After submitting via the submission page, you will see a new entry in the **submission history** under your Profile page (which is private), and the evaluation results on the hidden-set will later be revealed at the entry.
-The participants can decide whether to make it publicly visible on the shared Hidden-Set leaderboard, or keep it private in the Profile page.
+After submitting via the submission page, you will see a new entry in the **submission history** under your Profile page (which is private), and the evaluation results on the hidden-set will be revealed at the entry within one week.
+Please stay tuned!
+
+The participants can decide whether to make the submission publicly visible on the shared Hidden-Set leaderboard, or keep it private in the Profile page.
 The [hidden-set leaderboard](leaderboard?subset=Hidden+Dev+Set&track=constrained) will automatically show the best submission if no submission is selected to be shown publicly.
 **Note that all the hidden-set submissions are anonymous during and after the challenge.**
 If you wish to reveal your personal/model information on the [hidden-set leaderboard](leaderboard?subset=Hidden+Dev+Set&track=constrained), please [contact us](#Contact)!
