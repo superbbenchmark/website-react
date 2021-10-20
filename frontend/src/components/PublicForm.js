@@ -122,7 +122,7 @@ export default function PublicForm(){
             <React.Fragment>
                 <SubSubSection>
                     <Typography variant="body1" color="textSecondary">
-                        Make sure to read the <HashLink to="/rules">Rules</HashLink> before submitting to the <HashLink to="/leaderboard?track=constrained&subset=Paper">SUPERB Benchmark</HashLink> or the <HashLink to="/leaderboard?track=constrained&subset=Public+Set">SUPERB Challenge public-set</HashLink>.
+                        Make sure to read the <HashLink to="/rules">Rules</HashLink> before submitting to the <HashLink to="/leaderboard?track=constrained&subset=Paper">SUPERB Benchmark</HashLink> or the <HashLink to="/leaderboard?track=constrained&subset=Public+Set">SUPERB Challenge Public-set</HashLink>.
                     </Typography>
                 </SubSubSection>
                 <form
@@ -254,7 +254,7 @@ export default function PublicForm(){
                         component="fieldset"
                         style={{ marginTop: "2%" }}
                     >
-                        <FormLabel component="legend">Task</FormLabel>
+                        <FormLabel component="legend"><HashLink to="/rules">Track</HashLink></FormLabel>
                         <Controller
                             control={control}
                             name="task"

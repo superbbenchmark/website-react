@@ -198,7 +198,7 @@ export default function HiddenForm(){
                         component="fieldset"
                         style={{ marginTop: "2%" }}
                     >
-                        <FormLabel component="legend">Task</FormLabel>
+                        <FormLabel component="legend"><HashLink to="/rules">Track</HashLink></FormLabel>
                         <Controller
                             control={control}
                             name="task"
