@@ -191,7 +191,7 @@ The leaderboard accepts **submissions with the upstream model solely**, includin
 
 #### Finetuning on submission
 
-After the upstream model is submitted, we **benchmark the submitted upstream by finetuning each task's downstream model for participants**. **The quota for submissions per week is limited** but will be dynamically adjusted based on the number of participants. The weekly quota will be announced at [NEWS](https://superbbenchmark.org/news). Participants can [contact us](#Contact) to acquire the finetuning artifacts of their own submissions for sanity checks, including:
+After the upstream model is submitted, we **benchmark the submitted upstream by finetuning each task's downstream model for participants**. **The quota for submissions per week is limited and starts from 2 times/week,** but will be dynamically adjusted based on the number of participants. The quota adjustment will be announced at [NEWS](https://superbbenchmark.org/news). Participants can [contact us](#Contact) to acquire the finetuning artifacts of their own submissions for sanity checks, including:
 
 - Tensorboard logs
 - Testing results
@@ -205,7 +205,7 @@ After training the downstream model for all tasks, we show the best performance 
 
 (Update 10/15/2021 AOE)
 
-The [hidden-set leaderboard](leaderboard?subset=Hidden+Dev+Set&track=constrained) is online and accepts submissions. Please follow [the submission steps](https://huggingface.co/superb/superb-submission). We use HuggingFace's Hub to host the submitted upstreams and track the submitted model weights. On the other hand, we use our [submission page](submit?type=hidden) to control the submission limit, where the participants tell us the locations of their models on HuggingFace's Hub. **The submission limit** starts from **2 times/week**. If the participants increse to a certain amount, we will adjust the limit accordingly.
+The [hidden-set leaderboard](leaderboard?subset=Hidden+Dev+Set&track=constrained) is online and accepts submissions. Please follow [the submission steps](https://huggingface.co/superb/superb-submission). We use HuggingFace's Hub to host the submitted upstreams and track the submitted model weights. On the other hand, we use our [submission page](submit?type=hidden) to control the submission limit, where the participants tell us the locations of their models on HuggingFace's Hub.
 
 After submitting via the submission page, you will see a new entry in the **submission history** under your Profile page (which is private), and the evaluation results on the hidden-set will later be revealed at the entry.
 The participants can decide whether to make it publicly visible on the shared Hidden-Set leaderboard, or keep it private in the Profile page.
