@@ -519,7 +519,7 @@ const individual_submission_columnInfo = {
         type: "alphanumeric",
     },
     task: {
-        header: "Task",
+        header: "Track",
         width: 130,
         higherBetter: undefined,
         type: "alphanumeric",
@@ -613,7 +613,7 @@ const individual_submission_hidden_columnInfo = {
         type: "alphanumeric",
     },
     task: {
-        header: "Task",
+        header: "Track",
         width: 130,
         higherBetter: undefined,
         type: "alphanumeric",
@@ -702,7 +702,7 @@ const leaderboard_columnInfo = {
         type: "alphanumeric",
     },
     task: {
-        header: "Task",
+        header: "Track",
         width: 130,
         higherBetter: undefined,
         type: "alphanumeric",
@@ -753,24 +753,24 @@ const leaderboard_columnInfo = {
 };
 
 const leaderboard_hidden_columnInfo = {
-    submitName: {
-        header: "Method",
-        width: 150,
-        higherBetter: undefined,
-        type: "alphanumeric",
-    },
-    modelDesc: {
-        header: "Description",
-        width: 100,
-        higherBetter: undefined,
-        type: "alphanumeric",
-    },
-    name: {
-        header: "Name",
-        width: 100,
-        higherBetter: undefined,
-        type: "alphanumeric",
-    },
+    // submitName: {
+    //     header: "Method",
+    //     width: 150,
+    //     higherBetter: undefined,
+    //     type: "alphanumeric",
+    // },
+    // modelDesc: {
+    //     header: "Description",
+    //     width: 100,
+    //     higherBetter: undefined,
+    //     type: "alphanumeric",
+    // },
+    // name: {
+    //     header: "Name",
+    //     width: 100,
+    //     higherBetter: undefined,
+    //     type: "alphanumeric",
+    // },
     aoeTimeUpload: {
         header: "Upolad Time",
         width: 160,
@@ -778,7 +778,7 @@ const leaderboard_hidden_columnInfo = {
         type: "alphanumeric",
     },
     task: {
-        header: "Task",
+        header: "Track",
         width: 130,
         higherBetter: undefined,
         type: "alphanumeric",
