@@ -19,6 +19,7 @@ import { tracks } from "../Data";
 import FormTextField from "./FormTextfield";
 import { SubSubSection } from "./Sections";
 import { capitalizeFirstLetter } from "./Utilies";
+import { HashLink } from "react-router-hash-link";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -104,7 +105,9 @@ export default function HiddenForm(){
             <React.Fragment>
                 <SubSubSection>
                     <Typography variant="body1" color="textSecondary">
-                        Make sure to read the rules before submitting.
+                        <p>Please <a target="_blank" href="https://huggingface.co/superb/superb-submission">Upload your model</a> before the submitting to the <HashLink to="/leaderboard?track=constrained&subset=Hidden+Dev+Set">SUPERB Challenge Hidden-set</HashLink>.</p>
+                        <p>If you wish to submit pre-trained models in non-PyTorch frameworks, please <a href="https://docs.google.com/forms/d/e/1FAIpQLSe52jYL2Yk9oYqXfg_Bg0Sjp01a6HSLUhY5VohsZOE5sNmgsw/viewform">fill this form</a>.</p>
+                        <p>If you are not feasible to submit the pre-trained model, please <a href="https://docs.google.com/forms/d/e/1FAIpQLSdA44nArlIDfGV63WwtwXer4WAPQO1aBwEpAjDSNjbMQN-GJQ/viewform">fill this form</a> for us to see how to help!</p>
                     </Typography>
                 </SubSubSection>
                 <form

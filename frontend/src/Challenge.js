@@ -10,6 +10,7 @@ import { atomOneLight as colorTheme } from 'react-syntax-highlighter/dist/esm/st
 import { Section } from "./components/Sections";
 import { HashLink } from 'react-router-hash-link';
 import policy from "./policy";
+import { Box } from "@material-ui/core";
 
 
 
