@@ -62,11 +62,9 @@ export default function Landing(props) {
                         <li><span><Strong>Sep 18, 2021</Strong>: <HashLink to="/news#announcement2021">Challenge announcement</HashLink> &amp; </span><a
                             href="https://github.com/s3prl/s3prl" target="_blank" rel="noopener"><span>S3PRL</span></a><span> released</span></li>
                         <li><span><Strong>Sep 30, 2021</Strong>: Overall metrics announcement &amp; </span>
-                            <a href="https://superbbenchmark.org/leaderboard"
-                                target="_blank" rel="noopener"><span>public-set leaderboard</span>
-                            </a>
-                            <span> is online and accepts submissions</span></li>
-                        <li><span><Strong>Oct 15, 2021</Strong>: Hidden-set leaderboard is online and accepts submissions</span></li>
+                            <HashLink to="/leaderboard?subset=Public+Set&track=constrained">public-set leaderboard</HashLink>
+                            <span> is online and <HashLink to="/submit?type=public">accepts submissions</HashLink></span></li>
+                        <li><span><Strong>Oct 15, 2021</Strong>: <HashLink to="/leaderboard?subset=Hidden+Dev+Set&track=constrained">Hidden-set leaderboard</HashLink> is online and <HashLink to="/submit?type=hidden">accepts submissions</HashLink></span></li>
                         <li><span><Strong>Nov 12, 2021</Strong>: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
                             rel="noopener"><span>AAAI workshop</span></a><span> paper submission deadline (encouraged)</span></li>
                         <li><span><Strong>Dec 3, 2021</Strong>: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
