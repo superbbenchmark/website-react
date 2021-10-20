@@ -78,7 +78,9 @@ Compared with SUPERB Benchmark, SUPERB Challenge extends the framework with the 
     assert isinstance(upstream, torch.nn.Module)
     ~~~
 
-Please [contact us](#Contact) if you wish to use other language or framework.
+
+We accept upstream models in PyTorch by default. If you wish to submit upstreams in non-PyTorch frameworks, please [fill this form](https://docs.google.com/forms/d/e/1FAIpQLSe52jYL2Yk9oYqXfg_Bg0Sjp01a6HSLUhY5VohsZOE5sNmgsw/viewform)!
+If you are not feasible to submit the pre-trained model, please [fill this form](https://docs.google.com/forms/d/e/1FAIpQLSdA44nArlIDfGV63WwtwXer4WAPQO1aBwEpAjDSNjbMQN-GJQ/viewform) for us to see how to help!
 
 ### Interface functions
 
@@ -182,7 +184,10 @@ Since all the train/dev/test splits are public in the public-set, it is possible
 
 #### Submission type
 
-The leaderboard accepts **submissions with the upstream model only**, including **model definition** and **pre-trained weights**. The upstream model should follow the specification detailed at [Upstream Specification](#Upstream-Specification). The submission can be done publicly or privately. Only the **Hidden-set Committee** members can access the privately submitted upstreams and the models will be used solely for this challenge.
+The leaderboard accepts **submissions with the upstream model solely**, including **model definition** and **pre-trained weights**. The upstream model should follow the specification detailed at [Upstream Specification](#Upstream-Specification). The submission can be done publicly or privately. Only the **Hidden-set Committee** members can access the privately submitted upstreams and the models will be used solely for this challenge.
+
+- We accept upstream models in PyTorch by default. If you wish to submit upstreams in non-PyTorch frameworks, please [fill this form](https://docs.google.com/forms/d/e/1FAIpQLSe52jYL2Yk9oYqXfg_Bg0Sjp01a6HSLUhY5VohsZOE5sNmgsw/viewform)!
+- If you are not feasible to submit the pre-trained model, please [fill this form](https://docs.google.com/forms/d/e/1FAIpQLSdA44nArlIDfGV63WwtwXer4WAPQO1aBwEpAjDSNjbMQN-GJQ/viewform) for us to see how to help!
 
 #### Finetuning on submission
 
@@ -201,6 +206,12 @@ After training the downstream model for all tasks, we show the best performance 
 (Update 10/15/2021 AOE)
 
 The [hidden-set leaderboard](leaderboard?subset=Hidden+Dev+Set&track=constrained) is online and accepts submissions. Please follow [the submission steps](https://huggingface.co/superb/superb-submission). We use HuggingFace's Hub to host the submitted upstreams and track the submitted model weights. On the other hand, we use our [submission page](submit?type=hidden) to control the submission limit, where the participants tell us the locations of their models on HuggingFace's Hub. **The submission limit** starts from **2 times/week**. If the participants increse to a certain amount, we will adjust the limit accordingly.
+
+After submitting via the submission page, you will see a new entry in the **submission history** under your Profile page (which is private), and the evaluation results on the hidden-set will later be revealed at the entry.
+The participants can decide whether to make it publicly visible on the shared Hidden-Set leaderboard, or keep it private in the Profile page.
+The [hidden-set leaderboard](leaderboard?subset=Hidden+Dev+Set&track=constrained) will automatically show the best submission if no submission is selected to be shown publicly.
+**Note that all the hidden-set submissions are anonymous during and after the challenge.**
+If you wish to reveal your personal/model information on the [hidden-set leaderboard](leaderboard?subset=Hidden+Dev+Set&track=constrained), please [contact us](#Contact)!
 
 ## Overall Metrics
 
