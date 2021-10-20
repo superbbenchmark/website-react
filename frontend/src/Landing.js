@@ -9,7 +9,8 @@ import { DescriptionButton } from "./components/Buttons";
 import { Strong } from "./components/Utilies";
 import { subscribe_link } from "./Data";
 import YouTube from 'react-youtube';
-import { HashLink } from 'react-router-hash-link';
+import { Title } from "./components/Titles";
+import { HashLink } from "react-router-hash-link";
 
 export default function Landing(props) {
     const theme = useTheme();
@@ -109,7 +110,7 @@ export default function Landing(props) {
                                     <li>
                                         A
                                         <DescriptionButton
-                                            name="benchmark toolkit"
+                                            name={<a>benchmark toolkit</a>}
                                             link={
                                                 "https://github.com/s3prl/s3prl"
                                             }
@@ -123,12 +124,12 @@ export default function Landing(props) {
                                     <li>
                                         A public
                                         <DescriptionButton
-                                            name="leaderboard"
+                                            name={<a>leaderboard</a>}
                                             link="/leaderboard"
                                         />
                                         for{" "}
                                         <DescriptionButton
-                                            name="submissions"
+                                            name={<a>submissions</a>}
                                             link="/submit"
                                         />
                                         and performance tracking on the
@@ -193,17 +194,11 @@ export default function Landing(props) {
                         })}
                     </Grid>
                 </SubSection>
-                <Box margin={theme.spacing(8, 0)}>
-                    Note.
-                    <ol>
-                        <li>
-                            The initial release covers 10 discriminative tasks
-                            ranging from content, speaker, semantics, to
-                            paralinguistics.The SUPERB team is working on a
-                            follow-up release with generative tasks to come.
-                            Stay tuned!
-                        </li>
-                    </ol>
+                <Box margin={theme.spacing(8, 0)} textAlign="center">
+                    <Title title="Acknowledgement"/>
+                    <Typography variant="body1" color="textSecondary">
+                        We thank <DescriptionButton name={<a>Ming-Yang Ho</a>} link="https://kaminyou.com/" /> for creating and maintaining the SUPERB official website.
+                    </Typography>
                 </Box>
             </Box>
         </Box>
