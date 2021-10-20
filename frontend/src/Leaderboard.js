@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from 'react-router';
 import axios from "axios";
 import styled from "styled-components";
 import {
@@ -18,7 +19,7 @@ import Model from "./components/Modal";
 import TrackSelect from "./components/TrackSelect";
 import SubsetSelect from "./components/SubsetSelect";
 import { overall_metric_adder } from "./overall_metrics";
-import { NumericalSort, is_number_and_not_nan } from "./components/Utilies";
+import { NumericalSort, is_number_and_not_nan, CapitalizeLetter } from "./components/Utilies";
 import { Box, Divider } from "@material-ui/core";
 
 const Styles = styled.div`
@@ -257,13 +258,15 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
 }
 
 function LeaderBoard(props) {
+    let location = useLocation();// for more about location, refer to https://reactrouter.com/web/api/location
     const theme = useTheme();
     const [LeaderboardData, setLeaderboardData] = useState([]);
     const [LeaderboardShownData, setLeaderboardShownData] = useState([]);
     const [LeaderboardHiddenData, setLeaderboardHiddenData] = useState([]);
     const [LeaderboardHiddenShownData, setLeaderboardHiddenShownData] = useState([]);
     const [task, setTask] = useState("constrained");
-    const [subset, setSubset] = useState("Paper");
+
+    const [subset, setSubset] = useState((location['hash'].slice(1) !== "") ? CapitalizeLetter(location['hash'].slice(1)) : 'Paper');
     const track = subset.toLowerCase().includes("hidden") ? "hidden" : "public"
     const memoizedNumericSort = React.useCallback(NumericalSort);
 
@@ -364,7 +367,7 @@ function LeaderBoard(props) {
                 <Box margin={theme.spacing(2, "auto", 0.2)}>
                     <TrackSelect task={task} onTaskChange={onTaskChange} />
                 </Box>
-                <Divider style={{width: "600px", maxWidth: "80%", margin: "auto"}}/>
+                <Divider style={{ width: "600px", maxWidth: "80%", margin: "auto" }} />
                 <Box margin={theme.spacing(0.2, "auto", 1)}>
                     <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set"]} onChange={onSubsetChange} />
                 </Box>
