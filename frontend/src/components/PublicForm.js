@@ -20,6 +20,7 @@ import FormTextField from "./FormTextfield";
 import { SubSubSection } from "./Sections";
 import { capitalizeFirstLetter } from "./Utilies";
 import { HashLink } from "react-router-hash-link";
+import { Section } from "./Sections";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -119,7 +120,7 @@ export default function PublicForm(){
 
     function PublicPart() {
         return (
-            <React.Fragment>
+            <Section>
                 <SubSubSection>
                     <Typography variant="body1" color="textSecondary">
                         Make sure to read the <HashLink to="/rules">Rules</HashLink> before submitting to the <HashLink to="/leaderboard?track=constrained&subset=Paper">SUPERB Benchmark</HashLink> or the <HashLink to="/leaderboard?track=constrained&subset=Public+Set">SUPERB Challenge Public-set</HashLink>.
@@ -324,7 +325,7 @@ export default function PublicForm(){
                         {isLoading ? "Submitting..." : "Submit"}
                     </Button>
                 </form>
-            </React.Fragment >
+            </Section>
         )
     }
 

@@ -17,7 +17,7 @@ import { AuthContext } from "../context/auth-context";
 import { formVal } from "../utils/form-validator";
 import { tracks } from "../Data";
 import FormTextField from "./FormTextfield";
-import { SubSubSection } from "./Sections";
+import { Section, SubSubSection } from "./Sections";
 import { capitalizeFirstLetter } from "./Utilies";
 import { HashLink } from "react-router-hash-link";
 
@@ -102,7 +102,7 @@ export default function HiddenForm(){
 
     function HiddenPart() {
         return (
-            <React.Fragment>
+            <Section>
                 <SubSubSection>
                     <Typography variant="body1" color="textSecondary">
                         <p>Please <a target="_blank" href="https://huggingface.co/superb/superb-submission">Upload your model</a> before the submitting to the <HashLink to="/leaderboard?track=constrained&subset=Hidden+Dev+Set">SUPERB Challenge Hidden-set</HashLink>.</p>
@@ -244,7 +244,7 @@ export default function HiddenForm(){
                         {isLoading ? "Submitting..." : "Submit"}
                     </Button>
                 </form>
-            </React.Fragment >
+            </Section>
         )
     }
 
