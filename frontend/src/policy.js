@@ -5,14 +5,14 @@ const policy = String.raw`
 
 ### Background
 
-![](https://i.imgur.com/LMN9902.png)
+![](https://i.imgur.com/FDARwvz.png)
 *Fig 1.*
 
 SUPERB Challenge follows the similar evaluation framework introduced in [SUPERB Benchmark](https://arxiv.org/abs/2105.01051), which benchmarks the **generalizability** of Self-Supervised Learning (SSL) on speech. SSL models are termed **Upstream** and are evaluated with various **Downstream** tasks. The framework extract **multiple frozen hidden states** from a single upstream model and trains a learnable **weighted-sum** over the hidden states along with the downstream model task-by-task.
 
 ### Overview
 
-![](https://i.imgur.com/n7Ib3Xe.png)
+![](https://i.imgur.com/PhWTJIl.png)
 *Fig 2.*
 
 Fig 2. illustrates the evaluation framework of the challenge. The challenge evaluates SSL models' generalizability on 10 tasks. Each of the tasks has a corresponding public dataset (**public-set**) that is publicly available, and a hidden dataset (**hidden-set**) that will not be released. Participants can practice on the public-set to understand the performance of their upstream models, and choose the best one for submission as they wish. Then, participants **submit the upstream model** (model definition & pre-trained weights) publicly or privately to the hidden-set leaderboard. **We finetune the downstream models on the hidden-set** without releasing any audio/label. Both public-set and hidden-set have leaderboards and welcome submissions to share more results with the community. **The winners of the challenge will be solely determined by the ranking on the hidden-set leaderboard.** Finally, there will be **overall metrics** for ranking all upstreams.
