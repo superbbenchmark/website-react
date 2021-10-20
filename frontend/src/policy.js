@@ -365,43 +365,76 @@ After review the system description papers and compare their performance with th
 
 ## Organizers
 
-Hung-yi Lee,
-Shinji Watanabe,
-Abdelrahman Mohamed,
-Shang-Wen Li,
-Shuyan Dong,
-Heng-Jui Chang,
-Hsuan-Jui Chen,
-Po-Han Chi,
-Xuankai Chang,
-Yung-Sung Chuang,
-Tzu-Hsun Feng,
-Tzu-Hsien Huang,
-Wen-Chin Huang,
-Zili Huang,
-Andy T. Liu,
-Cheng-I Jeff Lai,
-Guan-Ting Lin,
-Kushal Lakhotia,
-Yist Y. Lin,
-Yassin Omar,
-Jiatong Shi,
-Hsiang-Sheng Tsai,
-Lewis Tunstall,
-Wei-Cheng Tseng,
+Hung-yi Lee
+
+Shinji Watanabe
+
+Abdelrahman Mohamed
+
+Shang-Wen Li
+
+Shuyan Dong
+
+Heng-Jui Chang
+
+Hsuan-Jui Chen
+
+Po-Han Chi
+
+Xuankai Chang
+
+Yung-Sung Chuang
+
+Tzu-Hsun Feng
+
+Tzu-Hsien Huang
+
+Wen-Chin Huang
+
+Zili Huang
+
+Andy T. Liu
+
+Cheng-I Jeff Lai
+
+Guan-Ting Lin
+
+Kushal Lakhotia
+
+Yist Y. Lin
+
+Yassin Omar
+
+Jiatong Shi
+
+Hsiang-Sheng Tsai
+
+Lewis Tunstall
+
+Wei-Cheng Tseng
+
 Shu-wen Yang
 
 ## Hidden-set Committee
 
-Xuankai Chang,
-Hsuan-Jui Chen,
-Yung-Sung Chuang,
-Zili Huang,
-Shang-Wen Li,
-Guan-Ting Lin,
-Yassin Omar,
-Jiatong Shi,
-Hsiang-Sheng Tsai,
+Xuankai Chang
+
+Hsuan-Jui Chen
+
+Yung-Sung Chuang
+
+Zili Huang
+
+Shang-Wen Li
+
+Guan-Ting Lin
+
+Yassin Omar
+
+Jiatong Shi
+
+Hsiang-Sheng Tsai
+
 Shu-wen Yang
 
 # Contact
