@@ -65,6 +65,7 @@ const domains = [
             binary discriminating a given pair of query and document into a match or not.\
             The English subset in QUESST 2014 challenge is adopted since we focus on investigating English as the first step.\
             The evaluation metric is maximum term weighted value (MTWV) which balances misses and false alarms.\
+            In the SUPERB Challenge, the average between Mean Average Precision (MAP) and Equal Error Rate (ERR) is used as the metric on the hidden-set\
           ",
             },
         ],
@@ -96,7 +97,8 @@ const domains = [
             },
             {
                 name: "ST",
-                description: `Speech Translation (ST) translates utterance into foreign words. To achieve this goal, the model has to perform ASR and MT simultaneously, which increases the difficulty. CoVoST2 En-De dataset is adopted while all the examples containing "REMOVE" are removed. The evaluation metric is case-sensitive detokenized BLEU.
+                description: `Speech Translation (ST) translates utterance into foreign words. To achieve this goal, the model has to perform ASR and MT simultaneously, which increases the difficulty. CoVoST2 En-De dataset is adopted while all the examples containing "REMOVE" are removed. The evaluation metric is case-sensitive detokenized BLEU. \
+                In the SUPERB Challenge, since it is too difficult to train the ST model with limited translation pairs, we first train on CoVoST2 En-De dataset and then finetuned on the training set of the hidden-set.
                 `
             }
         ],
@@ -161,7 +163,7 @@ const domains = [
         tasks: [
             {
                 name: "SE",
-                description: `Speech enhancement (SE) is the task of removing background noise from a degraded speech signal and improving the perceived quality and intelligibility of the signal. In SUPERB, we evaluate the speech enhancement problem on the VoiceBank-DEMAND corpus. A three layer BLSTM model is trained to predict the spectral mask for the clean signal. The prediction is transformed back to the time domain using inverse short-time Fourier transform (iSTFT). Our evaluation metrics cover various aspects of the speech enhancement quality. including Perceptual Evaluation of Speech Quality (PESQ),  ShortTime Objective Intelligibility (STOI), MOS predictor of overall signal quality (COVL) and scale-invariant signal-to-distortion ratio improvement (SI-SDRi)
+                description: `Speech enhancement (SE) is the task of removing background noise from a degraded speech signal and improving the perceived quality and intelligibility of the signal. In SUPERB, we evaluate the speech enhancement problem on the VoiceBank-DEMAND corpus. A three layer BLSTM model is trained to predict the spectral mask for the clean signal. The prediction is transformed back to the time domain using inverse short-time Fourier transform (iSTFT). Our evaluation metrics cover various aspects of the speech enhancement quality. including Perceptual Evaluation of Speech Quality (PESQ) and ShortTime Objective Intelligibility (STOI)
                 `
             },
             {

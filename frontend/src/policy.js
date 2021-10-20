@@ -155,7 +155,7 @@ The differences between the public-set and the hidden-set are controlled to be o
 3. Speakers
 4. Fewer labeled data
 
-In this way, the public-set is still a good indicator of the hidden-set performance to some degree. We follow the same (unless mentioned otherwise) implementation in the public-set for the hidden-set, and hence encourage participants to use [S3PRL](https://github.com/s3prl/s3prl/blob/master/s3prl/downstream/docs/superb.md) to benchmark their upstream models (optional) on the public-set. The winners of the challenge will be decided solely on the hidden-set, and the public-set and [S3PRL](https://github.com/s3prl/s3prl/blob/master/s3prl/downstream/docs/superb.md) implementations can serve as the start-kit.
+In this way, the public-set is still a good indicator of the hidden-set performance to some degree. We follow the same (unless mentioned otherwise in [TASKS](/tasks)) implementation in the public-set for the hidden-set, and hence encourage participants to use [S3PRL](https://github.com/s3prl/s3prl/blob/master/s3prl/downstream/docs/superb.md) to benchmark their upstream models (optional) on the public-set. The winners of the challenge will be decided solely on the hidden-set, and the public-set and [S3PRL](https://github.com/s3prl/s3prl/blob/master/s3prl/downstream/docs/superb.md) implementations can serve as the start-kit.
 
 ### Provide baselines for comparison
 
