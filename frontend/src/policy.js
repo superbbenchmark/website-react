@@ -12,7 +12,7 @@ SUPERB Challenge follows the similar evaluation framework introduced in [SUPERB 
 
 ### Overview
 
-![](https://i.imgur.com/PhWTJIl.png)
+![](https://i.imgur.com/BNr2gfE.png)
 *Fig 2.*
 
 Fig 2. illustrates the evaluation framework of the challenge. The challenge evaluates SSL models' generalizability on 10 tasks. Each of the tasks has a corresponding public dataset (**public-set**) that is publicly available, and a hidden dataset (**hidden-set**) that will not be released. Participants can practice on the public-set to understand the performance of their upstream models, and choose the best one for submission as they wish. Then, participants **submit the upstream model** (model definition & pre-trained weights) publicly or privately to the hidden-set leaderboard. **We finetune the downstream models on the hidden-set** without releasing any audio/label. Both public-set and hidden-set have leaderboards and welcome submissions to share more results with the community. **The winners of the challenge will be solely determined by the ranking on the hidden-set leaderboard.** Finally, there will be **overall metrics** for ranking all upstreams.
