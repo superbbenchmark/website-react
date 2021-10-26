@@ -130,7 +130,6 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
             defaultColumn,
             initialState: {
                 hiddenColumns: [
-                    "modelURL",
                     "aoeTimeUpload",
                     "task",
                     "stride",
