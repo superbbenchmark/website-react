@@ -406,7 +406,7 @@ const hidden_task_columnInfo = {
     PR_per_hidden_dev: {
         header: "PR hidden dev",
         width: 140,
-        higherBetter: true,
+        higherBetter: false,
         isScore: true,
         type: "number",
     },
@@ -427,7 +427,7 @@ const hidden_task_columnInfo = {
     ASR_wer_hidden_dev: {
         header: "ASR hidden dev",
         width: 140,
-        higherBetter: true,
+        higherBetter: false,
         isScore: true,
         type: "number",
     },
@@ -448,14 +448,14 @@ const hidden_task_columnInfo = {
     SV_eer_hidden_dev: {
         header: "SV hidden dev",
         width: 140,
-        higherBetter: true,
+        higherBetter: false,
         isScore: true,
         type: "number",
     },
     SD_der_hidden_dev: {
         header: "SD hidden dev",
         width: 140,
-        higherBetter: true,
+        higherBetter: false,
         isScore: true,
         type: "number",
     },
