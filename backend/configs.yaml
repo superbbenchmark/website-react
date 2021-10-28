@@ -104,39 +104,29 @@ INDIVIDUAL_HIDDEN_SUBMISSION_INFO:
         - submitUUID
     SCORE:
         - PR_per_hidden_dev
-        - KS_acc_hidden_dev
-        - IC_acc_hidden_dev
         - SID_acc_hidden_dev
         - ER_acc_hidden_dev
-        - ERfold1_acc_hidden_dev
-        - ERfold2_acc_hidden_dev
-        - ERfold3_acc_hidden_dev
-        - ERfold4_acc_hidden_dev
-        - ERfold5_acc_hidden_dev
         - ASR_wer_hidden_dev
-        - ASR_LM_wer_hidden_dev
-        - QbE_mtwv_hidden_dev
-        - SF_f1_hidden_dev
-        - SF_cer_hidden_dev
         - SV_eer_hidden_dev
         - SD_der_hidden_dev
+        - QbE_map_hidden_dev
+        - QbE_eer_hidden_dev
+        - ST_bleu_hidden_dev
+        - SS_sisdri_hidden_dev
+        - SE_pesq_hidden_dev
+        - SE_stoi_hidden_dev
         - PR_per_hidden_test
-        - KS_acc_hidden_test
-        - IC_acc_hidden_test
         - SID_acc_hidden_test
         - ER_acc_hidden_test
-        - ERfold1_acc_hidden_test
-        - ERfold2_acc_hidden_test
-        - ERfold3_acc_hidden_test
-        - ERfold4_acc_hidden_test
-        - ERfold5_acc_hidden_test
         - ASR_wer_hidden_test
-        - ASR_LM_wer_hidden_test
-        - QbE_mtwv_hidden_test
-        - SF_f1_hidden_test
-        - SF_cer_hidden_test
         - SV_eer_hidden_test
         - SD_der_hidden_test
+        - QbE_map_hidden_test
+        - QbE_eer_hidden_test
+        - ST_bleu_hidden_test
+        - SS_sisdri_hidden_test
+        - SE_pesq_hidden_test
+        - SE_stoi_hidden_test
 
 LEADERBOARD_HIDDEN_INFO:
     FILE:
@@ -149,36 +139,26 @@ LEADERBOARD_HIDDEN_INFO:
         - paramShared
     SCORE:
         - PR_per_hidden_dev
-        - KS_acc_hidden_dev
-        - IC_acc_hidden_dev
         - SID_acc_hidden_dev
         - ER_acc_hidden_dev
-        - ERfold1_acc_hidden_dev
-        - ERfold2_acc_hidden_dev
-        - ERfold3_acc_hidden_dev
-        - ERfold4_acc_hidden_dev
-        - ERfold5_acc_hidden_dev
         - ASR_wer_hidden_dev
-        - ASR_LM_wer_hidden_dev
-        - QbE_mtwv_hidden_dev
-        - SF_f1_hidden_dev
-        - SF_cer_hidden_dev
         - SV_eer_hidden_dev
         - SD_der_hidden_dev
+        - QbE_map_hidden_dev
+        - QbE_eer_hidden_dev
+        - ST_bleu_hidden_dev
+        - SS_sisdri_hidden_dev
+        - SE_pesq_hidden_dev
+        - SE_stoi_hidden_dev
         - PR_per_hidden_test
-        - KS_acc_hidden_test
-        - IC_acc_hidden_test
         - SID_acc_hidden_test
         - ER_acc_hidden_test
-        - ERfold1_acc_hidden_test
-        - ERfold2_acc_hidden_test
-        - ERfold3_acc_hidden_test
-        - ERfold4_acc_hidden_test
-        - ERfold5_acc_hidden_test
         - ASR_wer_hidden_test
-        - ASR_LM_wer_hidden_test
-        - QbE_mtwv_hidden_test
-        - SF_f1_hidden_test
-        - SF_cer_hidden_test
         - SV_eer_hidden_test
         - SD_der_hidden_test
+        - QbE_map_hidden_test
+        - QbE_eer_hidden_test
+        - ST_bleu_hidden_test
+        - SS_sisdri_hidden_test
+        - SE_pesq_hidden_test
+        - SE_stoi_hidden_test

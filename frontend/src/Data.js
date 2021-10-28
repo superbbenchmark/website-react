@@ -466,7 +466,7 @@ const hidden_task_columnInfo = {
         isScore: true,
         type: "number",
     },
-    SS_sisdr_hidden_dev: {
+    SS_sisdri_hidden_dev: {
         header: "SS hidden dev",
         width: 140,
         higherBetter: true,
