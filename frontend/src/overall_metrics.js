@@ -172,7 +172,7 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
                 sortType: memoizedNumericSort,
                 higherBetter: true,
                 isScore: true,
-                Cell: ({ value }) => is_number_and_not_nan(value) ? String(value) : "-",
+                Cell: ({ value }) => is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-",
             })
         }
 
@@ -189,7 +189,7 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
                 sortType: memoizedNumericSort,
                 higherBetter: true,
                 isScore: true,
-                Cell: ({ value }) => is_number_and_not_nan(value) ? String(value) : "-",
+                Cell: ({ value }) => is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-",
             })
         }
 
@@ -205,7 +205,7 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
                 sortType: memoizedNumericSort,
                 higherBetter: true,
                 isScore: true,
-                Cell: ({ value }) => is_number_and_not_nan(value) ? String(value) : "-",
+                Cell: ({ value }) => is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-",
             })
         }
 
@@ -222,7 +222,7 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
                 sortType: memoizedNumericSort,
                 higherBetter: true,
                 isScore: true,
-                Cell: ({ value }) => is_number_and_not_nan(value) ? String(value) : "-",
+                Cell: ({ value }) => is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-",
             })
         }
 

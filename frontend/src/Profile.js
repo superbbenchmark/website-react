@@ -559,7 +559,7 @@ function Profile(props) {
                         ? parseModelURL
                         : key === "download" && track === "public"
                             ? parseDownload
-                            : ({ value }) => isScore ? (is_number_and_not_nan(value) ? String(value) : "-") : (value == undefined ? "-" : String(value)),
+                            : ({ value }) => isScore ? (is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-") : (value == undefined ? "-" : String(value)),
         };
     });
     columns[0]["sticky"] = "left";
