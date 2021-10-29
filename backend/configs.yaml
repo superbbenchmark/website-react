@@ -52,6 +52,10 @@ INDIVIDUAL_SUBMISSION_INFO:
         - SF_cer_public
         - SV_eer_public
         - SD_der_public
+        - SE_pesq_public
+        - SE_stoi_public
+        - SS_sisdri_public
+        - ST_bleu_public
 
 ## Leaderboard shown data
 LEADERBOARD_INFO:
@@ -86,7 +90,10 @@ LEADERBOARD_INFO:
         - SF_cer_public
         - SV_eer_public
         - SD_der_public
-
+        - SE_pesq_public
+        - SE_stoi_public
+        - SS_sisdri_public
+        - ST_bleu_public
 
 # Hidden
 INDIVIDUAL_HIDDEN_SUBMISSION_INFO:

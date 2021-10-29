@@ -14,7 +14,9 @@ from models.file import Status
 from dotenv import load_dotenv
 from utils import is_plaintext, is_csv
 from config import configs
-
+import csv
+from pathlib import Path
+from sacrebleu.metrics import BLEU
 
 def read_file(path, callback=lambda x: x, sep=" ", default_value=""):
     content = {}
@@ -395,6 +397,93 @@ def metric_calculate_pipeline(file_path, submitUUID):
                     session.commit()
                 except Exception as e:
                     print(e, file=output_log_f)
+
+        #============================================#
+        #                   SE                       #
+        #============================================#
+        # SE PUBLIC
+        if os.path.isdir(os.path.join(predict_root, "se_public")):
+            if os.path.isfile(os.path.join(predict_root, "se_public", "metrics.txt")):
+                if is_plaintext(os.path.join(predict_root, "se_public", "metrics.txt")):
+                    print("[SE PUBLIC]", file=output_log_f)
+                    try:
+                        predict_file = os.path.join(
+                            predict_root, "se_public", "metrics.txt")
+
+                        with open(predict_file) as file:
+                            for line in file.readlines():
+                                metric, score = line.strip().split(maxsplit=1)
+                                if metric == "pesq":
+                                    pesq = score
+                                    score_model.SE_pesq_public = float(pesq)
+                                elif metric == "stoi":
+                                    stoi = score
+                                    score_model.SE_stoi_public = float(stoi)
+
+                        print(f"SE: pesq {pesq}, stoi {stoi}", file=output_log_f)
+                        session.commit()
+                    except Exception as e:
+                        print(e, file=output_log_f)
+
+        #============================================#
+        #                   SS                       #
+        #============================================#
+        # SS PUBLIC
+        if os.path.isdir(os.path.join(predict_root, "ss_public")):
+            if os.path.isfile(os.path.join(predict_root, "ss_public", "metrics.txt")):
+                if is_plaintext(os.path.join(predict_root, "ss_public", "metrics.txt")):
+                    print("[SS PUBLIC]", file=output_log_f)
+                    try:
+                        predict_file = os.path.join(
+                            predict_root, "ss_public", "metrics.txt")
+
+                        with open(predict_file) as file:
+                            for line in file.readlines():
+                                metric, score = line.strip().split(maxsplit=1)
+                                if "si_sdr" in metric:
+                                    si_sdri = score
+                                    score_model.SS_sisdri_public = float(si_sdri)
+
+                        print(f"SS: si_sdri {si_sdri}", file=output_log_f)
+                        session.commit()
+                    except Exception as e:
+                        print(e, file=output_log_f)
+
+        #============================================#
+        #                   ST                       #
+        #============================================#
+        # ST PUBLIC
+        if os.path.isdir(os.path.join(predict_root, "st_public")):
+            if os.path.isfile(os.path.join(predict_root, "st_public", "predict.tsv")):
+                if is_plaintext(os.path.join(predict_root, "st_public", "predict.tsv")):
+                    print("[ST PUBLIC]", file=output_log_f)
+                    try:
+                        predict_file = os.path.join(
+                            predict_root, "st_public", "predict.tsv")
+
+                        hyps, refs = [], []
+
+                        with open(predict_file, 'r') as f:
+                            reader = csv.DictReader(
+                                f,
+                                delimiter='\t',
+                                quotechar=None,
+                                doublequote=False,
+                                lineterminator='\n',
+                                quoting=csv.QUOTE_NONE,
+                            )
+                            for line in reader:
+                                hyps.append(line["hyp"])
+                                refs.append(line["ref"])
+
+                        bleu = BLEU()
+                        score = bleu.corpus_score(hyps, [refs]).score
+                        score_model.ST_bleu_public = float(score)
+
+                        print(f"ST: bleu {score}", file=output_log_f)
+                        session.commit()
+                    except Exception as e:
+                        print(e, file=output_log_f)
 
         file_model.state = Status.DONE
         session.commit()

@@ -92,6 +92,10 @@ class ScoreModel(Base):
     SF_cer_public = Column(Float)
     SV_eer_public = Column(Float)
     SD_der_public = Column(Float)
+    ST_bleu_public = Column(Float)
+    SS_sisdri_public = Column(Float)
+    SE_pesq_public = Column(Float)
+    SE_stoi_public = Column(Float)
 
 class HiddenScoreModel(Base):
     __tablename__ = "hiddenscores"
