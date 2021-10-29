@@ -66,12 +66,10 @@ def submission_records_parser(submission_records, configs, mode="individual", co
         elif isinstance(attribute, datetime.datetime):
             return attribute.strftime("%Y-%m-%d %H:%M:%S")
         elif isinstance(attribute, float):
-            if (("map" in key_name) or ("per" in key_name) or ("acc" in key_name) or ("wer" in key_name) or ("f1" in key_name) or ("cer" in key_name) or ("eer" in key_name)):
+            if (("stoi" in key_name) or ("mtwv" in key_name) or ("map" in key_name) or ("per" in key_name) or ("acc" in key_name) or ("wer" in key_name) or ("f1" in key_name) or ("cer" in key_name) or ("eer" in key_name)):
                 return round(attribute * 100, 2)
             elif ("der" in key_name):
                 return round(attribute, 2)
-            elif ("mtwv" in key_name):
-                return round(attribute, 4)
             else:
                 return attribute
         else:
