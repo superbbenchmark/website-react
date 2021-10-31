@@ -25,6 +25,9 @@ function score_normalizer(columns, data) {
             ) {
                 submission[accessor] = 100 - value
             }
+            else if (accessor.includes("_pesq_")) (
+                submission[accessor] = 100 * (value - 1.02) / (4.56 - 1.02)
+            )
             else {
                 submission[accessor] = value
             }

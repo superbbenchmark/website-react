@@ -801,7 +801,7 @@ const reference_points = {
     "SID_acc_public": [20.058174, 9.03e+01],
     "ER_acc_public": [48.23672168, 67.62],
     "ASR_wer_public": [76.82, 96.38],
-    "QbE_mtwv_public": [0.0058, 0.0736],
+    "QbE_mtwv_public": [0.0058, 0.0736].map(item => 100 * item),
     "SF_f1_public": [69.64, 89.81],
     "SF_cer_public": [47.06, 78.24],
     "SV_eer_public": [90.44, 94.89],

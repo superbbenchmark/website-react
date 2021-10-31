@@ -635,9 +635,9 @@ def get_hidden_leaderboard_default():
             "QbE_map_hidden_dev": 32.09455907,
             "QbE_eer_hidden_dev": 29.38648462,
             "ST_bleu_hidden_dev": 23.33,
-            "SS_sisdri_hidden_dev": 0,
-            "SE_pesq_hidden_dev": 0,
-            "SE_stoi_hidden_dev": 0,
+            "SS_sisdri_hidden_dev": None,
+            "SE_pesq_hidden_dev": None,
+            "SE_stoi_hidden_dev": None,
         },
     ]
     return data
