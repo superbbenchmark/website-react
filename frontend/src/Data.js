@@ -769,7 +769,7 @@ const leaderboard_hidden_columnInfo = {
     // },
     name: {
         header: "Name",
-        width: 100,
+        width: 200,
         higherBetter: undefined,
         type: "alphanumeric",
     },
