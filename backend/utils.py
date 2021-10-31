@@ -88,10 +88,7 @@ def submission_records_parser(submission_records, configs, mode="individual", co
     file_info_list = configs[config_mode]["FILE"]
     score_info_list = configs[config_mode]["SCORE"]
 
-    submission_info = []  
-    if (mode == "individual") and (competition_type == "public"):
-        submission_info.append(get_leaderboard_default()[0])  # need FBANK result as baseline
-
+    submission_info = []
     for file_model in submission_records:
         single_info = {}
         score_model = file_model.scores[0]
