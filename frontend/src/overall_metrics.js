@@ -1,4 +1,4 @@
-import { reference_points } from "./Data";
+import { reference_points, hidden_dev_set, hidden_test_set } from "./Data";
 import {is_number_and_not_nan} from "./components/Utilies";
 
 function score_normalizer(columns, data) {
@@ -25,9 +25,6 @@ function score_normalizer(columns, data) {
             ) {
                 submission[accessor] = 100 - value
             }
-            else if (accessor.includes("_pesq_")) (
-                submission[accessor] = 100 * (value - 1.02) / (4.56 - 1.02)
-            )
             else {
                 submission[accessor] = value
             }
@@ -145,15 +142,10 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
         ].includes(column.accessor))
     }
     else if (subset === "Hidden Dev Set") {
-        score_columns = score_columns.filter((column) => [
-            "PR_per_hidden_dev", "SID_acc_hidden_dev", "ER_acc_hidden_dev", "ASR_wer_hidden_dev", "QbE_map_hidden_dev",
-            "QbE_eer_hidden_dev", "SV_eer_hidden_dev", "SD_der_hidden_dev", "ST_bleu_hidden_dev", "SS_sisdr_hidden_dev",
-            "SE_pesq_hidden_dev", "SE_stoi_hidden_dev", "SS_sisdri_hidden_dev",
-        ].includes(column.accessor))
+        score_columns = score_columns.filter((column) => hidden_dev_set.includes(column.accessor))
     }
     else if (subset === "Hidden Test Set") {
-        score_columns = score_columns.filter((column) => [
-        ].includes(column.Header))
+        score_columns = score_columns.filter((column) => hidden_test_set.includes(column.Header))
     }
     
     let new_data;

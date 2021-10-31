@@ -824,6 +824,18 @@ const reference_points = {
     "SE_stoi_hidden_dev": [0, 100],
 }
 
+const hidden_dev_set = [
+    "PR_per_hidden_dev", "SID_acc_hidden_dev", "ER_acc_hidden_dev", "ASR_wer_hidden_dev", "QbE_map_hidden_dev",
+    "QbE_eer_hidden_dev", "SV_eer_hidden_dev", "SD_der_hidden_dev", "ST_bleu_hidden_dev",
+    "SE_pesq_hidden_dev", "SE_stoi_hidden_dev", "SS_sisdri_hidden_dev",
+]
+
+const hidden_test_set = [
+    "PR_per_hidden_test", "SID_acc_hidden_test", "ER_acc_hidden_test", "ASR_wer_hidden_test", "QbE_map_hidden_test",
+    "QbE_eer_hidden_test", "SV_eer_hidden_test", "SD_der_hidden_test", "ST_bleu_hidden_test",
+    "SE_pesq_hidden_test", "SE_stoi_hidden_test", "SS_sisdri_hidden_test",
+]
+
 export {
     reference_points,
     subscribe_link,
@@ -835,4 +847,6 @@ export {
     leaderboard_hidden_columnInfo,
     leaderboard_selections,
     public_hidden_selections,
+    hidden_dev_set,
+    hidden_test_set,
 };

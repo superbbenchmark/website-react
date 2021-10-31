@@ -13,7 +13,7 @@ import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
 import InsertLinkIcon from "@material-ui/icons/InsertLink";
-import { leaderboard_columnInfo, leaderboard_hidden_columnInfo } from "./Data";
+import { hidden_dev_set, hidden_test_set, leaderboard_columnInfo, leaderboard_hidden_columnInfo } from "./Data";
 import Model from "./components/Modal";
 import TrackSelect from "./components/TrackSelect";
 import SubsetSelect from "./components/SubsetSelect";
@@ -297,8 +297,53 @@ function LeaderBoard(props) {
             url: "/api/hiddensubmission/leaderboard",
         })
             .then((res) => {
-                setLeaderboardHiddenData(res.data.leaderboard);
-                setLeaderboardHiddenShownData(res.data.leaderboard.filter(data => mapping_array[data.task] === task));
+                let leaderboardData = res.data.leaderboard;
+                function all_not_nan(submission) {
+                    for (let accessor of hidden_dev_set) {
+                        if(! is_number_and_not_nan(submission[accessor])) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                leaderboardData = leaderboardData.filter(submission => all_not_nan(submission));
+
+                if (leaderboardData.length > 0) {
+                    let newShownData = []
+                    let names = new Set(leaderboardData.map(data => data.name));
+                    for (let name of names) {
+                        let submissions = leaderboardData.filter(data => data.name === name);
+
+                        if (submissions.length < 1) {
+                            continue;
+                        }
+                        if (name === "baseline") {
+                            newShownData.push(...submissions);
+                            continue;
+                        }
+
+                        let userEmail = auth.email;
+                        for (let submission of submissions) {
+                            if (submission.email != userEmail) {
+                                submission.name = "-";
+                                submission.submitName = "-";
+                                submission.modelDesc = "-";
+                            }
+                        }
+
+                        let selected = submissions.reduce((a, b) => (a.showOnLeaderboard === "YES") || (b.showOnLeaderboard === "YES"), {
+                            showOnLeaderboard: false,
+                        })
+                        if (selected) {
+                            newShownData.push(...submissions.filter(data => data.showOnLeaderboard));
+                        }
+                        else {
+                            newShownData.push(...submissions);
+                        }
+                    }
+                    setLeaderboardHiddenData(newShownData);
+                    setLeaderboardHiddenShownData(newShownData);
+                }
             })
             .catch((error) => {
                 console.error(error);
@@ -379,42 +424,6 @@ function LeaderBoard(props) {
     let trimmedColumns, trimmedLeaderboardShownData
     [trimmedColumns, trimmedLeaderboardShownData] = overall_metric_adder(["rank", "rank_p", "interpolation", "interpolation_p"],
         columns, data, subset, memoizedNumericSort)
-
-    if (track == "hidden" && trimmedLeaderboardShownData.length > 0) {
-        let newShownData = []
-        let names = new Set(trimmedLeaderboardShownData.map(data => data.name));
-        for (let name of names) {
-            let submissions = trimmedLeaderboardShownData.filter(data => data.name === name && is_number_and_not_nan(data.score));
-            if (submissions.length < 1) {
-                continue;
-            }
-            if (name === "baseline") {
-                newShownData.push(...submissions);
-                continue;
-            }
-            
-            let userEmail = auth.email;
-            for (let submission of submissions) {
-                if (submission.email != userEmail) {
-                    submission.name = "-";
-                    submission.submitName = "-";
-                    submission.modelDesc = "-";
-                }
-            }
-
-            let selected = submissions.reduce((a, b) => (a.showOnLeaderboard === "YES") || (b.showOnLeaderboard === "YES"), {
-                showOnLeaderboard: false,
-            })
-            if (selected) {
-                newShownData.push(...submissions.filter(data => data.showOnLeaderboard))
-            }
-            else {
-                submissions.sort((a, b) => (b.score - a.score));
-                newShownData.push(submissions[0]);
-            }
-        }
-        trimmedLeaderboardShownData = newShownData;
-    }
 
     const memoColumns = React.useMemo(() => trimmedColumns);
 
