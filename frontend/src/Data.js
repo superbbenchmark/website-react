@@ -755,21 +755,21 @@ const leaderboard_columnInfo = {
 };
 
 const leaderboard_hidden_columnInfo = {
-    // submitName: {
-    //     header: "Method",
-    //     width: 150,
-    //     higherBetter: undefined,
-    //     type: "alphanumeric",
-    // },
-    // modelDesc: {
-    //     header: "Description",
-    //     width: 100,
-    //     higherBetter: undefined,
-    //     type: "alphanumeric",
-    // },
+    submitName: {
+        header: "Method",
+        width: 150,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
+    modelDesc: {
+        header: "Description",
+        width: 150,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
     name: {
         header: "Name",
-        width: 200,
+        width: 130,
         higherBetter: undefined,
         type: "alphanumeric",
     },

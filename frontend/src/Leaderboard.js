@@ -291,35 +291,18 @@ function LeaderBoard(props) {
             .catch((error) => {
                 console.error(error);
             });
-        if (auth.isLoggedIn) {
-            await axios({
-                method: "patch",
-                url: "/api/hiddensubmission/leaderboard",
-                headers: {
-                    Authorization: "Bearer " + auth.token,
-                },
+
+        await axios({
+            method: "get",
+            url: "/api/hiddensubmission/leaderboard",
+        })
+            .then((res) => {
+                setLeaderboardHiddenData(res.data.leaderboard);
+                setLeaderboardHiddenShownData(res.data.leaderboard.filter(data => mapping_array[data.task] === task));
             })
-                .then((res) => {
-                    setLeaderboardHiddenData(res.data.leaderboard);
-                    setLeaderboardHiddenShownData(res.data.leaderboard.filter((data) => mapping_array[data.task] === task));
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
-        else {
-            await axios({
-                method: "get",
-                url: "/api/hiddensubmission/leaderboard",
-            })
-                .then((res) => {
-                    setLeaderboardHiddenData(res.data.leaderboard);
-                    setLeaderboardHiddenShownData(res.data.leaderboard.filter((data) => mapping_array[data.task] === task));
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     const onTaskChange = (e) => {
@@ -353,7 +336,7 @@ function LeaderBoard(props) {
 
     useEffect(() => {
         getLeaderboard();
-    }, [auth.isLoggedIn]);
+    }, []);
 
     let columnInfo = track == "hidden" ? leaderboard_hidden_columnInfo : leaderboard_columnInfo;
     let columns = Object.keys(columnInfo).map((key) => {
@@ -396,6 +379,43 @@ function LeaderBoard(props) {
     let trimmedColumns, trimmedLeaderboardShownData
     [trimmedColumns, trimmedLeaderboardShownData] = overall_metric_adder(["rank", "rank_p", "interpolation", "interpolation_p"],
         columns, data, subset, memoizedNumericSort)
+
+    if (track == "hidden" && trimmedLeaderboardShownData.length > 0) {
+        let newShownData = []
+        let names = new Set(trimmedLeaderboardShownData.map(data => data.name));
+        for (let name of names) {
+            let submissions = trimmedLeaderboardShownData.filter(data => data.name === name && is_number_and_not_nan(data.score));
+            if (submissions.length < 1) {
+                continue;
+            }
+            if (name === "baseline") {
+                newShownData.push(...submissions);
+                continue;
+            }
+            
+            let userEmail = auth.email;
+            for (let submission of submissions) {
+                if (submission.email != userEmail) {
+                    submission.name = "-";
+                    submission.submitName = "-";
+                    submission.modelDesc = "-";
+                }
+            }
+
+            let selected = submissions.reduce((a, b) => (a.showOnLeaderboard === "YES") || (b.showOnLeaderboard === "YES"), {
+                showOnLeaderboard: false,
+            })
+            if (selected) {
+                newShownData.push(...submissions.filter(data => data.showOnLeaderboard))
+            }
+            else {
+                submissions.sort((a, b) => (b.score - a.score));
+                newShownData.push(submissions[0]);
+            }
+        }
+        trimmedLeaderboardShownData = newShownData;
+    }
+
     const memoColumns = React.useMemo(() => trimmedColumns);
 
     return (

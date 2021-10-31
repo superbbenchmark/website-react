@@ -86,7 +86,7 @@ class UserLogin(Resource):
             access_token = create_access_token(
                 identity=identity['email'], expires_delta=datetime.timedelta(hours=1))
             isAdmin = check_admin_credential(identity['email'])
-            return {"message": "Login Success", "access_token": access_token, "isAdmin":isAdmin}, HTTPStatus.OK
+            return {"message": "Login Success", "access_token": access_token, "isAdmin":isAdmin, "email": identity['email']}, HTTPStatus.OK
 
         except Exception as e:
             print(e)
