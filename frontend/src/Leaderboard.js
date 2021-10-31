@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import {
@@ -21,6 +21,7 @@ import { overall_metric_adder } from "./overall_metrics";
 import { NumericalSort, is_number_and_not_nan } from "./components/Utilies";
 import { Box, Divider } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
+import { AuthContext } from "./context/auth-context";
 
 const Styles = styled.div`
   .table {
@@ -263,6 +264,7 @@ function useQuery() {
 function LeaderBoard(props) {
     let query = useQuery();
 
+    const auth = useContext(AuthContext);
     const theme = useTheme();
     const [LeaderboardData, setLeaderboardData] = useState([]);
     const [LeaderboardShownData, setLeaderboardShownData] = useState([]);
@@ -289,15 +291,35 @@ function LeaderBoard(props) {
             .catch((error) => {
                 console.error(error);
             });
-        await axios
-            .get("/api/hiddensubmission/leaderboard")
-            .then((res) => {
-                setLeaderboardHiddenData(res.data.leaderboard);
-                setLeaderboardHiddenShownData(res.data.leaderboard.filter((data) => mapping_array[data.task] === task));
+        if (auth.isLoggedIn) {
+            await axios({
+                method: "patch",
+                url: "/api/hiddensubmission/leaderboard",
+                headers: {
+                    Authorization: "Bearer " + auth.token,
+                },
             })
-            .catch((error) => {
-                console.error(error);
-            });
+                .then((res) => {
+                    setLeaderboardHiddenData(res.data.leaderboard);
+                    setLeaderboardHiddenShownData(res.data.leaderboard.filter((data) => mapping_array[data.task] === task));
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+        else {
+            await axios({
+                method: "get",
+                url: "/api/hiddensubmission/leaderboard",
+            })
+                .then((res) => {
+                    setLeaderboardHiddenData(res.data.leaderboard);
+                    setLeaderboardHiddenShownData(res.data.leaderboard.filter((data) => mapping_array[data.task] === task));
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
     };
 
     const onTaskChange = (e) => {
@@ -331,7 +353,7 @@ function LeaderBoard(props) {
 
     useEffect(() => {
         getLeaderboard();
-    }, []);
+    }, [auth.isLoggedIn]);
 
     let columnInfo = track == "hidden" ? leaderboard_hidden_columnInfo : leaderboard_columnInfo;
     let columns = Object.keys(columnInfo).map((key) => {
@@ -382,7 +404,7 @@ function LeaderBoard(props) {
                 <Box margin={theme.spacing(2, "auto", 0.2)}>
                     <TrackSelect task={task} onTaskChange={onTaskChange} />
                 </Box>
-                <Divider style={{width: "600px", maxWidth: "80%", margin: "auto"}}/>
+                <Divider style={{ width: "600px", maxWidth: "80%", margin: "auto" }} />
                 <Box margin={theme.spacing(0.2, "auto", 1)}>
                     <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set"]} onChange={onSubsetChange} />
                 </Box>

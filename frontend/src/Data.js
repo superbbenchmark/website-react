@@ -767,12 +767,12 @@ const leaderboard_hidden_columnInfo = {
     //     higherBetter: undefined,
     //     type: "alphanumeric",
     // },
-    // name: {
-    //     header: "Name",
-    //     width: 100,
-    //     higherBetter: undefined,
-    //     type: "alphanumeric",
-    // },
+    name: {
+        header: "Name",
+        width: 100,
+        higherBetter: undefined,
+        type: "alphanumeric",
+    },
     aoeTimeUpload: {
         header: "Upolad Time",
         width: 160,

@@ -275,15 +275,43 @@ class HiddenSubmissionList(Resource):
 
 class HiddenLeaderBoard(Resource):
     @classmethod
+    @jwt_required()
+    def patch(cls):
+        '''Get hidden leaderboard data'''
+        try:
+            leaderboard_default_data = get_hidden_leaderboard_default()
+            leaderboard_user_data = HiddenFileModel.find_all()
+            user_mail = get_jwt_identity()
+            submission_names = []
+            for user_data in leaderboard_user_data:
+                if user_mail == user_data.email:
+                    submission_names.append(
+                        UserModel.find_by_email(email=user_data.email).name)
+                else:
+                    submission_names.append("-")
+            submission_info = submission_records_parser(
+                leaderboard_user_data, configs, mode="leaderboard", competition_type="hidden")
+
+            for single_info, name in zip(submission_info, submission_names):
+                single_info.update({"name": name})
+
+            leaderboard_default_data += submission_info
+
+            return {"leaderboard": leaderboard_default_data}, HTTPStatus.OK
+
+        except Exception as e:
+            print(e)
+            return {"message": "Something went wrong!"}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+    @classmethod
     def get(cls):
         '''Get hidden leaderboard data'''
         try:
             leaderboard_default_data = get_hidden_leaderboard_default()
-            leaderboard_user_data = HiddenFileModel.find_show_on_leaderboard()
+            leaderboard_user_data = HiddenFileModel.find_all()
             submission_names = []
             for user_data in leaderboard_user_data:
-                submission_names.append(
-                    UserModel.find_by_email(email=user_data.email).name)
+                submission_names.append("-")
             submission_info = submission_records_parser(
                 leaderboard_user_data, configs, mode="leaderboard", competition_type="hidden")
 
