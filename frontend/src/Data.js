@@ -807,9 +807,21 @@ const reference_points = {
     "SV_eer_public": [90.44, 94.89],
     "SD_der_public": [89.95, 94.38],
     "ST_bleu_public": [2.32, 20.01],
-    "SE_pesq_public": [2.5529, 2.6421],
-    "SE_stoi_public": [0.9364, 0.9418],
+    "SE_pesq_public": [2.55, 2.64],
+    "SE_stoi_public": [93.6, 94.2],
     "SS_sisdri_public": [9.2341, 10.4514],
+    "PR_per_hidden_dev": [0.8100076941, 0.1632352551].map(item => 100 * (1 - item)),
+    "SID_acc_hidden_dev": [0.3711268902, 0.957554996].map(item => 100 * item),
+    "ER_acc_hidden_dev": [0.4712328911, 0.6794520617].map(item => 100 * item),
+    "ASR_wer_hidden_dev": [73.56, 21.49418249].map(item => 100 * (1 - item)),
+    "SV_eer_hidden_dev": [0.131968, 0.0553945].map(item => 100 * (1 - item)),
+    "SD_der_hidden_dev": [0.157551825, 0.1048149392].map(item => 100 * (1 - item)),
+    "QbE_map_hidden_dev": [0.1860194802, 0.5108585358].map(item => 100 * item),
+    "QbE_eer_hidden_dev": [0.3431956172, 0.1780432165].map(item => 100 * item),
+    "ST_bleu_hidden_dev": [5.248, 23.33],
+    "SS_sisdri_hidden_dev": [0, 100],
+    "SE_pesq_hidden_dev": [0, 100],
+    "SE_stoi_hidden_dev": [0, 100],
 }
 
 export {

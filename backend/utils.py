@@ -136,7 +136,7 @@ def get_leaderboard_default():
             "SV_eer_public": 9.56,
             "SD_der_public": 10.05,
             "ST_bleu_public": 2.32,
-            "SE_pesq_public": 2.5529,
+            "SE_pesq_public": 2.55,
             "SE_stoi_public": 93.6,
             "SS_sisdri_public": 9.2341,
         },
