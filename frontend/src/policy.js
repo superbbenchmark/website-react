@@ -207,12 +207,15 @@ After training the downstream model for all tasks, we show the best performance 
 
 The [hidden-set leaderboard](leaderboard?subset=Hidden+Dev+Set&track=constrained) is online and accepts submissions. Please follow [the submission steps](https://huggingface.co/superb/superb-submission). We use HuggingFace's Hub to host the submitted upstreams and track the submitted model weights. On the other hand, we use our [submission page](submit?type=hidden) to control the submission limit, where the participants tell us the locations of their models on HuggingFace's Hub.
 
-After submitting via the submission page, you will see a new entry in the **submission history** under your Profile page (which is private), and the evaluation results on the hidden-set will be revealed at the entry within one week.
+After submitting via the submission page, you will see a new entry in the **submission history** under your Profile page, and the evaluation results on the hidden-set will be revealed at the entry within one week.
 Please stay tuned!
 
-The participants can decide whether to make the submission publicly visible on the shared Hidden-Set leaderboard, or keep it private in the Profile page.
-The [hidden-set leaderboard](leaderboard?subset=Hidden+Dev+Set&track=constrained) will automatically show the best submission if no submission is selected to be shown publicly.
-**Note that all the hidden-set submissions are anonymous during and after the challenge.**
+(Update 10/31/2021 AOE)
+
+All the submitted results will remain anonymous during and after the challenge.
+You can select a few submissions to show on the leaderboard.
+If no submission is selected, we will show all your submissions on the leaderboard anonymously.
+Only you can see your personal/model information on the leaderboard, but you will not see others'.
 If you wish to reveal your personal/model information on the [hidden-set leaderboard](leaderboard?subset=Hidden+Dev+Set&track=constrained), please [contact us](#Contact)!
 
 ## Overall Metrics
