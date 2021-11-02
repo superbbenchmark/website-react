@@ -473,15 +473,15 @@ const hidden_task_columnInfo = {
         isScore: true,
         type: "number",
     },
-    SE_pesq_hidden_dev: {
-        header: "SE-PESQ hidden dev",
+    SE_stoi_hidden_dev: {
+        header: "SE-STOI hidden dev",
         width: 180,
         higherBetter: true,
         isScore: true,
         type: "number",
     },
-    SE_stoi_hidden_dev: {
-        header: "SE-STOI hidden dev",
+    SE_pesq_hidden_dev: {
+        header: "SE-PESQ hidden dev",
         width: 180,
         higherBetter: true,
         isScore: true,
@@ -819,9 +819,9 @@ const reference_points = {
     "QbE_map_hidden_dev": [0.1860194802, 0.5108585358].map(item => 100 * item),
     "QbE_eer_hidden_dev": [0.3694903255, 0.1780432165].map(item => 100 * (1 - item)),
     "ST_bleu_hidden_dev": [3.2, 23.33],
-    "SS_sisdri_hidden_dev": [0, 100],
-    "SE_pesq_hidden_dev": [0, 100],
-    "SE_stoi_hidden_dev": [0, 100],
+    "SS_sisdri_hidden_dev": [4.655592075, 8.082589958],
+    "SE_pesq_hidden_dev": [1.510035692, 1.567159144],
+    "SE_stoi_hidden_dev": [0.8433188677, 0.8520344653].map(item => 100 * item),
 }
 
 const hidden_dev_set = [
