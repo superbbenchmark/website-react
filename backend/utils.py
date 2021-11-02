@@ -617,15 +617,17 @@ def get_leaderboard_default():
     return data
 
 def get_hidden_leaderboard_default():
-    data = [{
-            "name":"baseline",
+    data = [
+        {
+            "name":"strong baseline",
             "aoeTimeUpload":"-",
             "task":"CONSTRAINED",
             "submitName": "HuBERT Large",
+            "modelDesc": "M-P + VQ",
             "huggingfaceOrganizationName":"-",
             "huggingfaceRepoName": "-",
             "huggingfaceCommonHash": "-",
-            "paramShared": 0,
+            "paramShared": 316.61e6,
             "PR_per_hidden_dev": 16.32352551,
             "SID_acc_hidden_dev": 89.3388390541076,
             "ER_acc_hidden_dev": 65.4794514179229,
@@ -635,9 +637,9 @@ def get_hidden_leaderboard_default():
             "QbE_map_hidden_dev": 32.09455907,
             "QbE_eer_hidden_dev": 29.38648462,
             "ST_bleu_hidden_dev": 23.33,
-            "SS_sisdri_hidden_dev": None,
-            "SE_pesq_hidden_dev": None,
-            "SE_stoi_hidden_dev": None,
+            "SS_sisdri_hidden_dev": 8.082589958,
+            "SE_pesq_hidden_dev": 1.567159144,
+            "SE_stoi_hidden_dev": 85.20344653,
         },
     ]
     return data

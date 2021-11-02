@@ -317,7 +317,7 @@ function LeaderBoard(props) {
                         if (submissions.length < 1) {
                             continue;
                         }
-                        if (name === "baseline") {
+                        if (name.includes("baseline")) {
                             newShownData.push(...submissions);
                             continue;
                         }
