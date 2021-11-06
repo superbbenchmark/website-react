@@ -51,7 +51,8 @@ export default function Landing(props) {
                 </Typography>
             </Box>
             <Box margin={theme.spacing(1, "auto", 6)}>
-                <span><strong><a href={subscribe_link} target="_blank" rel="noopener noreferrer">Subscribe</a></strong> our e-news to receive all the latest information about SUPERB.</span>
+                <p><strong><a href={subscribe_link} target="_blank" rel="noopener noreferrer">Subscribe</a></strong> our e-news to receive all the latest information about SUPERB or <strong>contact us</strong> via</p>
+                <p><strong><a href="mailto:superb.announcement@gmail.com" target="_blank">superb.announcement@gmail.com</a></strong></p>
             </Box>
             <Box maxWidth={800} margin={theme.spacing(1, "auto", 6)}>
                 <Typography variant="h6" color="textPrimary">
