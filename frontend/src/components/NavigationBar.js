@@ -197,15 +197,16 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                                     <Grid item>
                                         <AdaptiveLink link="/">
                                             <LiftingBarButton>
-                                                <Typography
-                                                    color="textPrimary"
-                                                    variant="h6"
-                                                    className={`${classes.navlink}`}
+                                                <div
+                                                    style={{textAlign: "left"}}
                                                 >
                                                     {largeScreen
-                                                        ? "SUPERB"
-                                                        : "SUPERB"}
-                                                </Typography>
+                                                        ?
+                                                        <img src="logo-color.png" style={{width: "60%", textAlign: "left"}} />
+                                                        :
+                                                        <img src="logo-color.png" style={{width: "20%", textAlign: "left"}} />
+                                                    }
+                                                </div>
                                             </LiftingBarButton>
                                         </AdaptiveLink>
                                     </Grid>
