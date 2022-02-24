@@ -1,4 +1,4 @@
-import { reference_points } from "./Data";
+import { reference_points, hidden_dev_set, hidden_test_set } from "./Data";
 import {is_number_and_not_nan} from "./components/Utilies";
 
 function score_normalizer(columns, data) {
@@ -138,19 +138,14 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
     else if (subset === "Public Set") {
         score_columns = score_columns.filter((column) => [
             "PR_per_public", "SID_acc_public", "QbE_mtwv_public", "ASR_wer_public", "SV_eer_public",
-            "ER_acc_public", "SD_der_public", "ST_bleu_public", "SE_pesq_public", "SE_stoi_public",
+            "ER_acc_public", "SD_der_public", "ST_bleu_public", "SE_pesq_public", "SE_stoi_public", "SS_sisdri_public",
         ].includes(column.accessor))
     }
     else if (subset === "Hidden Dev Set") {
-        score_columns = score_columns.filter((column) => [
-            "PR_per_hidden_dev", "SID_acc_hidden_dev", "ER_acc_hidden_dev", "ASR_wer_hidden_dev", "QbE_map_hidden_dev",
-            "QbE_eer_hidden_dev", "SV_eer_hidden_dev", "SD_der_hidden_dev", "ST_bleu_hidden_dev", "SS_sisdr_hidden_dev",
-            "SE_pesq_hidden_dev", "SE_stoi_hidden_dev",
-        ].includes(column.accessor))
+        score_columns = score_columns.filter((column) => hidden_dev_set.includes(column.accessor))
     }
     else if (subset === "Hidden Test Set") {
-        score_columns = score_columns.filter((column) => [
-        ].includes(column.Header))
+        score_columns = score_columns.filter((column) => hidden_test_set.includes(column.Header))
     }
     
     let new_data;
@@ -172,7 +167,7 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
                 sortType: memoizedNumericSort,
                 higherBetter: true,
                 isScore: true,
-                Cell: ({ value }) => is_number_and_not_nan(value) ? String(value) : "-",
+                Cell: ({ value }) => is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-",
             })
         }
 
@@ -189,7 +184,7 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
                 sortType: memoizedNumericSort,
                 higherBetter: true,
                 isScore: true,
-                Cell: ({ value }) => is_number_and_not_nan(value) ? String(value) : "-",
+                Cell: ({ value }) => is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-",
             })
         }
 
@@ -205,7 +200,7 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
                 sortType: memoizedNumericSort,
                 higherBetter: true,
                 isScore: true,
-                Cell: ({ value }) => is_number_and_not_nan(value) ? String(value) : "-",
+                Cell: ({ value }) => is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-",
             })
         }
 
@@ -222,7 +217,7 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
                 sortType: memoizedNumericSort,
                 higherBetter: true,
                 isScore: true,
-                Cell: ({ value }) => is_number_and_not_nan(value) ? String(value) : "-",
+                Cell: ({ value }) => is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-",
             })
         }
 

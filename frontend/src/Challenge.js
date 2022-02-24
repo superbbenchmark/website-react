@@ -25,7 +25,7 @@ function Challenge(props) {
     const theme = useTheme();
 
     return (
-        <React.Fragment>
+        <Section>
             <Section margin={theme.spacing(8, "auto", 1)} align="left">
                 <ReactMarkdown
                     children={policy}
@@ -85,7 +85,7 @@ function Challenge(props) {
                     }}
                 />
             </Section>
-        </React.Fragment >
+        </Section>
     );
 }
 

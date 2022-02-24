@@ -9,7 +9,8 @@ import { DescriptionButton } from "./components/Buttons";
 import { Strong } from "./components/Utilies";
 import { subscribe_link } from "./Data";
 import YouTube from 'react-youtube';
-import { HashLink } from 'react-router-hash-link';
+import { Title } from "./components/Titles";
+import { HashLink } from "react-router-hash-link";
 
 export default function Landing(props) {
     const theme = useTheme();
@@ -50,7 +51,8 @@ export default function Landing(props) {
                 </Typography>
             </Box>
             <Box margin={theme.spacing(1, "auto", 6)}>
-                <span><strong><a href={subscribe_link} target="_blank" rel="noopener noreferrer">Subscribe</a></strong> our e-news to receive all the latest information about SUPERB.</span>
+                <p><strong><a href={subscribe_link} target="_blank" rel="noopener noreferrer">Subscribe</a></strong> our e-news to receive all the latest information about SUPERB or <strong>contact us</strong> via</p>
+                <p><strong><a href="mailto:superb.announcement@gmail.com" target="_blank">superb.announcement@gmail.com</a></strong></p>
             </Box>
             <Box maxWidth={800} margin={theme.spacing(1, "auto", 6)}>
                 <Typography variant="h6" color="textPrimary">
@@ -61,12 +63,10 @@ export default function Landing(props) {
                     <ul>
                         <li><span><Strong>Sep 18, 2021</Strong>: <HashLink to="/news#announcement2021">Challenge announcement</HashLink> &amp; </span><a
                             href="https://github.com/s3prl/s3prl" target="_blank" rel="noopener"><span>S3PRL</span></a><span> released</span></li>
-                        <li><span><Strong>Sep 30, 2021</Strong>: Overall metrics announcement &amp; </span>
-                            <a href="https://superbbenchmark.org/leaderboard"
-                                target="_blank" rel="noopener"><span>public-set leaderboard</span>
-                            </a>
-                            <span> is online and accepts submissions</span></li>
-                        <li><span><Strong>Oct 15, 2021</Strong>: Hidden-set leaderboard is online and accepts submissions</span></li>
+                        <li><span><Strong>Sep 30, 2021</Strong>: <HashLink to="/challenge#Overall-Metrics">Overall metrics</HashLink> announcement &amp; </span>
+                            <HashLink to="/leaderboard?subset=Public+Set&track=constrained">public-set leaderboard</HashLink>
+                            <span> is online and <HashLink to="/submit?type=public">accepts submissions</HashLink></span></li>
+                        <li><span><Strong>Oct 15, 2021</Strong>: <HashLink to="/leaderboard?subset=Hidden+Dev+Set&track=constrained">Hidden-set leaderboard</HashLink> is online and <HashLink to="/submit?type=hidden">accepts submissions</HashLink></span></li>
                         <li><span><Strong>Nov 12, 2021</Strong>: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
                             rel="noopener"><span>AAAI workshop</span></a><span> paper submission deadline (encouraged)</span></li>
                         <li><span><Strong>Dec 3, 2021</Strong>: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
@@ -111,7 +111,7 @@ export default function Landing(props) {
                                     <li>
                                         A
                                         <DescriptionButton
-                                            name="benchmark toolkit"
+                                            name={<a>benchmark toolkit</a>}
                                             link={
                                                 "https://github.com/s3prl/s3prl"
                                             }
@@ -125,12 +125,12 @@ export default function Landing(props) {
                                     <li>
                                         A public
                                         <DescriptionButton
-                                            name="leaderboard"
+                                            name={<a>leaderboard</a>}
                                             link="/leaderboard"
                                         />
                                         for{" "}
                                         <DescriptionButton
-                                            name="submissions"
+                                            name={<a>submissions</a>}
                                             link="/submit"
                                         />
                                         and performance tracking on the
@@ -195,17 +195,11 @@ export default function Landing(props) {
                         })}
                     </Grid>
                 </SubSection>
-                <Box margin={theme.spacing(8, 0)}>
-                    Note.
-                    <ol>
-                        <li>
-                            The initial release covers 10 discriminative tasks
-                            ranging from content, speaker, semantics, to
-                            paralinguistics.The SUPERB team is working on a
-                            follow-up release with generative tasks to come.
-                            Stay tuned!
-                        </li>
-                    </ol>
+                <Box margin={theme.spacing(8, 0)} textAlign="center">
+                    <Title title="Acknowledgement"/>
+                    <Typography variant="body1" color="textSecondary">
+                        We thank <DescriptionButton name={<a>Ming-Yang Ho</a>} link="https://kaminyou.com/" /> for creating and maintaining the SUPERB official website.
+                    </Typography>
                 </Box>
             </Box>
         </Box>

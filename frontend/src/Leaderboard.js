@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from 'react-router';
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import {
@@ -14,13 +13,15 @@ import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
 import InsertLinkIcon from "@material-ui/icons/InsertLink";
-import { leaderboard_columnInfo, leaderboard_hidden_columnInfo } from "./Data";
+import { hidden_dev_set, hidden_test_set, leaderboard_columnInfo, leaderboard_hidden_columnInfo } from "./Data";
 import Model from "./components/Modal";
 import TrackSelect from "./components/TrackSelect";
 import SubsetSelect from "./components/SubsetSelect";
 import { overall_metric_adder } from "./overall_metrics";
 import { NumericalSort, is_number_and_not_nan, CapitalizeLetter } from "./components/Utilies";
 import { Box, Divider } from "@material-ui/core";
+import { useLocation } from "react-router-dom";
+import { AuthContext } from "./context/auth-context";
 
 const Styles = styled.div`
   .table {
@@ -130,7 +131,6 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
             defaultColumn,
             initialState: {
                 hiddenColumns: [
-                    "modelURL",
                     "aoeTimeUpload",
                     "task",
                     "stride",
@@ -257,16 +257,21 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
     );
 }
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
 function LeaderBoard(props) {
-    let location = useLocation();// for more about location, refer to https://reactrouter.com/web/api/location
+    let query = useQuery();
+
+    const auth = useContext(AuthContext);
     const theme = useTheme();
     const [LeaderboardData, setLeaderboardData] = useState([]);
     const [LeaderboardShownData, setLeaderboardShownData] = useState([]);
     const [LeaderboardHiddenData, setLeaderboardHiddenData] = useState([]);
     const [LeaderboardHiddenShownData, setLeaderboardHiddenShownData] = useState([]);
-    const [task, setTask] = useState("constrained");
-
-    const [subset, setSubset] = useState((location['hash'].slice(1) !== "") ? CapitalizeLetter(location['hash'].slice(1)) : 'Paper');
+    const [task, setTask] = useState(query.get("track") || "constrained");
+    const [subset, setSubset] = useState(query.get("subset") || "Paper");
     const track = subset.toLowerCase().includes("hidden") ? "hidden" : "public"
     const memoizedNumericSort = React.useCallback(NumericalSort);
 
@@ -286,11 +291,59 @@ function LeaderBoard(props) {
             .catch((error) => {
                 console.error(error);
             });
-        await axios
-            .get("/api/hiddensubmission/leaderboard")
+
+        await axios({
+            method: "get",
+            url: "/api/hiddensubmission/leaderboard",
+        })
             .then((res) => {
-                setLeaderboardHiddenData(res.data.leaderboard);
-                setLeaderboardHiddenShownData(res.data.leaderboard.filter((data) => mapping_array[data.task] === task));
+                let leaderboardData = res.data.leaderboard;
+                function all_not_nan(submission) {
+                    for (let accessor of hidden_dev_set) {
+                        if(! is_number_and_not_nan(submission[accessor])) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                leaderboardData = leaderboardData.filter(submission => all_not_nan(submission));
+
+                if (leaderboardData.length > 0) {
+                    let newShownData = []
+                    let names = new Set(leaderboardData.map(data => data.name));
+                    for (let name of names) {
+                        let submissions = leaderboardData.filter(data => data.name === name);
+
+                        if (submissions.length < 1) {
+                            continue;
+                        }
+                        if (name.includes("baseline")) {
+                            newShownData.push(...submissions);
+                            continue;
+                        }
+
+                        let userEmail = auth.email;
+                        for (let submission of submissions) {
+                            if (submission.email != userEmail) {
+                                submission.name = "-";
+                                submission.submitName = "-";
+                                submission.modelDesc = "-";
+                            }
+                        }
+
+                        let selected = submissions.reduce((a, b) => (a.showOnLeaderboard === "YES") || (b.showOnLeaderboard === "YES"), {
+                            showOnLeaderboard: false,
+                        })
+                        if (selected) {
+                            newShownData.push(...submissions.filter(data => data.showOnLeaderboard));
+                        }
+                        else {
+                            newShownData.push(...submissions);
+                        }
+                    }
+                    setLeaderboardHiddenData(newShownData);
+                    setLeaderboardHiddenShownData(newShownData);
+                }
             })
             .catch((error) => {
                 console.error(error);
@@ -299,6 +352,12 @@ function LeaderBoard(props) {
 
     const onTaskChange = (e) => {
         setTask(e.target.value);
+
+        // push history
+        const url = new URL(window.location);
+        url.searchParams.set("track", e.target.value);
+        window.history.pushState({}, '', url);
+
         let setShown = track === "hidden" ? setLeaderboardHiddenShownData : setLeaderboardShownData;
         let allData = track === "hidden" ? LeaderboardHiddenData : LeaderboardData;
         e.target.value === "all"
@@ -340,13 +399,19 @@ function LeaderBoard(props) {
             Cell:
                 key === "modelURL"
                     ? parseModelURL
-                    : ({ value }) => isScore ? (is_number_and_not_nan(value) ? String(value) : "-") : (value == undefined ? "-" : String(value)),
+                    : ({ value }) => isScore ? (is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-") : (value == undefined ? "-" : String(value)),
         };
     });
     columns[0]["sticky"] = "left";
 
     const onSubsetChange = (e) => {
         setSubset(e.target.value);
+
+        // push history
+        const url = new URL(window.location);
+        url.searchParams.set("subset", e.target.value);
+        window.history.pushState({}, '', url);
+
     };
 
     let data;
@@ -359,6 +424,7 @@ function LeaderBoard(props) {
     let trimmedColumns, trimmedLeaderboardShownData
     [trimmedColumns, trimmedLeaderboardShownData] = overall_metric_adder(["rank", "rank_p", "interpolation", "interpolation_p"],
         columns, data, subset, memoizedNumericSort)
+
     const memoColumns = React.useMemo(() => trimmedColumns);
 
     return (

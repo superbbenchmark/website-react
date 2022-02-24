@@ -5,6 +5,7 @@ import Clock from "react-live-clock";
 import { Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
 
 import { submitFormTheme } from "./Theme";
 import { SubSubSection } from "./Sections";
@@ -14,12 +15,20 @@ import PubHidSelect from "./PubHidSelect";
 import PublicForm from "./PublicForm";
 import HiddenForm from "./HiddenForm";
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
 export default function SubmitForm(props) {
     const theme = useTheme();
-    const [type, setType] = useState("public");
+    let query = useQuery();
+    const [type, setType] = useState(query.get("type") || "public");
 
     const onTypeChange = (e) => {
         setType(e.target.value);
+        const url = new URL(window.location);
+        url.searchParams.set("type", e.target.value);
+        window.history.pushState({}, '', url);
     };
 
     const SwitchPart = () => {

@@ -65,6 +65,7 @@ const domains = [
             binary discriminating a given pair of query and document into a match or not.\
             The English subset in QUESST 2014 challenge is adopted since we focus on investigating English as the first step.\
             The evaluation metric is maximum term weighted value (MTWV) which balances misses and false alarms.\
+            In the SUPERB Challenge, the average between Mean Average Precision (MAP) and Equal Error Rate (ERR) is used as the metric on the hidden-set\
           ",
             },
         ],
@@ -96,7 +97,8 @@ const domains = [
             },
             {
                 name: "ST",
-                description: `Speech Translation (ST) translates utterance into foreign words. To achieve this goal, the model has to perform ASR and MT simultaneously, which increases the difficulty. CoVoST2 En-De dataset is adopted while all the examples containing "REMOVE" are removed. The evaluation metric is case-sensitive detokenized BLEU.
+                description: `Speech Translation (ST) translates utterance into foreign words. To achieve this goal, the model has to perform ASR and MT simultaneously, which increases the difficulty. CoVoST2 En-De dataset is adopted while all the examples containing "REMOVE" are removed. The evaluation metric is case-sensitive detokenized BLEU. \
+                In the SUPERB Challenge, since it is too difficult to train the ST model with limited translation pairs, we first train on CoVoST2 En-De dataset and then finetuned on the training set of the hidden-set.
                 `
             }
         ],
@@ -161,7 +163,7 @@ const domains = [
         tasks: [
             {
                 name: "SE",
-                description: `Speech enhancement (SE) is the task of removing background noise from a degraded speech signal and improving the perceived quality and intelligibility of the signal. In SUPERB, we evaluate the speech enhancement problem on the VoiceBank-DEMAND corpus. A three layer BLSTM model is trained to predict the spectral mask for the clean signal. The prediction is transformed back to the time domain using inverse short-time Fourier transform (iSTFT). Our evaluation metrics cover various aspects of the speech enhancement quality. including Perceptual Evaluation of Speech Quality (PESQ),  ShortTime Objective Intelligibility (STOI), MOS predictor of overall signal quality (COVL) and scale-invariant signal-to-distortion ratio improvement (SI-SDRi)
+                description: `Speech enhancement (SE) is the task of removing background noise from a degraded speech signal and improving the perceived quality and intelligibility of the signal. In SUPERB, we evaluate the speech enhancement problem on the VoiceBank-DEMAND corpus. A three layer BLSTM model is trained to predict the spectral mask for the clean signal. The prediction is transformed back to the time domain using inverse short-time Fourier transform (iSTFT). Our evaluation metrics cover various aspects of the speech enhancement quality. including Perceptual Evaluation of Speech Quality (PESQ) and ShortTime Objective Intelligibility (STOI)
                 `
             },
             {
@@ -404,7 +406,7 @@ const hidden_task_columnInfo = {
     PR_per_hidden_dev: {
         header: "PR hidden dev",
         width: 140,
-        higherBetter: true,
+        higherBetter: false,
         isScore: true,
         type: "number",
     },
@@ -425,7 +427,7 @@ const hidden_task_columnInfo = {
     ASR_wer_hidden_dev: {
         header: "ASR hidden dev",
         width: 140,
-        higherBetter: true,
+        higherBetter: false,
         isScore: true,
         type: "number",
     },
@@ -446,14 +448,14 @@ const hidden_task_columnInfo = {
     SV_eer_hidden_dev: {
         header: "SV hidden dev",
         width: 140,
-        higherBetter: true,
+        higherBetter: false,
         isScore: true,
         type: "number",
     },
     SD_der_hidden_dev: {
         header: "SD hidden dev",
         width: 140,
-        higherBetter: true,
+        higherBetter: false,
         isScore: true,
         type: "number",
     },
@@ -464,22 +466,22 @@ const hidden_task_columnInfo = {
         isScore: true,
         type: "number",
     },
-    SS_sisdr_hidden_dev: {
+    SS_sisdri_hidden_dev: {
         header: "SS hidden dev",
         width: 140,
         higherBetter: true,
         isScore: true,
         type: "number",
     },
-    SE_pesq_hidden_dev: {
-        header: "SE-PESQ hidden dev",
+    SE_stoi_hidden_dev: {
+        header: "SE-STOI hidden dev",
         width: 180,
         higherBetter: true,
         isScore: true,
         type: "number",
     },
-    SE_stoi_hidden_dev: {
-        header: "SE-STOI hidden dev",
+    SE_pesq_hidden_dev: {
+        header: "SE-PESQ hidden dev",
         width: 180,
         higherBetter: true,
         isScore: true,
@@ -519,7 +521,7 @@ const individual_submission_columnInfo = {
         type: "alphanumeric",
     },
     task: {
-        header: "Task",
+        header: "Track",
         width: 130,
         higherBetter: undefined,
         type: "alphanumeric",
@@ -613,7 +615,7 @@ const individual_submission_hidden_columnInfo = {
         type: "alphanumeric",
     },
     task: {
-        header: "Task",
+        header: "Track",
         width: 130,
         higherBetter: undefined,
         type: "alphanumeric",
@@ -702,7 +704,7 @@ const leaderboard_columnInfo = {
         type: "alphanumeric",
     },
     task: {
-        header: "Task",
+        header: "Track",
         width: 130,
         higherBetter: undefined,
         type: "alphanumeric",
@@ -761,13 +763,13 @@ const leaderboard_hidden_columnInfo = {
     },
     modelDesc: {
         header: "Description",
-        width: 100,
+        width: 150,
         higherBetter: undefined,
         type: "alphanumeric",
     },
     name: {
         header: "Name",
-        width: 100,
+        width: 130,
         higherBetter: undefined,
         type: "alphanumeric",
     },
@@ -778,7 +780,7 @@ const leaderboard_hidden_columnInfo = {
         type: "alphanumeric",
     },
     task: {
-        header: "Task",
+        header: "Track",
         width: 130,
         higherBetter: undefined,
         type: "alphanumeric",
@@ -799,16 +801,40 @@ const reference_points = {
     "SID_acc_public": [20.058174, 9.03e+01],
     "ER_acc_public": [48.23672168, 67.62],
     "ASR_wer_public": [76.82, 96.38],
-    "QbE_mtwv_public": [0.0058, 0.0736],
+    "QbE_mtwv_public": [0.0058, 0.0736].map(item => 100 * item),
     "SF_f1_public": [69.64, 89.81],
     "SF_cer_public": [47.06, 78.24],
     "SV_eer_public": [90.44, 94.89],
     "SD_der_public": [89.95, 94.38],
     "ST_bleu_public": [2.32, 20.01],
-    "SE_pesq_public": [2.5529, 2.6421],
-    "SE_stoi_public": [0.9364, 0.9418],
+    "SE_pesq_public": [2.55, 2.64],
+    "SE_stoi_public": [93.6, 94.2],
     "SS_sisdri_public": [9.2341, 10.4514],
+    "PR_per_hidden_dev": [0.8100076941, 0.1632352551].map(item => 100 * (1 - item)),
+    "SID_acc_hidden_dev": [0.4958333373, 0.7983333468].map(item => 100 * item),
+    "ER_acc_hidden_dev": [0.4712328911, 0.6794520617].map(item => 100 * item),
+    "ASR_wer_hidden_dev": [0.7356, 0.2149418249].map(item => 100 * (1 - item)),
+    "SV_eer_hidden_dev": [0.255671, 0.127294].map(item => 100 * (1 - item)),
+    "SD_der_hidden_dev": [0.157551825, 0.1048149392].map(item => 100 * (1 - item)),
+    "QbE_map_hidden_dev": [0.1860194802, 0.5108585358].map(item => 100 * item),
+    "QbE_eer_hidden_dev": [0.3694903255, 0.1780432165].map(item => 100 * (1 - item)),
+    "ST_bleu_hidden_dev": [3.2, 23.33],
+    "SS_sisdri_hidden_dev": [4.655592075, 8.082589958],
+    "SE_pesq_hidden_dev": [1.510035692, 1.567159144],
+    "SE_stoi_hidden_dev": [0.8433188677, 0.8520344653].map(item => 100 * item),
 }
+
+const hidden_dev_set = [
+    "PR_per_hidden_dev", "SID_acc_hidden_dev", "ER_acc_hidden_dev", "ASR_wer_hidden_dev", "QbE_map_hidden_dev",
+    "QbE_eer_hidden_dev", "SV_eer_hidden_dev", "SD_der_hidden_dev", "ST_bleu_hidden_dev",
+    "SE_pesq_hidden_dev", "SE_stoi_hidden_dev", "SS_sisdri_hidden_dev",
+]
+
+const hidden_test_set = [
+    "PR_per_hidden_test", "SID_acc_hidden_test", "ER_acc_hidden_test", "ASR_wer_hidden_test", "QbE_map_hidden_test",
+    "QbE_eer_hidden_test", "SV_eer_hidden_test", "SD_der_hidden_test", "ST_bleu_hidden_test",
+    "SE_pesq_hidden_test", "SE_stoi_hidden_test", "SS_sisdri_hidden_test",
+]
 
 export {
     reference_points,
@@ -821,4 +847,6 @@ export {
     leaderboard_hidden_columnInfo,
     leaderboard_selections,
     public_hidden_selections,
+    hidden_dev_set,
+    hidden_test_set,
 };

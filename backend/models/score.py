@@ -25,6 +25,10 @@ class ScoreModel(db.Model):
     SF_cer_public = db.Column(db.Float)
     SV_eer_public = db.Column(db.Float)
     SD_der_public = db.Column(db.Float)
+    ST_bleu_public = db.Column(db.Float)
+    SS_sisdri_public = db.Column(db.Float)
+    SE_pesq_public = db.Column(db.Float)
+    SE_stoi_public = db.Column(db.Float)
 
     @classmethod
     def find_by_fileId(cls, _id: int) -> "ScoreModel":

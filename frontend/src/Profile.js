@@ -35,6 +35,7 @@ import SubsetSelect from "./components/SubsetSelect";
 import { overall_metric_adder } from "./overall_metrics";
 import { Box, Divider, FormControl, InputLabel, Select, MenuItem, Input, FormControlLabel, Switch } from "@material-ui/core";
 import { NumericalSort, is_number_and_not_nan } from "./components/Utilies";
+import { useLocation } from "react-router-dom";
 
 const Styles = styled.div`
   .table {
@@ -274,21 +275,27 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
     );
 }
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
 function Profile(props) {
+    let query = useQuery();
+
     const theme = useTheme();
     const auth = useContext(AuthContext);
     const [allSubmissionData, setAllSubmissionData] = useState([]);
     const [allHiddenSubmissionData, setAllHiddenSubmissionData] = useState([]);
     const [shownData, setShownData] = useState([]);
     const [shownHiddenData, setShownHiddenData] = useState([]);
-    const [task, setTask] = useState("constrained");
+    const [task, setTask] = useState(query.get("track") || "constrained");
     const [username, setUsername] = useState("");
     const [resetUserName, setResetUserName] = useState("");
     const [dailyCounts, setDailyCounts] = useState(0);
     const [weeklyCounts, setWeeklyCounts] = useState(0);
     const [hiddenDailyCounts, setHiddenDailyCounts] = useState(0);
     const [hiddenWeeklyCounts, setHiddenWeeklyCounts] = useState(0);
-    const [subset, setSubset] = useState("Paper");
+    const [subset, setSubset] = useState(query.get("subset") || "Paper");
     const track = subset.toLowerCase().includes("hidden") ? "hidden" : "public"
     const memoizedNumericSort = React.useCallback(NumericalSort);
 
@@ -409,6 +416,12 @@ function Profile(props) {
 
     const onTaskChange = (e) => {
         setTask(e.target.value);
+
+        // push history
+        const url = new URL(window.location);
+        url.searchParams.set("track", e.target.value);
+        window.history.pushState({}, '', url);
+
         let setShown = track === "hidden" ? setShownHiddenData : setShownData;
         let allData = track === "hidden" ? allHiddenSubmissionData : allSubmissionData;
         e.target.value === "all"
@@ -546,13 +559,18 @@ function Profile(props) {
                         ? parseModelURL
                         : key === "download" && track === "public"
                             ? parseDownload
-                            : ({ value }) => isScore ? (is_number_and_not_nan(value) ? String(value) : "-") : (value == undefined ? "-" : String(value)),
+                            : ({ value }) => isScore ? (is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-") : (value == undefined ? "-" : String(value)),
         };
     });
     columns[0]["sticky"] = "left";
 
     const onSubsetChange = (e) => {
         setSubset(e.target.value);
+
+        // push history
+        const url = new URL(window.location);
+        url.searchParams.set("subset", e.target.value);
+        window.history.pushState({}, '', url);
     };
 
     let trimmedColumns, trimmedShownData;

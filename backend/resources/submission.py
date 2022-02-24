@@ -279,7 +279,7 @@ class HiddenLeaderBoard(Resource):
         '''Get hidden leaderboard data'''
         try:
             leaderboard_default_data = get_hidden_leaderboard_default()
-            leaderboard_user_data = HiddenFileModel.find_show_on_leaderboard()
+            leaderboard_user_data = HiddenFileModel.find_all()
             submission_names = []
             for user_data in leaderboard_user_data:
                 submission_names.append(

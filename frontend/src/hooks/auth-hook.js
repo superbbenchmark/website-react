@@ -9,6 +9,7 @@ const clientId =
 export const useAuth = () => {
     const [token, setToken] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [email, setEmail] = useState(null);
     const [tokenExpirationDate, setTokenExpirationDate] = useState();
 
     const onFailure = () => {};
@@ -19,20 +20,23 @@ export const useAuth = () => {
         onFailure,
     });
 
-    const login = useCallback((token, expirationDate, isAdmin) => {
+    const login = useCallback((token, expirationDate, isAdmin, email) => {
         const tokenExpirationDate =
             expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
         isAdmin = isAdmin || false;
+        email = email || null;
 
         setToken(token);
         setTokenExpirationDate(tokenExpirationDate);
-        setIsAdmin(isAdmin)
+        setIsAdmin(isAdmin);
+        setEmail(email);
         localStorage.setItem(
             "data",
             JSON.stringify({
                 token: token,
                 expiration: tokenExpirationDate.toISOString(),
                 isAdmin: isAdmin,
+                email: email,
             })
         );
     }, []);
@@ -42,6 +46,7 @@ export const useAuth = () => {
         setToken(null);
         setTokenExpirationDate(null);
         setIsAdmin(false);
+        setEmail(null);
         localStorage.removeItem("data");
     }, []);
 
@@ -60,14 +65,15 @@ export const useAuth = () => {
         if (
             storedData &&
             storedData.token &&
-            new Date(storedData.expiration) > new Date()
+            new Date(storedData.expiration) > new Date() &&
+            storedData.email
         ) {
-            login(storedData.token, new Date(storedData.expiration), storedData.isAdmin);
+            login(storedData.token, new Date(storedData.expiration), storedData.isAdmin, storedData.email);
         }
         else {
             logout()
         }
     }, [login]);
 
-    return { token, isAdmin, login, logout };
+    return { token, isAdmin, email, login, logout };
 };
