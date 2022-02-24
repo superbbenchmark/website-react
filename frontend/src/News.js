@@ -18,6 +18,17 @@ const news = [
     //         markdown
     //     ),
     // },
+    // {
+    //     title: "This is for leaderboard test",
+    //     date: new Date(2021, 9, 20),
+    //     content: (
+    //         <span>
+    //             <HashLink to="/leaderboard#paper">paper</HashLink><br />
+    //             <HashLink to="/leaderboard#public-set">Public Set</HashLink><br />
+    //             <HashLink to="/leaderboard#hidden-dev-set">Hidden Dev Set</HashLink><br />
+    //         </span >
+    //     ),
+    // },
     {
         title: "2021 SUPERB Challenge Timeline",
         date: new Date(2021, 8, 18),//y,m(0~11),d,h,m,s,ms
