@@ -34,7 +34,7 @@ const news = [
         date: new Date(2021, 8, 18),//y,m(0~11),d,h,m,s,ms
         content: (
             <span align="left">
-                <HashLink to="/challenge#top">Challenge Policy</HashLink>
+                <HashLink to="/challenge-aaai2022#top">Challenge Policy</HashLink>
                 <ul>
                     <li><span><Strong>Sep 18, 2021</Strong>: <HashLink to="/news#announcement2021">Challenge announcement</HashLink> &amp; </span><a
                         href="https://github.com/s3prl/s3prl" target="_blank" rel="noopener"><span>S3PRL</span></a><span> released</span></li>
@@ -66,7 +66,7 @@ const news = [
         content: (
             <span align="left">
                 <div>
-                    We are pleased to announce that the <Strong>2021 SUPERB Challenge</Strong> will be kicked off in <Strong>Oct 2021</Strong> and the results will be presented in <Strong>February 2022</Strong> in a reserved session at <a href="https://aaai-sas-2022.github.io" target="_blank" rel="noopener">The 2nd Self-supervised Learning for Audio and Speech Processing workshop at AAAI</a> in Vancouver.The challenge policy can be found at <HashLink to="/challenge#top">here</HashLink>.Submission system will be open in early <Strong>Oct 2021</Strong>.
+                    We are pleased to announce that the <Strong>2021 SUPERB Challenge</Strong> will be kicked off in <Strong>Oct 2021</Strong> and the results will be presented in <Strong>February 2022</Strong> in a reserved session at <a href="https://aaai-sas-2022.github.io" target="_blank" rel="noopener">The 2nd Self-supervised Learning for Audio and Speech Processing workshop at AAAI</a> in Vancouver.The challenge policy can be found at <HashLink to="/challenge-aaai2022#top">here</HashLink>.Submission system will be open in early <Strong>Oct 2021</Strong>.
                 </div>
                 <br />
                 <div>
