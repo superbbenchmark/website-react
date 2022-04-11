@@ -382,14 +382,20 @@ def metric_calculate_pipeline(file_path, submitUUID):
         #                   SD                       #
         #============================================#
         # SD PUBLIC
-        if os.path.isdir(os.path.join(predict_root, "sd_public")):
-            if len(glob.glob(os.path.join(predict_root, "sd_public", "*.h5"))) > 0:
+        sd_dir = os.path.join(predict_root, "sd_public")
+        if os.path.isdir(sd_dir):
+            if len(glob.glob(os.path.join(sd_dir, "*.h5"))) > 0:
+                prediction_dir = os.path.join(sd_dir, "scoring", "predictions")
+                os.makedirs(prediction_dir, exist_ok=True)
+                os.system(f"mv {sd_dir}/*.h5 {prediction_dir}")
+
+            if len(glob.glob(os.path.join(predict_root, "sd_public", "scoring", "predictions", "*.h5"))) > 0:
                 print("[SD PUBLIC]", file=output_log_f)
                 try:
                     with tempfile.TemporaryDirectory() as scoring_dir:
                         sd_predict_dir = os.path.join(
                             predict_root, "sd_public")
-                        os.system(f"./{os.path.join(ground_truth_root, 'sd_public', 'score.sh')} {scoring_dir} {sd_predict_dir} {os.path.join(ground_truth_root, 'sd_public')} | tail -n 1 | awk '{{print $4}}' > {scoring_dir}/result.log")
+                        os.system(f"./{os.path.join(ground_truth_root, 'sd_public', 'score.sh')} {sd_predict_dir} {os.path.join(ground_truth_root, 'sd_public', 'test')} | tail -n 1 | awk '{{print $4}}' > {scoring_dir}/result.log")
                         with open(f"{scoring_dir}/result.log", "r") as result:
                             der = result.readline().strip()
                     print(f"SD: der {der}", file=output_log_f)

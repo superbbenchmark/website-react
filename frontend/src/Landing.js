@@ -34,9 +34,7 @@ export default function Landing(props) {
     return (
         <Box ref={ref} margin={theme.spacing(0, 0, 8)}>
             <Box margin={theme.spacing(8, "auto", 1)}>
-                <Typography variant="h2" color="textPrimary">
-                    <strong>SUPERB</strong>
-                </Typography>
+                <img src="logo-color.png" style={{width: "40%", textAlign: "left"}} />
             </Box>
             <Box margin={theme.spacing(1, "auto", 6)}>
                 <Typography
@@ -170,7 +168,7 @@ export default function Landing(props) {
                     </SubSubSection>
                     <SubSubSection>
                         <Typography variant="body1" color="textSecondary">
-                            We also want to let you know that <a href="https://signalprocessingsociety.org/blog/ieee-jstsp-special-issue-self-supervised-learning-speech-and-audio-processing" target="_blank" rel="noopener noreferrer">IEEE JSTSP Special Issue on Self-Supervised Learning for Speech and Audio Processing</a> is call-for-paper.The deadline is <Strong>December 31, 2021</Strong>.The research based on SUPERB will be very suitable for the special issue.If you have any questions about the special issue, please feel free to contact Hung-yi Lee (<a href="mailto:hungyilee@ntu.edu.tw" target="_blank" rel="noopener noreferrer">hungyilee@ntu.edu.tw</a>).
+                            We also want to let you know that <a href="https://signalprocessingsociety.org/blog/ieee-jstsp-special-issue-self-supervised-learning-speech-and-audio-processing" target="_blank" rel="noopener noreferrer">IEEE JSTSP Special Issue on Self-Supervised Learning for Speech and Audio Processing</a> is call-for-paper.The deadline is <Strong>January 15, 2022</Strong>.The research based on SUPERB will be very suitable for the special issue. If you want to submit to the special issue but have problems meeting the deadline, please feel free to contact Hung-yi Lee (<a href="mailto:hungyilee@ntu.edu.tw" target="_blank" rel="noopener noreferrer">hungyilee@ntu.edu.tw</a>).
                         </Typography>
                     </SubSubSection>
                 </SubSection>
