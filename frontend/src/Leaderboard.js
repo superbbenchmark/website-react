@@ -422,7 +422,7 @@ function LeaderBoard(props) {
         data = LeaderboardShownData;
     }
     let trimmedColumns, trimmedLeaderboardShownData
-    [trimmedColumns, trimmedLeaderboardShownData] = overall_metric_adder(["rank", "rank_p", "interpolation", "interpolation_p"],
+    [trimmedColumns, trimmedLeaderboardShownData] = overall_metric_adder(["rank", "interpolation"], // "rank_p", "interpolation_p"
         columns, data, subset, memoizedNumericSort)
 
     const memoColumns = React.useMemo(() => trimmedColumns);
@@ -430,7 +430,7 @@ function LeaderBoard(props) {
     return (
         <>
             <Box width="90%" margin="auto">
-                <Box margin={theme.spacing(2, "auto", 0.2)}>
+                <Box margin={theme.spacing(6, "auto", 0.2)}>
                     <TrackSelect task={task} onTaskChange={onTaskChange} />
                 </Box>
                 <Divider style={{ width: "600px", maxWidth: "80%", margin: "auto" }} />
