@@ -30,6 +30,8 @@ import { AuthContext } from "./context/auth-context";
 import { useAuth } from "./hooks/auth-hook";
 import { useContext } from "react";
 
+import { policy_slt2022, policy_aaai2022 } from "./policy";
+
 const useStyles = makeStyles((theme) => ({
     narrowViewport: {
         width: "85%",
@@ -95,12 +97,12 @@ function App() {
                 </Route>
                 <Route path="/challenge-aaai2022">
                     <div className={`${classes.narrowViewport}`}>
-                        <Challenge />
+                        <Challenge policy={policy_aaai2022} />
                     </div>
                 </Route>
-                <Route path="/challenge-slt2023">
+                <Route path="/challenge-slt2022">
                     <div className={`${classes.narrowViewport}`}>
-                        <Challenge />
+                    <Challenge policy={policy_slt2022} />
                     </div>
                 </Route>
                 <Route path="/profile" exact>
@@ -141,18 +143,18 @@ function App() {
                 </Route>
                 <Route path="/leaderboard">
                     <Leaderboard
-                        height={`${height - navbarHeight}px`}
+                       f height={`${height - navbarHeight}px`}
                         tableControlRef={tableControlRef}
                     />
                 </Route>
                 <Route path="/challenge-aaai2022">
                     <div className={`${classes.narrowViewport}`}>
-                        <Challenge />
+                        <Challenge policy={policy_aaai2022} />
                     </div>
                 </Route>
-                <Route path="/challenge-slt2023">
+                <Route path="/challenge-slt2022">
                     <div className={`${classes.narrowViewport}`}>
-                        <Challenge />
+                        <Challenge policy={policy_slt2022} />
                     </div>
                 </Route>
                 <Route path="/submit">

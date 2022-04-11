@@ -169,7 +169,7 @@ function NavigationBar({ width, tableControlRef, ...props }) {
     ["Rules", "/rules"],
     // ["Compare", "/compare"],
     ["Leaderboard", "/leaderboard"],
-    ["Challenge", [["SLT2023", "/challenge-slt2023"], ["AAAI2022", "/challenge-aaai2022"]]],
+    ["Challenge", [["SLT2022", "/challenge-slt2022"], ["AAAI2022", "/challenge-aaai2022"]]],
     ["Submit", "/submit"],
   ];
   if (auth.isLoggedIn) {
@@ -319,119 +319,18 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                   justify="flex-start"
                   alignItems="center"
                   spacing={1}
-    const largeScreen = useMediaQuery(theme.breakpoints.up("lg"));
-    return (
-        <React.Fragment>
-            <CssBaseline />
-            <HideOnScroll {...props}>
-                <AppBar color="primary">
-                    <Toolbar className={classes.toolbar}>
-                        <Grid container alignItems="center">
-                            <Grid item xs={9} lg={2}>
-                                <Grid
-                                    container
-                                    direction="row"
-                                    justify="flex-start"
-                                    alignItems="center"
-                                    spacing={1}
-                                >
-                                    <Grid item>
-                                        <AdaptiveLink link="/">
-                                            <LiftingBarButton>
-                                                <div
-                                                    style={{textAlign: "left"}}
-                                                >
-                                                    {largeScreen
-                                                        ?
-                                                        <img src="logo-color.png" style={{width: "60%", textAlign: "left"}} />
-                                                        :
-                                                        <img src="logo-color.png" style={{width: "20%", textAlign: "left"}} />
-                                                    }
-                                                </div>
-                                            </LiftingBarButton>
-                                        </AdaptiveLink>
-                                    </Grid>
-                                    {(location.pathname.includes(
-                                        "leaderboard"
-                                    ) ||
-                                        location.pathname.includes(
-                                            "profile"
-                                        )) && (
-                                            <Grid item>
-                                                <AdaptiveLink link={null}>
-                                                    <Button
-                                                        size="small"
-                                                        variant="outlined"
-                                                        onClick={() => {
-                                                            tableControlRef.current.click();
-                                                        }}
-                                                    >
-                                                        {largeScreen
-                                                            ? "Help"
-                                                            : "Help"}
-                                                    </Button>
-                                                </AdaptiveLink>
-                                            </Grid>
-                                        )}
-                                </Grid>
-                            </Grid>
-                            <Grid item xs={3} lg={10}>
-                                <Grid
-                                    container
-                                    direction="row"
-                                    justify="flex-end"
-                                    alignItems="center"
-                                >
-                                    <Hidden mdDown>
-                                        {items.map(([content, link]) => (
-                                            <Grid item key={link}>
-                                                <AdaptiveLink link={link}>
-                                                    <LiftingBarButton>
-                                                        {content}
-                                                    </LiftingBarButton>
-                                                </AdaptiveLink>
-                                            </Grid>
-                                        ))}
-                                    </Hidden>
-                                    <Hidden lgUp>
-                                        <Grid item>
-                                            <Drawer items={items}>
-                                                <LiftingBarButton>
-                                                    <Typography
-                                                        color="textSecondary"
-                                                        variant="overline"
-                                                    >
-                                                        MENU
-                                                    </Typography>
-                                                </LiftingBarButton>
-                                            </Drawer>
-                                        </Grid>
-                                    </Hidden>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Toolbar>
-                </AppBar>
-            </HideOnScroll>
-            <Toolbar id="back-to-top-anchor" />
-            <ScrollTop {...props}>
-                <Fab
-                    color="secondary"
-                    size="small"
-                    aria-label="scroll back to top"
                 >
                   <Grid item>
                     <AdaptiveLink link="/">
                       <LiftingBarButton>
-                        <Typography
-                          color="textPrimary"
-                          variant="h6"
-                          className={`${classes.navlink}`}
-                        >
-                          {largeScreen
-                            ? "SUPERB"
-                            : "SUPERB"}
-                        </Typography>
+                      <div style={{textAlign: "left" }}>
+                        {largeScreen
+                        ?
+                        <img src="logo-color.png" style={{width: "60%" , textAlign: "left" }} />
+                        :
+                        <img src="logo-color.png" style={{width: "20%" , textAlign: "left" }} />
+                        }
+                      </div>
                       </LiftingBarButton>
                     </AdaptiveLink>
                   </Grid>

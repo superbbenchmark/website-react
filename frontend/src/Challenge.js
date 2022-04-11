@@ -13,7 +13,6 @@ import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
 
 import { Section } from "./components/Sections";
 import { scrollWithOffset } from "./utils/scroll-with-offset";
-import policy from "./policy";
 import './custom.scss';
 
 
@@ -44,7 +43,7 @@ function Challenge(props) {
     const markdown_block = (
         <Section align="left">
             <ReactMarkdown
-                children={policy}
+                children={props.policy}
                 remarkPlugins={[remarkMath, remarkGfm]}
                 rehypePlugins={[rehypeKatex]}
                 components={{
@@ -103,7 +102,7 @@ function Challenge(props) {
         </Section>
     )
 
-    const headers = policy.split("\n").filter(e => e.match(/^[#]{1,3}[^#]+$/g))
+    const headers = props.policy.split("\n").filter(e => e.match(/^[#]{1,3}[^#]+$/g))
 
     function getMenuItem(item) {
         const id = item.replace(/^[#]+\s/g, "").toString().replace(/ /g, '-')
