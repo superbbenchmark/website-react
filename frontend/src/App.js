@@ -30,7 +30,8 @@ import { AuthContext } from "./context/auth-context";
 import { useAuth } from "./hooks/auth-hook";
 import { useContext } from "react";
 
-import { policy_slt2022, policy_aaai2022 } from "./policy";
+import { challenge_overview, framework, upstream, submission, metrics } from "./policy";
+import { policy_aaai2022 } from "./history/AAAI2022_policy";
 
 const useStyles = makeStyles((theme) => ({
     narrowViewport: {
@@ -95,14 +96,34 @@ function App() {
                         tableControlRef={tableControlRef}
                     />
                 </Route>
+                <Route path="/challenge-slt2022/challenge_overview">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Challenge policy={challenge_overview} />
+                    </div>
+                </Route>
+                <Route path="/challenge-slt2022/framework">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Challenge policy={framework} />
+                    </div>
+                </Route>
+                <Route path="/challenge-slt2022/upstream">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Challenge policy={upstream} />
+                    </div>
+                </Route>
+                <Route path="/challenge-slt2022/submission">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Challenge policy={submission} />
+                    </div>
+                </Route>
+                <Route path="/challenge-slt2022/metrics">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Challenge policy={metrics} />
+                    </div>
+                </Route>
                 <Route path="/challenge-aaai2022">
                     <div className={`${classes.narrowViewport}`}>
                         <Challenge policy={policy_aaai2022} />
-                    </div>
-                </Route>
-                <Route path="/challenge-slt2022">
-                    <div className={`${classes.narrowViewport}`}>
-                    <Challenge policy={policy_slt2022} />
                     </div>
                 </Route>
                 <Route path="/profile" exact>
@@ -147,14 +168,34 @@ function App() {
                         tableControlRef={tableControlRef}
                     />
                 </Route>
+                <Route path="/challenge-slt2022/challenge_overview">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Challenge policy={challenge_overview} />
+                    </div>
+                </Route>
+                <Route path="/challenge-slt2022/framework">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Challenge policy={framework} />
+                    </div>
+                </Route>
+                <Route path="/challenge-slt2022/upstream">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Challenge policy={upstream} />
+                    </div>
+                </Route>
+                <Route path="/challenge-slt2022/submission">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Challenge policy={submission} />
+                    </div>
+                </Route>
+                <Route path="/challenge-slt2022/metrics">
+                    <div className={`${classes.narrowViewport}`}>
+                        <Challenge policy={metrics} />
+                    </div>
+                </Route>
                 <Route path="/challenge-aaai2022">
                     <div className={`${classes.narrowViewport}`}>
                         <Challenge policy={policy_aaai2022} />
-                    </div>
-                </Route>
-                <Route path="/challenge-slt2022">
-                    <div className={`${classes.narrowViewport}`}>
-                        <Challenge policy={policy_slt2022} />
                     </div>
                 </Route>
                 <Route path="/submit">

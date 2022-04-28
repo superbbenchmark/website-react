@@ -169,7 +169,13 @@ function NavigationBar({ width, tableControlRef, ...props }) {
     ["Rules", "/rules"],
     // ["Compare", "/compare"],
     ["Leaderboard", "/leaderboard"],
-    ["Challenge", [["SLT2022", "/challenge-slt2022"], ["AAAI2022", "/challenge-aaai2022"]]],
+    ["Challenge", [
+      ["Challenge Overview", "/challenge-slt2022/challenge_overview"],
+      ["Evaluation Framework", "/challenge-slt2022/framework"],
+      ["Upstream Specification", "/challenge-slt2022/upstream"],
+      ["Leaderboard Submission", "/challenge-slt2022/submission"],
+      ["Overall Metrics", "/challenge-slt2022/metrics"],
+    ]],
     ["Submit", "/submit"],
   ];
   if (auth.isLoggedIn) {
@@ -326,9 +332,9 @@ function NavigationBar({ width, tableControlRef, ...props }) {
                       <div style={{textAlign: "left" }}>
                         {largeScreen
                         ?
-                        <img src="logo-color.png" style={{width: "60%" , textAlign: "left" }} />
+                        <img src="/logo-color.png" style={{width: "60%" , textAlign: "left" }} />
                         :
-                        <img src="logo-color.png" style={{width: "20%" , textAlign: "left" }} />
+                        <img src="/logo-color.png" style={{width: "20%" , textAlign: "left" }} />
                         }
                       </div>
                       </LiftingBarButton>
