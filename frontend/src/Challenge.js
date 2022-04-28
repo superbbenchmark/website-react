@@ -65,15 +65,19 @@ function Challenge(props) {
                         )
                     },
                     a({ href, children, ...props }) {
-                        const match = /.*superbbenchmark\.org\/\w+/.exec(href || '')
+                        const root_url = /http.+\/\/[a-z0-9.:]+/.exec(window.location.href || '')[0].replace(/http.+\/\//, "")
+                        href = href.replace(/.*/ + root_url, "/").replace(/http.+\/\/superbbenchmark.org\//, "")
+
+                        const match = /http.*|mailto/.exec(href || '')
                         return match ? (
-                            <HashLink to={match[0].replace(/.*superbbenchmark\.org/, "") + "#top"} {...props}>
-                                {children}
-                            </HashLink>
-                        ) : (
-                            <a href={href} {...props}>
+                            <a href={href} target="_blank" rel="noopener" {...props}>
                                 {children}
                             </a>
+                            
+                        ) : (
+                            <HashLink to={/#.*/.exec(href || '') ? href : href + "#top"} {...props}>
+                                {children}
+                            </HashLink>
                         )
                     },
                     h1({ level, children, ...props }) {
