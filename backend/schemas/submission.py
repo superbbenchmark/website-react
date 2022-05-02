@@ -14,6 +14,8 @@ class SubmissionPublicSchema(Schema):
     inputFormat = fields.Str(required=True, validate=Length(max=300))
     corpus = fields.Str(required=True, validate=Length(max=300))
     paramDesc = fields.Str(required=True, validate=Length(max=300))
+    params = fields.Str(required=True, validate=Length(max=300))
+    macs = fields.Str(required=True, validate=Length(max=300))
     paramShared = fields.Str(required=True, validate=Length(max=300))
     fineTunedParam = fields.Str(
         required=True, validate=Length(max=100))  # Not required

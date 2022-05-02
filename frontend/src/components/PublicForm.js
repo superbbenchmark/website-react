@@ -4,8 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 
 import swal from "sweetalert";
 import axios from "axios";
-
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, Link } from "@material-ui/core";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -63,6 +62,8 @@ export default function PublicForm(){
             inputFormat: "",
             corpus: "",
             paramDesc: "",
+            params: "",
+            macs: "",
             paramShared: "",
             fineTunedParam: "",
             taskSpecParam: "",
@@ -86,6 +87,8 @@ export default function PublicForm(){
             formData.append("inputFormat", data.inputFormat);
             formData.append("corpus", data.corpus);
             formData.append("paramDesc", data.paramDesc);
+            formData.append("params", data.params);
+            formData.append("macs", data.macs);
             formData.append("paramShared", data.paramShared);
             formData.append("fineTunedParam", data.fineTunedParam);
             formData.append("taskSpecParam", data.taskSpecParam);
@@ -125,6 +128,7 @@ export default function PublicForm(){
                     <Typography variant="body1" color="textSecondary">
                         Make sure to read the <HashLink to="/rules">Rules</HashLink> before submitting to the <HashLink to="/leaderboard?track=constrained&subset=Paper">SUPERB Benchmark</HashLink> or the <HashLink to="/leaderboard?track=constrained&subset=Public+Set">SUPERB Challenge Public-set</HashLink>.
                     </Typography>
+                    <Link href={"/api/download/example"} color="secondary">Sample submission file</Link>
                 </SubSubSection>
                 <form
                     className={classes.root}
@@ -212,12 +216,35 @@ export default function PublicForm(){
                             errors.paramDesc && errors.paramDesc.message
                         }
                     />
-
+                    <FormTextField
+                        control={control}
+                        className={classes.textField}
+                        name="params"
+                        label="Total number of parameter*"
+                        description="The total number of parameters in your model computed by our profiling tool. (Required)"
+                        rules={formVal.params}
+                        error={errors.params}
+                        helperText={
+                            errors.params && errors.params.message
+                        }
+                    />
+                    <FormTextField
+                        control={control}
+                        className={classes.textField}
+                        name="macs"
+                        label="Total estimated number of MACs*"
+                        description="The total number of multiply accumulate operations in your model computed by our profiling tool. (Required)"
+                        rules={formVal.macs}
+                        error={errors.macs}
+                        helperText={
+                            errors.macs && errors.macs.message
+                        }
+                    />
                     <FormTextField
                         control={control}
                         className={classes.textField}
                         name="paramShared"
-                        label="Parameter shared without fine-tuning*"
+                        label="Parameter shared w/o fine-tuning*"
                         description="The total number of parameters in your model which don't require task spesific fine-tuning (only numeric numbers allowed). (Required)"
                         rules={formVal.paramShared}
                         error={errors.paramShared}

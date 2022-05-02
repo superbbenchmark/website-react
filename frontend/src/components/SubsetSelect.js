@@ -17,6 +17,9 @@ export default function SubsetSelect({ subset, selections, onChange }) {
         else if (name === "hidden dev set") {
             return "Challenge Hidden Dev";
         }
+        else if (name === "hidden test set") {
+            return "Challenge Hidden Test";
+        }
         return originName;
     }
 

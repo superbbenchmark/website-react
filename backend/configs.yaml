@@ -27,6 +27,8 @@ INDIVIDUAL_SUBMISSION_INFO:
         - stride
         - inputFormat
         - corpus
+        - params
+        - macs
         - paramDesc
         - paramShared
         - fineTunedParam
@@ -69,6 +71,8 @@ LEADERBOARD_INFO:
         - inputFormat
         - corpus
         - paramDesc
+        - params
+        - macs
         - paramShared
         - fineTunedParam
         - taskSpecParam
@@ -110,6 +114,8 @@ INDIVIDUAL_HIDDEN_SUBMISSION_INFO:
         - stateInfo
         - submitUUID
     SCORE:
+        - params
+        - macs
         - PR_per_hidden_dev
         - SID_acc_hidden_dev
         - ER_acc_hidden_dev
@@ -122,18 +128,18 @@ INDIVIDUAL_HIDDEN_SUBMISSION_INFO:
         - SS_sisdri_hidden_dev
         - SE_pesq_hidden_dev
         - SE_stoi_hidden_dev
-        # - PR_per_hidden_test
-        # - SID_acc_hidden_test
-        # - ER_acc_hidden_test
-        # - ASR_wer_hidden_test
-        # - SV_eer_hidden_test
-        # - SD_der_hidden_test
-        # - QbE_map_hidden_test
-        # - QbE_eer_hidden_test
-        # - ST_bleu_hidden_test
-        # - SS_sisdri_hidden_test
-        # - SE_pesq_hidden_test
-        # - SE_stoi_hidden_test
+        - PR_per_hidden_test
+        - SID_acc_hidden_test
+        - ER_acc_hidden_test
+        - ASR_wer_hidden_test
+        - SV_eer_hidden_test
+        - SD_der_hidden_test
+        - QbE_map_hidden_test
+        - QbE_eer_hidden_test
+        - ST_bleu_hidden_test
+        - SS_sisdri_hidden_test
+        - SE_pesq_hidden_test
+        - SE_stoi_hidden_test
 
 LEADERBOARD_HIDDEN_INFO:
     FILE:
@@ -147,6 +153,8 @@ LEADERBOARD_HIDDEN_INFO:
         - showOnLeaderboard
         - email
     SCORE:
+        - params
+        - macs
         - PR_per_hidden_dev
         - SID_acc_hidden_dev
         - ER_acc_hidden_dev
@@ -159,15 +167,15 @@ LEADERBOARD_HIDDEN_INFO:
         - SS_sisdri_hidden_dev
         - SE_pesq_hidden_dev
         - SE_stoi_hidden_dev
-        # - PR_per_hidden_test
-        # - SID_acc_hidden_test
-        # - ER_acc_hidden_test
-        # - ASR_wer_hidden_test
-        # - SV_eer_hidden_test
-        # - SD_der_hidden_test
-        # - QbE_map_hidden_test
-        # - QbE_eer_hidden_test
-        # - ST_bleu_hidden_test
-        # - SS_sisdri_hidden_test
-        # - SE_pesq_hidden_test
-        # - SE_stoi_hidden_test
+        - PR_per_hidden_test
+        - SID_acc_hidden_test
+        - ER_acc_hidden_test
+        - ASR_wer_hidden_test
+        - SV_eer_hidden_test
+        - SD_der_hidden_test
+        - QbE_map_hidden_test
+        - QbE_eer_hidden_test
+        - ST_bleu_hidden_test
+        - SS_sisdri_hidden_test
+        - SE_pesq_hidden_test
+        - SE_stoi_hidden_test

@@ -403,6 +403,20 @@ const public_task_columnInfo = {
 }
 
 const hidden_task_columnInfo = {
+    params: {
+        header: "Params",
+        width: 130,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    macs: {
+        header: "MACs",
+        width: 130,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
     PR_per_hidden_dev: {
         header: "PR",
         width: 80,
@@ -481,6 +495,91 @@ const hidden_task_columnInfo = {
         type: "number",
     },
     SE_pesq_hidden_dev: {
+        header: "SE-PESQ",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    // test
+    PR_per_hidden_test: {
+        header: "PR",
+        width: 80,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    SID_acc_hidden_test: {
+        header: "SID",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    ER_acc_hidden_test: {
+        header: "ER",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    ASR_wer_hidden_test: {
+        header: "ASR",
+        width: 80,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    QbE_map_hidden_test: {
+        header: "QbE-MAP",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    QbE_eer_hidden_test: {
+        header: "QbE-EER",
+        width: 80,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    SV_eer_hidden_test: {
+        header: "SV",
+        width: 80,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    SD_der_hidden_test: {
+        header: "SD",
+        width: 80,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    ST_bleu_hidden_test: {
+        header: "ST",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    SS_sisdri_hidden_test: {
+        header: "SS",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    SE_stoi_hidden_test: {
+        header: "SE-STOI",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    SE_pesq_hidden_test: {
         header: "SE-PESQ",
         width: 80,
         higherBetter: true,
@@ -809,18 +908,6 @@ const leaderboard_hidden_columnInfo = {
         higherBetter: undefined,
         type: "alphanumeric",
     },
-    params: {
-        header: "Params",
-        width: 130,
-        higherBetter: undefined,
-        type: "number",
-    },
-    macs: {
-        header: "MACs",
-        width: 130,
-        higherBetter: undefined,
-        type: "number",
-    },
     paramShared: {
         header: "Shared parameters",
         width: 100,
@@ -831,6 +918,7 @@ const leaderboard_hidden_columnInfo = {
 };
 
 const reference_points = {
+    // public
     "PR_per_public": [17.989999999999995, 96.47],
     "KS_acc_public": [41.3826674, 96.66],
     "IC_acc_public": [9.649354219, 98.76],
@@ -846,6 +934,7 @@ const reference_points = {
     "SE_pesq_public": [2.55, 2.64],
     "SE_stoi_public": [93.6, 94.2],
     "SS_sisdri_public": [9.2341, 10.4514],
+    // hidden dev
     "PR_per_hidden_dev": [0.8100076941, 0.1632352551].map(item => 100 * (1 - item)),
     "SID_acc_hidden_dev": [0.4958333373, 0.7983333468].map(item => 100 * item),
     "ER_acc_hidden_dev": [0.4712328911, 0.6794520617].map(item => 100 * item),
@@ -858,15 +947,31 @@ const reference_points = {
     "SS_sisdri_hidden_dev": [4.655592075, 8.082589958],
     "SE_pesq_hidden_dev": [1.510035692, 1.567159144],
     "SE_stoi_hidden_dev": [0.8433188677, 0.8520344653].map(item => 100 * item),
+    // hidden test
+    "PR_per_hidden_test": [0.81663806713, 0.18215388839].map(item => 100 * (1 - item)),
+    "SID_acc_hidden_test": [0.48166665435, 0.80250000954].map(item => 100 * item),
+    "ER_acc_hidden_test": [0.46978020668, 0.60989010334].map(item => 100 * item),
+    "ASR_wer_hidden_test": [0.73561739944, 0.22029646522].map(item => 100 * (1 - item)),
+    "SV_eer_hidden_test": [0.24044900000, 0.09814810000].map(item => 100 * (1 - item)),
+    "SD_der_hidden_test": [0.13400000000, 0.09100000000].map(item => 100 * (1 - item)),
+    "QbE_map_hidden_test": [0.12724326551, 0.49059066176].map(item => 100 * item),
+    "QbE_eer_hidden_test": [0.35976561904, 0.16548413038].map(item => 100 * (1 - item)),
+    "ST_bleu_hidden_test": [2.320000000, 20.010000000],
+    "SS_sisdri_hidden_test": [2.845464051, 7.301311103],
+    "SE_pesq_hidden_test": [1.530031757, 1.567550004],
+    "SE_stoi_hidden_test": [0.84461450984, 0.85292513083].map(item => 100 * item),
+    
 }
 
 const hidden_dev_set = [
+    "params", "macs", 
     "PR_per_hidden_dev", "SID_acc_hidden_dev", "ER_acc_hidden_dev", "ASR_wer_hidden_dev", "QbE_map_hidden_dev",
     "QbE_eer_hidden_dev", "SV_eer_hidden_dev", "SD_der_hidden_dev", "ST_bleu_hidden_dev",
     "SE_pesq_hidden_dev", "SE_stoi_hidden_dev", "SS_sisdri_hidden_dev",
 ]
 
 const hidden_test_set = [
+    "params", "macs", 
     "PR_per_hidden_test", "SID_acc_hidden_test", "ER_acc_hidden_test", "ASR_wer_hidden_test", "QbE_map_hidden_test",
     "QbE_eer_hidden_test", "SV_eer_hidden_test", "SD_der_hidden_test", "ST_bleu_hidden_test",
     "SE_pesq_hidden_test", "SE_stoi_hidden_test", "SS_sisdri_hidden_test",

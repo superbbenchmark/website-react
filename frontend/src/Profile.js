@@ -130,7 +130,7 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
         () => ({
             minWidth: 10,
             width: 150,
-            maxWidth: 400,
+            maxWidth: 600,
         }),
         []
     );
@@ -511,6 +511,22 @@ function Profile(props) {
                 </a>
             );
     };
+    
+    const parseScore = ({ value }) => {
+        if (is_number_and_not_nan(value)) return String(Math.round(value * 100) / 100);
+        else return "-";
+        
+    }
+
+    const parseBigint = ({ value }) => {
+        if (value == undefined) return "-";
+        else return parseInt(value).toExponential(3);
+    }
+    
+    const parseOther = ({ value }) => {
+        if (value == undefined) return "-";
+        else return String(value);
+    }
 
     useEffect(() => {
         getIndividualSubmission();
@@ -542,6 +558,7 @@ function Profile(props) {
     let columnInfo = track == "hidden" ? individual_submission_hidden_columnInfo : individual_submission_columnInfo;
     let columns = Object.keys(columnInfo).map((key) => {
         let isScore = columnInfo[key].isScore
+        let isBigint = key == "params" | key == "macs"
         return {
             Header: columnInfo[key].header,
             accessor: key,
@@ -559,7 +576,13 @@ function Profile(props) {
                         ? parseModelURL
                         : key === "download" && track === "public"
                             ? parseDownload
-                            : ({ value }) => isScore ? (is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-") : (value == undefined ? "-" : String(value)),
+                            : isScore
+                                ? isBigint
+                                    ? parseBigint
+                                    : parseScore
+                                : isBigint
+                                    ? parseBigint
+                                    : parseOther
         };
     });
     columns[0]["sticky"] = "left";
@@ -645,7 +668,7 @@ function Profile(props) {
                     </Box>
                     <Divider style={{ width: "600px", maxWidth: "80%", margin: "auto" }} />
                     <Box margin={theme.spacing(0.2, "auto", 1)}>
-                        <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set"]} onChange={onSubsetChange} />
+                        <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set", "Hidden Testm Set"]} onChange={onSubsetChange} />
                     </Box>
                 </Box>
                 <Table columns={memoColumns} data={trimmedShownData} {...props} />
