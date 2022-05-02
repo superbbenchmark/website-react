@@ -27,10 +27,12 @@ const challenge_overview = String.raw`
         * Fixed downstream model architectures
         * Frozen upstream model
         * Except above, no other limitations in downstream training procedure (e.g. hyperparameter, optimizer, etc.)
+        * Can only evaluated towards a subset of tasks
     * **Hidden-set**: Dataset is totally inaccessible, submit **model** (model definition & pre-trained weights)
         * We will use several different learning rates for each downstream task training while fixing all the other hyperparameters and present the best result on leaderboard
 * encourage innovative and aims to be less competitive:
-    * Add number of parameters and operations as efficiency metrics, encourage improvement of different perspectives
+    * Participants are free to choose whether present their submissions on leaderboard or not
+    * In addition to model accuracy, we will have metrics such as number of parameters and operations to capture computation efficiency of proposed approach. We encourage algorithm improvement in diverse perspectives.
 
 ## Participant Requirements
 
@@ -261,7 +263,7 @@ Since the full benchmarking on the public-set can take some time for the trainin
 
 ### Public-set leaderboard and submission
 
-The [public-set leaderboard](leaderboard?subset=Public+Set&track=constrained) is online and [accepts submissions](submit?type=public) (need login). There is no deadline for it. Since all the train/dev/test splits are public available, **the leaderboard accepts submissions with the inferenced prediction files on each task's testing split** which will be auto-generated if you follow the benchmarking steps in [S3PRL](https://github.com/s3prl/s3prl/blob/master/s3prl/downstream/docs/superb.md). And in this challenge, we only consider submissions submited to the **Constrained track** (see [Rules](/rules) for further information about track).
+The [public-set leaderboard](/leaderboard?subset=Public+Set&track=constrained) is online and [accepts submissions](/submit?type=public) (need login). There is no deadline for it. Since all the train/dev/test splits are public available, **the leaderboard accepts submissions with the inferenced prediction files on each task's testing split** which will be auto-generated if you follow the benchmarking steps in [S3PRL](https://github.com/s3prl/s3prl/blob/master/s3prl/downstream/docs/superb.md). And in this challenge, we only consider submissions submited to the **Constrained track** (see [Rules](/rules) for further information about track).
 
 ## Hidden-set
 
@@ -292,7 +294,7 @@ After training the downstream model for all tasks with several different learnin
 
 #### How to submit
 
-The [hidden-set leaderboard](leaderboard?subset=Hidden+Dev+Set&track=constrained) is online and accepts submissions. Please follow the submission steps. We use HuggingFace's Hub to host the submitted upstreams and track the submitted model weights. On the other hand, we use our submission page to control the submission limit, where the participants tell us the locations of their models on HuggingFace's Hub.
+The [hidden-set leaderboard](/leaderboard?subset=Hidden+Dev+Set&track=constrained) is online and accepts submissions. Please follow the submission steps. We use HuggingFace's Hub to host the submitted upstreams and track the submitted model weights. On the other hand, we use our submission page to control the submission limit, where the participants tell us the locations of their models on HuggingFace's Hub.
 
 After submitting via the submission page, you will see a new entry in the submission history under your Profile page, and the evaluation results on the hidden-set will be revealed at the entry within one week. Please stay tuned!
 
@@ -382,7 +384,7 @@ In this challenge, we consider not including those modules since they are usuall
 
 ### Conclusion
 
-The ranking metrics are the primary performance measures in this challenge and are designed to emphasize an upstream's universally usability. When two upstreams tie on the same rank, the scoring metrics take the tasks' variations and improvement difficulty into account to help the final decision. You can refer to the [public-set leaderboard](leaderboard?subset=Public+Set&track=constrained) for the overall metrics calculation.
+The ranking metrics are the primary performance measures in this challenge and are designed to emphasize an upstream's universally usability. When two upstreams tie on the same rank, the scoring metrics take the tasks' variations and improvement difficulty into account to help the final decision. You can refer to the [public-set leaderboard](/leaderboard?subset=Public+Set&track=constrained) for the overall metrics calculation.
 
 #### Reference points
 
