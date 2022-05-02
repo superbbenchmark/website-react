@@ -106,8 +106,7 @@ export default function HiddenForm(){
                 <SubSubSection>
                     <Typography variant="body1" color="textSecondary">
                         <p>Please <a target="_blank" href="https://huggingface.co/superb/superb-submission">Upload your model</a> before the submitting to the <HashLink to="/leaderboard?track=constrained&subset=Hidden+Dev+Set">SUPERB Challenge Hidden-set</HashLink>.</p>
-                        <p>If you wish to submit pre-trained models in non-PyTorch frameworks, please <a href="https://docs.google.com/forms/d/e/1FAIpQLSe52jYL2Yk9oYqXfg_Bg0Sjp01a6HSLUhY5VohsZOE5sNmgsw/viewform">fill this form</a>.</p>
-                        <p>If you are not feasible to submit the pre-trained model, please <a href="https://docs.google.com/forms/d/e/1FAIpQLSdA44nArlIDfGV63WwtwXer4WAPQO1aBwEpAjDSNjbMQN-GJQ/viewform">fill this form</a> for us to see how to help!</p>
+                        <p>If you wish to submit pre-trained models in non-PyTorch frameworks or are not feasible to submit the pre-trained model, please <HashLink to="/challenge-slt2022/challenge_overview#Contact">contact us</HashLink> for us to see how to help!</p>
                     </Typography>
                 </SubSubSection>
                 <form

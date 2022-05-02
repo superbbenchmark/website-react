@@ -54,31 +54,27 @@ export default function Landing(props) {
             </Box>
             <Box maxWidth={800} margin={theme.spacing(1, "auto", 6)}>
                 <Typography variant="h6" color="textPrimary">
-                    <strong>2021 SUPERB Challenge Timeline</strong>
+                    <strong>SLT2022 SUPERB Challenge Timeline</strong>
                 </Typography>
                 <span align="left">
-                    <HashLink to="/challenge-aaai2022#top">Challenge Policy</HashLink>
-                    <ul>
-                        <li><span><Strong>Sep 18, 2021</Strong>: <HashLink to="/news#announcement2021">Challenge announcement</HashLink> &amp; </span><a
-                            href="https://github.com/s3prl/s3prl" target="_blank" rel="noopener"><span>S3PRL</span></a><span> released</span></li>
-                        <li><span><Strong>Sep 30, 2021</Strong>: <HashLink to="/challenge-aaai2022#Overall-Metrics">Overall metrics</HashLink> announcement &amp; </span>
-                            <HashLink to="/leaderboard?subset=Public+Set&track=constrained">public-set leaderboard</HashLink>
-                            <span> is online and <HashLink to="/submit?type=public">accepts submissions</HashLink></span></li>
-                        <li><span><Strong>Oct 15, 2021</Strong>: <HashLink to="/leaderboard?subset=Hidden+Dev+Set&track=constrained">Hidden-set leaderboard</HashLink> is online and <HashLink to="/submit?type=hidden">accepts submissions</HashLink></span></li>
-                        <li><span><Strong>Nov 12, 2021</Strong>: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
-                            rel="noopener"><span>AAAI workshop</span></a><span> paper submission deadline (encouraged)</span></li>
-                        <li><span><Strong>Dec 3, 2021</Strong>: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
-                            rel="noopener"><span>AAAI workshop</span></a><span> paper acceptance / rejection announcement</span>
-                        </li>
-                        <li><span><Strong>Jan 10, 2022</Strong>: Hidden-set leaderboard submission deadline</span></li>
-                        <li><span><Strong>Jan 13, 2022</Strong>: Submission selection &amp; system description paper deadline</span></li>
-                        <li><span><Strong>Jan 20, 2022</Strong>: Winner announcement &amp; reveal hidden-set private scores</span></li>
-                        <li><span><Strong>Jan 22, 2022</Strong>: AAAI late </span><a href="https://aaai.org/Conferences/AAAI-21/registration/"
-                            target="_blank" rel="noopener"><span>registration</span></a><span> deadline</span></li>
-                        <li><span>Feb 28 - Mar 1, 2022: </span><a href="https://aaai-sas-2022.github.io/" target="_blank"
-                            rel="noopener"><span>AAAI workshop</span></a><span> presentation</span></li>
-                    </ul>
-                </span>
+                <HashLink to="/challenge-slt2022/challenge_overview#top">Challenge Policy</HashLink>
+                <ul>
+                    <li><span><Strong>Mar 2, 2022</Strong>: <HashLink to="/news#announcement2022">Challenge announcement</HashLink></span>
+                    </li>
+                    <li><Strong>Mar 2, 2022</Strong>: <HashLink to="/leaderboard?subset=Public+Set">Leaderboard</HashLink>
+                        <span> is online and accepts submissions</span>
+                    </li>
+                    <li><span><Strong>Jul 15, 2022</Strong>: </span><a href="https://slt2022.org/" target="_blank"
+                        rel="noopener"><span>SLT workshop</span></a><span> paper submission (encouraged)</span></li>
+                    <li><span><Strong>Sep 30, 2022</Strong>: </span><a href="https://slt2022.org/" target="_blank"
+                        rel="noopener"><span>SLT workshop</span></a><span> paper notification</span>
+                    </li>
+                    <li><span><Strong>Dec 1, 2022</Strong>: System description paper deadline</span></li>
+                    <li><span><Strong>Dec 25, 2022</Strong>: Challenge result and inviter announcement</span></li>
+                    <li><span>Jan 9 - 12, 2023: </span><a href="https://slt2022.org/" target="_blank"
+                        rel="noopener"><span>SLT workshop</span></a><span> presentation</span></li>
+                </ul>
+            </span>
             </Box>
             <YouTube videoId="zd9fiVvej0k" opts={opts} />
             <Box maxWidth={800} margin="auto" textAlign="left">
@@ -91,7 +87,7 @@ export default function Landing(props) {
                         >
                             SUPERB is a collection of benchmarking resources to
                             evaluate the capability of a universal shared
-                            representation for speech processing.SUPERB
+                            representation for speech processing. SUPERB
                             consists of the following:
                             <div
                                 style={{
@@ -103,7 +99,7 @@ export default function Landing(props) {
                                 <ol>
                                     <li>
                                         A benchmark of ten speech processing
-                                        tasks[1]built on established public
+                                        tasks[1] built on established public
                                         datasets,
                                     </li>
                                     <li>
@@ -143,7 +139,7 @@ export default function Landing(props) {
                             SUPERB aims to offer the community a standard and
                             comprehensive framework to train, evaluate, and
                             compare the generalizability of universal speech
-                            representations on speech processing tasks.A
+                            representations on speech processing tasks. A
                             universal speech representation can be leveraged to
                             quickly adapt to diverse downstream tasks with
                             minimum architectural change and downstream
@@ -160,15 +156,10 @@ export default function Landing(props) {
                             advancement in speech processing with powerful,
                             generalizable, and reusable speech representations.
                             SUPERB is a long-term maintained and continuously
-                            developing project.As we are gradually releasing
+                            developing project. As we are gradually releasing
                             new tasks and opening new tracks, we invite
                             researchers to participate in the challenge and
                             advance the research frontier together.
-                        </Typography>
-                    </SubSubSection>
-                    <SubSubSection>
-                        <Typography variant="body1" color="textSecondary">
-                            We also want to let you know that <a href="https://signalprocessingsociety.org/blog/ieee-jstsp-special-issue-self-supervised-learning-speech-and-audio-processing" target="_blank" rel="noopener noreferrer">IEEE JSTSP Special Issue on Self-Supervised Learning for Speech and Audio Processing</a> is call-for-paper.The deadline is <Strong>January 15, 2022</Strong>.The research based on SUPERB will be very suitable for the special issue. If you want to submit to the special issue but have problems meeting the deadline, please feel free to contact Hung-yi Lee (<a href="mailto:hungyilee@ntu.edu.tw" target="_blank" rel="noopener noreferrer">hungyilee@ntu.edu.tw</a>).
                         </Typography>
                     </SubSubSection>
                 </SubSection>

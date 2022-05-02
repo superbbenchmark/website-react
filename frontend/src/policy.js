@@ -61,11 +61,14 @@ After review the system description papers and compare their performance with th
 
 ## Timeline
 
-- Apr 29, 2022: Challenge announcement
-- Apr 29, 2022: Submission start
+- Mar 02, 2022: Challenge announcement
+- Mar 02, 2022: Leaderboard is online and accepts submissions
+- Jul 15, 2022: SLT paper submission (encouraged)
+- Sep 30, 2022: SLT paper notification
 - Dec 01, 2022: System description paper submission deadline
 - Dec 25, 2022: Result and inviter announcement
 - at least after the end of 2022: End of hidden-set submission
+- Jan 9 - 12, 2023: [SLT workshop](https://slt2022.org/) presentation
 
 ## Organizers
 
@@ -300,6 +303,10 @@ All the submitted results will remain anonymous during and after the challenge. 
 (Update 04/28/2022 AOE)
 
 [The profiling tool](https://github.com/B06901052/DeepSpeed/tree/superb-challenge) we used are mainly based on [**DeepSpeed**](https://github.com/microsoft/DeepSpeed/tree/master/deepspeed/profiling/flops_profiler) developed by **Microsoft**. And for our demands, we fork it and add some additional features. You can use it to profile your model or upstreams in s3prl. All the details are in the repo's README.md.
+
+To match reality, we choose 32 audios as model inputs from LibriSpeech test-clean split by:
+1. sort all audios by sequence length
+2. choose (82*i + 1)th from i=0~31 audios (2620 audios in total)
 `
 
 const metrics = String.raw`
