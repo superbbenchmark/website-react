@@ -18,7 +18,7 @@ import Model from "./components/Modal";
 import TrackSelect from "./components/TrackSelect";
 import SubsetSelect from "./components/SubsetSelect";
 import { overall_metric_adder } from "./overall_metrics";
-import { NumericalSort, is_number_and_not_nan } from "./components/Utilies";
+import { NumericalSort, is_number_and_not_nan, CapitalizeLetter } from "./components/Utilies";
 import { Box, Divider } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "./context/auth-context";
@@ -111,7 +111,7 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
         () => ({
             minWidth: 10,
             width: 150,
-            maxWidth: 400,
+            maxWidth: 600,
         }),
         []
     );
@@ -321,7 +321,7 @@ function LeaderBoard(props) {
                             newShownData.push(...submissions);
                             continue;
                         }
-
+                        // TODO: here to control whether show name or not
                         let userEmail = auth.email;
                         for (let submission of submissions) {
                             if (submission.email != userEmail) {
@@ -331,11 +331,11 @@ function LeaderBoard(props) {
                             }
                         }
 
-                        let selected = submissions.reduce((a, b) => (a.showOnLeaderboard === "YES") || (b.showOnLeaderboard === "YES"), {
-                            showOnLeaderboard: false,
-                        })
-                        if (selected) {
-                            newShownData.push(...submissions.filter(data => data.showOnLeaderboard));
+                        // let selected = submissions.reduce((a, b) => (a.showOnLeaderboard === "YES") || (b.showOnLeaderboard === "YES"), {
+                        //     showOnLeaderboard: false,
+                        // })
+                        if (true) {
+                            newShownData.push(...submissions.filter(data => data.showOnLeaderboard !== "NO"));
                         }
                         else {
                             newShownData.push(...submissions);
@@ -379,6 +379,22 @@ function LeaderBoard(props) {
             );
     };
 
+    const parseScore = ({ value }) => {
+        if (is_number_and_not_nan(value)) return String(Math.round(value * 100) / 100);
+        else return "-";
+        
+    }
+
+    const parseBigint = ({ value }) => {
+        if (value == undefined | value == "-") return "-";
+        else return parseInt(value).toExponential(3);
+    }
+    
+    const parseOther = ({ value }) => {
+        if (value == undefined) return "-";
+        else return String(value);
+    }
+
     useEffect(() => {
         getLeaderboard();
     }, []);
@@ -386,6 +402,7 @@ function LeaderBoard(props) {
     let columnInfo = track == "hidden" ? leaderboard_hidden_columnInfo : leaderboard_columnInfo;
     let columns = Object.keys(columnInfo).map((key) => {
         let isScore = columnInfo[key].isScore
+        let isBigint = key == "params" | key == "macs"
         return {
             Header: columnInfo[key].header,
             accessor: key,
@@ -399,7 +416,11 @@ function LeaderBoard(props) {
             Cell:
                 key === "modelURL"
                     ? parseModelURL
-                    : ({ value }) => isScore ? (is_number_and_not_nan(value) ? String(Math.round(value * 100) / 100) : "-") : (value == undefined ? "-" : String(value)),
+                    : isBigint
+                        ? parseBigint
+                        : isScore
+                            ? parseScore
+                            : parseOther,
         };
     });
     columns[0]["sticky"] = "left";
@@ -422,7 +443,7 @@ function LeaderBoard(props) {
         data = LeaderboardShownData;
     }
     let trimmedColumns, trimmedLeaderboardShownData
-    [trimmedColumns, trimmedLeaderboardShownData] = overall_metric_adder(["rank", "rank_p", "interpolation", "interpolation_p"],
+    [trimmedColumns, trimmedLeaderboardShownData] = overall_metric_adder(["rank", "interpolation"], // "rank_p", "interpolation_p"
         columns, data, subset, memoizedNumericSort)
 
     const memoColumns = React.useMemo(() => trimmedColumns);
@@ -430,12 +451,12 @@ function LeaderBoard(props) {
     return (
         <>
             <Box width="90%" margin="auto">
-                <Box margin={theme.spacing(2, "auto", 0.2)}>
+                <Box margin={theme.spacing(6, "auto", 0.2)}>
                     <TrackSelect task={task} onTaskChange={onTaskChange} />
                 </Box>
                 <Divider style={{ width: "600px", maxWidth: "80%", margin: "auto" }} />
                 <Box margin={theme.spacing(0.2, "auto", 1)}>
-                    <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set"]} onChange={onSubsetChange} />
+                    <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set", "Hidden Test Set"]} onChange={onSubsetChange} />
                 </Box>
             </Box>
             <Table

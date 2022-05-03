@@ -10,6 +10,8 @@ function score_normalizer(columns, data) {
             let value = data[i][accessor]
 
             if (
+                accessor.includes("params") ||
+                accessor.includes("macs") ||
                 accessor.includes("ERfold") ||
                 accessor.includes("ASR_LM")
             ) {
@@ -145,7 +147,7 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
         score_columns = score_columns.filter((column) => hidden_dev_set.includes(column.accessor))
     }
     else if (subset === "Hidden Test Set") {
-        score_columns = score_columns.filter((column) => hidden_test_set.includes(column.Header))
+        score_columns = score_columns.filter((column) => hidden_test_set.includes(column.accessor))
     }
     
     let new_data;

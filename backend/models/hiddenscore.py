@@ -1,5 +1,5 @@
 from db import db
-
+from sqlalchemy.dialects.mysql import BIGINT
 
 class HiddenScoreModel(db.Model):
     __tablename__ = "hiddenscores"
@@ -35,6 +35,10 @@ class HiddenScoreModel(db.Model):
     SS_sisdri_hidden_test = db.Column(db.Float)
     SE_pesq_hidden_test = db.Column(db.Float)
     SE_stoi_hidden_test = db.Column(db.Float)
+    
+    # profiling
+    params = db.Column(BIGINT(unsigned=True))
+    macs = db.Column(BIGINT(unsigned=True))
 
     @classmethod
     def find_by_fileId(cls, _id: int) -> "HiddenScoreModel":

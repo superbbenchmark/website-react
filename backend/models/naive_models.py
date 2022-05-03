@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, Enum, Float, DateTime, String, Text, TIM
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from models.file import Status, Task, Show
+from sqlalchemy.dialects.mysql import BIGINT
 
 Base = declarative_base()
 
@@ -40,6 +41,10 @@ class FileModel(Base):
     aoeTimeUpload = Column(DateTime, nullable=False)
     dateUpload = Column(DateTime)
     showOnLeaderboard = Column(Enum(Show),  nullable=False)
+    
+    # profiling
+    params = Column(BIGINT(unsigned=True))
+    macs = Column(BIGINT(unsigned=True))
 
     scores = relationship("ScoreModel",  backref="files")
 
@@ -131,3 +136,7 @@ class HiddenScoreModel(Base):
     SS_sisdri_hidden_test = Column(Float)
     SE_pesq_hidden_test = Column(Float)
     SE_stoi_hidden_test = Column(Float)
+    
+    # profiling
+    params = Column(BIGINT(unsigned=True))
+    macs = Column(BIGINT(unsigned=True))

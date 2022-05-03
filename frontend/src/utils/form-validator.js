@@ -68,6 +68,18 @@ const formVal = {
             message: "Parameter description should not excced 300 charaters",
         },
     },
+    params: {
+        required: "This field is required",
+        validate: {
+            validNum: (input) => validNumber(input),
+        },
+    },
+    macs: {
+        required: "This field is required",
+        validate: {
+            validNum: (input) => validNumber(input),
+        },
+    },
     paramShared: {
         required: "This field is required",
         validate: {

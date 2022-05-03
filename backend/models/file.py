@@ -2,6 +2,7 @@ from typing import List
 from db import db
 import enum
 import datetime
+from sqlalchemy.dialects.mysql import BIGINT
 
 
 class Status(enum.Enum):
@@ -50,6 +51,10 @@ class FileModel(db.Model):
     aoeTimeUpload = db.Column(db.DateTime, nullable=False)
     dateUpload = db.Column(db.DateTime,  default=db.func.current_timestamp())
     showOnLeaderboard = db.Column(db.Enum(Show),  nullable=False, default=Show.NO)
+    
+    # profiling
+    params = db.Column(BIGINT(unsigned=True))
+    macs = db.Column(BIGINT(unsigned=True))
 
     scores = db.relationship("ScoreModel",  backref="files")
 
