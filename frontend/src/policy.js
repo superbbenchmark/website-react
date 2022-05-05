@@ -80,7 +80,7 @@ Tzu-Hsun Feng (NTU)
 
 Tzu-Quan Lin (NTU)
 
-Hai-Bin Wu (NTU)
+Haibin Wu (NTU)
 
 Shinji Watanabe (CMU)
 
