@@ -46,8 +46,8 @@ const news = [
                     <li><span><Strong>Sep 30, 2022</Strong>: </span><a href="https://slt2022.org/" target="_blank"
                         rel="noopener"><span>SLT workshop</span></a><span> paper notification</span>
                     </li>
-                    <li><span><Strong>Dec 1, 2022</Strong>: System description paper deadline</span></li>
-                    <li><span><Strong>Dec 25, 2022</Strong>: Challenge result and inviter announcement</span></li>
+                    <li><span><Strong>Nov 1, 2022</Strong>: System description paper deadline</span></li>
+                    <li><span><Strong>Dec 20, 2022</Strong>: Challenge result and invitee announcement</span></li>
                     <li><span>Jan 9 - 12, 2023: </span><a href="https://slt2022.org/" target="_blank"
                         rel="noopener"><span>SLT workshop</span></a><span> presentation</span></li>
                 </ul>
@@ -69,7 +69,7 @@ const news = [
                 </div>
                 <br />
                 <div>
-                    Workshop papers will be reviewed and acceptance will be determined based on the quality of the work. Participants can obtain results on hidden dataset through the challenge’s model submission system that will be open from <Strong>now</Strong> all the way to at least <Strong>Dec 31, 2022</Strong>. Authors of the accepted papers should update hidden set results in their paper, and send the final paper to the organizers for verification by <Strong>Dec 1, 2022</Strong>. Performance on the hidden set will not be judged during the verification process.
+                    Workshop papers will be reviewed and acceptance will be determined based on the quality of the work. Participants can obtain results on hidden dataset through the challenge’s model submission system that will be open from <Strong>now</Strong> all the way to at least <Strong>Dec 31, 2022</Strong>. Authors of the accepted papers should update hidden set results in their paper, and send the final paper to the organizers for verification by <Strong>Nov 1, 2022</Strong>. Performance on the hidden set will not be judged during the verification process.
                 </div>
             </span >
         ),

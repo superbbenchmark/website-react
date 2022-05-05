@@ -69,8 +69,8 @@ export default function Landing(props) {
                     <li><span><Strong>Sep 30, 2022</Strong>: </span><a href="https://slt2022.org/" target="_blank"
                         rel="noopener"><span>SLT workshop</span></a><span> paper notification</span>
                     </li>
-                    <li><span><Strong>Dec 1, 2022</Strong>: System description paper deadline</span></li>
-                    <li><span><Strong>Dec 25, 2022</Strong>: Challenge result and inviter announcement</span></li>
+                    <li><span><Strong>Nov 1, 2022</Strong>: System description paper deadline</span></li>
+                    <li><span><Strong>Dec 20, 2022</Strong>: Challenge result and invitee announcement</span></li>
                     <li><span>Jan 9 - 12, 2023: </span><a href="https://slt2022.org/" target="_blank"
                         rel="noopener"><span>SLT workshop</span></a><span> presentation</span></li>
                 </ul>
