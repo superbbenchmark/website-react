@@ -187,7 +187,7 @@ export default function Landing(props) {
                 <Box margin={theme.spacing(8, 0)} textAlign="center">
                     <Title title="Acknowledgement"/>
                     <Typography variant="body1" color="textSecondary">
-                        We thank <DescriptionButton name={<a>Ming-Yang Ho</a>} link="https://kaminyou.com/" /> for creating and maintaining the SUPERB official website.
+                        We thank <DescriptionButton name={<a>Shu-wen Yang</a>} link="https://github.com/leo19941227" /> and <DescriptionButton name={<a>Ming-Yang Ho</a>} link="https://kaminyou.com/" /> for creating and maintaining the SUPERB official website.
                     </Typography>
                 </Box>
             </Box>
