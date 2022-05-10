@@ -51,13 +51,13 @@ To verify the submitted upstream follows the challenge policy, we suggest to sub
 - Pre-training data
 - Parameter size for each submission
 
-The submission should follow the challenge policy and the paper is expected to be well-written. The deadline for the system description paper is **Dec 1, 2022**. Review of these papers will be the responsibility of our SUPERB challenge organisers. Accepted system description papers will not be indexed by the IEEE, but authors of these papers will **have the opportunity to present their work in a dedicated session at the Workshop**.
+The submission should follow the challenge policy and the paper is expected to be well-written. The deadline for the system description paper is **Nov 1, 2022**. Review of these papers will be the responsibility of our SUPERB challenge organisers. Accepted system description papers will not be indexed by the IEEE, but authors of these papers will **have the opportunity to present their work in a dedicated session at the Workshop**.
 
 #### Note 1.
 
 The system description paper is for the challenge review only and is not considered as SLT workshop paper by default, but **we encourage participants to submit their methods' papers to SLT workshop**. If the method turns out to be similar to that used for the final selected submissions, the same paper can be used as the system description paper.
 
-## Inviter Announcement and Presentation
+## Invitee Announcement and Presentation
 
 After review the system description papers and compare their performance with the hidden-set **private scores**. We will announce the final results on **Dec 25, 2022**. And the outstanding one may be invited to present their methods in SLT workshop.
 
@@ -67,8 +67,8 @@ After review the system description papers and compare their performance with th
 - Mar 02, 2022: Leaderboard is online and accepts submissions
 - Jul 15, 2022: SLT paper submission (encouraged)
 - Sep 30, 2022: SLT paper notification
-- Dec 01, 2022: System description paper submission deadline
-- Dec 25, 2022: Result and inviter announcement
+- Nov 01, 2022: System description paper submission deadline
+- Dec 20, 2022: Result and invitee announcement
 - at least after the end of 2022: End of hidden-set submission
 - Jan 9 - 12, 2023: [SLT workshop](https://slt2022.org/) presentation
 
