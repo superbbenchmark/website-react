@@ -172,7 +172,8 @@ export default function Landing(props) {
                             ["jhu-1000.png", "https://www.jhu.edu/"],
                             ["fair-1000.png", "https://ai.facebook.com/"],
                             ["lxt-1000.png", "https://www.lxt.ai/"],
-                            ["huggingface-1000.png", "https://huggingface.co/"]
+                            ["huggingface-1000.png", "https://huggingface.co/"],
+                            ["isca_logo_1000.png", "https://www.isca-speech.org/iscaweb/"]
                         ].map((filename) => {
                             return (
                                 <Grid item xs={6} sm={4} md={4} key={filename[0]}>

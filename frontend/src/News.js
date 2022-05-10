@@ -30,6 +30,19 @@ const news = [
     //     ),
     // },
     {
+        title: "The SUPERB challenge2022 is accepted as an ISCA endorsed activity!",
+        date: new Date(2022, 4, 10),
+        content: (
+            <span align="left">
+                <img src="isca_logo_1240.png" style={{"width": 300}}></img>
+                <br />
+                <div>
+                    We are pleased to announce that the Speech processing Universal PERformance Benchmark (SUPERB) challenge2022 has been Approved as an ISCA endorsed activity. For the system description papers accepted by us, we will use the ISCA archive on those papers.
+                </div>
+            </span >
+        ),
+    },
+    {
         title: "SLT2022 SUPERB Challenge Timeline",
         date: new Date(2022, 4, 2),//y,m(0~11),d,h,m,s,ms
         content: (
