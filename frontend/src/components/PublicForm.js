@@ -62,8 +62,11 @@ export default function PublicForm(){
             inputFormat: "",
             corpus: "",
             paramDesc: "",
-            params: "",
             macs: "",
+            macsShort: "",
+            macsMedium: "",
+            macsLong: "",
+            macsLonger: "",
             paramShared: "",
             fineTunedParam: "",
             taskSpecParam: "",
@@ -87,8 +90,11 @@ export default function PublicForm(){
             formData.append("inputFormat", data.inputFormat);
             formData.append("corpus", data.corpus);
             formData.append("paramDesc", data.paramDesc);
-            formData.append("params", data.params);
             formData.append("macs", data.macs);
+            formData.append("macsShort", data.macsShort);
+            formData.append("macsMedium", data.macsMedium);
+            formData.append("macsLong", data.macsLong);
+            formData.append("macsLonger", data.macsLonger);
             formData.append("paramShared", data.paramShared);
             formData.append("fineTunedParam", data.fineTunedParam);
             formData.append("taskSpecParam", data.taskSpecParam);
@@ -128,7 +134,12 @@ export default function PublicForm(){
                     <Typography variant="body1" color="textSecondary">
                         Make sure to read the <HashLink to="/rules">Rules</HashLink> before submitting to the <HashLink to="/leaderboard?track=constrained&subset=Paper">SUPERB Benchmark</HashLink> or the <HashLink to="/leaderboard?track=constrained&subset=Public+Set">SUPERB Challenge Public-set</HashLink>.
                     </Typography>
+                </SubSubSection>
+                <SubSubSection>
                     <Link href={"/api/download/example"} color="secondary">Sample submission file</Link>
+                </SubSubSection>
+                <SubSubSection>
+                    <HashLink to="/challenge-slt2022/submission#Profiling-Tool">Description of Profiling Tool</HashLink>
                 </SubSubSection>
                 <form
                     className={classes.root}
@@ -219,25 +230,61 @@ export default function PublicForm(){
                     <FormTextField
                         control={control}
                         className={classes.textField}
-                        name="params"
-                        label="Total number of parameter*"
-                        description="The total number of parameters in your model computed by our profiling tool. (Required)"
-                        rules={formVal.params}
-                        error={errors.params}
+                        name="macs"
+                        label="MACs* (bucket: all)"
+                        description='The total number of multiply accumulate operations while forwarding your model computed by our profiling tool with bucket "all". (Required)'
+                        rules={formVal.macs}
+                        error={errors.macs}
                         helperText={
-                            errors.params && errors.params.message
+                            errors.macs && errors.macs.message
                         }
                     />
                     <FormTextField
                         control={control}
                         className={classes.textField}
-                        name="macs"
-                        label="Total estimated number of MACs*"
-                        description="The total number of multiply accumulate operations in your model computed by our profiling tool. (Required)"
+                        name="macsShort"
+                        label="MACs* (bucket: short)"
+                        description='The total number of multiply accumulate operations while forwarding your model computed by our profiling tool with bucket "short". (Required)'
                         rules={formVal.macs}
-                        error={errors.macs}
+                        error={errors.macsMedium}
                         helperText={
-                            errors.macs && errors.macs.message
+                            errors.macsShort && errors.macsShort.message
+                        }
+                    />
+                    <FormTextField
+                        control={control}
+                        className={classes.textField}
+                        name="macsMedium"
+                        label="MACs* (bucket: medium)"
+                        description='The total number of multiply accumulate operations while forwarding your model computed by our profiling tool with bucket "Medium". (Required)'
+                        rules={formVal.macs}
+                        error={errors.macsMedium}
+                        helperText={
+                            errors.macsMedium && errors.macsMedium.message
+                        }
+                    />
+                    <FormTextField
+                        control={control}
+                        className={classes.textField}
+                        name="macsLong"
+                        label="MACs* (bucket: long)"
+                        description='The total number of multiply accumulate operations while forwarding your model computed by our profiling tool with bucket "Long". (Required)'
+                        rules={formVal.macs}
+                        error={errors.macsLong}
+                        helperText={
+                            errors.macsLong && errors.macsLong.message
+                        }
+                    />
+                    <FormTextField
+                        control={control}
+                        className={classes.textField}
+                        name="macsLonger"
+                        label="MACs* (bucket: longer)"
+                        description='The total number of multiply accumulate operations while forwarding your model computed by our profiling tool with bucket "Longer". (Required)'
+                        rules={formVal.macs}
+                        error={errors.macsLonger}
+                        helperText={
+                            errors.macsLonger && errors.macsLonger.message
                         }
                     />
                     <FormTextField

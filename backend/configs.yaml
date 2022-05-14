@@ -27,8 +27,11 @@ INDIVIDUAL_SUBMISSION_INFO:
         - stride
         - inputFormat
         - corpus
-        - params
         - macs
+        - macsShort
+        - macsMedium
+        - macsLong
+        - macsLonger
         - paramDesc
         - paramShared
         - fineTunedParam
@@ -71,8 +74,11 @@ LEADERBOARD_INFO:
         - inputFormat
         - corpus
         - paramDesc
-        - params
         - macs
+        - macsShort
+        - macsMedium
+        - macsLong
+        - macsLonger
         - paramShared
         - fineTunedParam
         - taskSpecParam

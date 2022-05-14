@@ -53,8 +53,11 @@ class FileModel(db.Model):
     showOnLeaderboard = db.Column(db.Enum(Show),  nullable=False, default=Show.NO)
     
     # profiling
-    params = db.Column(BIGINT(unsigned=True))
     macs = db.Column(BIGINT(unsigned=True))
+    macsShort = db.Column(BIGINT(unsigned=True))
+    macsMedium = db.Column(BIGINT(unsigned=True))
+    macsLong = db.Column(BIGINT(unsigned=True))
+    macsLonger = db.Column(BIGINT(unsigned=True))
 
     scores = db.relationship("ScoreModel",  backref="files")
 

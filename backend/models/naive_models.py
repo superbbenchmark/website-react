@@ -43,8 +43,11 @@ class FileModel(Base):
     showOnLeaderboard = Column(Enum(Show),  nullable=False)
     
     # profiling
-    params = Column(BIGINT(unsigned=True))
     macs = Column(BIGINT(unsigned=True))
+    macsShort = Column(BIGINT(unsigned=True))
+    macsMedium = Column(BIGINT(unsigned=True))
+    macsLong = Column(BIGINT(unsigned=True))
+    macsLonger = Column(BIGINT(unsigned=True))
 
     scores = relationship("ScoreModel",  backref="files")
 
