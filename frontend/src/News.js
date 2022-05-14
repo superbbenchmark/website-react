@@ -37,7 +37,7 @@ const news = [
                 <img src="isca_logo_1000.png" style={{"width": 300}}></img>
                 <br />
                 <div>
-                    We are pleased to announce that the Speech processing Universal PERformance Benchmark (SUPERB) challenge2022 has been Approved as an ISCA endorsed activity. For the system description papers accepted by us, we will use the ISCA archive on those papers.
+                    We are pleased to announce that the Speech processing Universal PERformance Benchmark (SUPERB) challenge2022 has been Approved as an ISCA endorsed activity.
                 </div>
             </span >
         ),
