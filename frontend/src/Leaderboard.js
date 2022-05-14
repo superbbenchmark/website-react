@@ -11,7 +11,7 @@ import { useSticky } from "react-table-sticky";
 import { useTheme, fade } from "@material-ui/core/styles";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
+import { red, green } from "@material-ui/core/colors";
 import InsertLinkIcon from "@material-ui/icons/InsertLink";
 import { hidden_dev_set, hidden_test_set, leaderboard_columnInfo, leaderboard_hidden_columnInfo } from "./Data";
 import Model from "./components/Modal";
@@ -115,8 +115,8 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
         }),
         []
     );
-    const scores = columns.filter((item) => item.isScore);
-    const randomColumn = scores[Math.floor(Math.random() * scores.length)];
+    // const scores = columns.filter((item) => item.isScore);
+    // const randomColumn = scores[Math.floor(Math.random() * scores.length)];
     const defaultSortby = React.useMemo(() => [
         {
             id: "rank",
@@ -137,7 +137,6 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
                     "inputFormat",
                     "corpus",
                     "paramDesc",
-                    "paramShared",
                     "fineTunedParam",
                     "taskSpecParam",
                 ],
@@ -298,6 +297,7 @@ function LeaderBoard(props) {
         })
             .then((res) => {
                 let leaderboardData = res.data.leaderboard;
+                //FIXME: only consider hidden_dev_set
                 function all_not_nan(submission) {
                     for (let accessor of hidden_dev_set) {
                         if(! is_number_and_not_nan(submission[accessor])) {
@@ -402,7 +402,7 @@ function LeaderBoard(props) {
     let columnInfo = track == "hidden" ? leaderboard_hidden_columnInfo : leaderboard_columnInfo;
     let columns = Object.keys(columnInfo).map((key) => {
         let isScore = columnInfo[key].isScore
-        let isBigint = key == "params" | key == "macs"
+        let isBigint = key == "paramShared" | key.includes("macs")
         return {
             Header: columnInfo[key].header,
             accessor: key,
@@ -459,11 +459,12 @@ function LeaderBoard(props) {
                     <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set", "Hidden Test Set"]} onChange={onSubsetChange} />
                 </Box>
             </Box>
+            <span style={{"font-size": 24}}>* The four columns (1)~(4) correspond to the macs calculated with short, medium, long, longer bucket respectively</span>
             <Table
                 columns={memoColumns}
                 data={trimmedLeaderboardShownData}
                 {...props}
-            />
+                />
         </>
     );
 }

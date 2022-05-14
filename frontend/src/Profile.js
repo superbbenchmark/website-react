@@ -6,7 +6,6 @@ import {
     useBlockLayout,
     useSortBy,
     useResizeColumns,
-    useGlobalFilter,
 } from "react-table";
 import { useSticky } from "react-table-sticky";
 import InsertLinkIcon from "@material-ui/icons/InsertLink";
@@ -14,18 +13,16 @@ import InsertLinkIcon from "@material-ui/icons/InsertLink";
 import { useTheme, fade } from "@material-ui/core/styles";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
-import { Typography, TextField } from "@material-ui/core";
+import { grey, red, green } from "@material-ui/core/colors";
+import { TextField } from "@material-ui/core";
 import { Title } from "./components/Titles";
 import { Section } from "./components/Sections";
 import CheckIcon from "@material-ui/icons/Check";
 import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
 import CropSquareIcon from "@material-ui/icons/CropSquare";
 import {
     individual_submission_columnInfo,
     individual_submission_hidden_columnInfo,
-    leaderboard_selections,
 } from "./Data";
 import { AuthContext } from "./context/auth-context";
 import swal from "sweetalert";
@@ -153,7 +150,6 @@ function Table({ columns, data, height = "500px", tableControlRef = null }) {
                     "inputFormat",
                     "corpus",
                     "paramDesc",
-                    "paramShared",
                     "fineTunedParam",
                     "taskSpecParam",
                     "stateInfo",
@@ -558,7 +554,7 @@ function Profile(props) {
     let columnInfo = track == "hidden" ? individual_submission_hidden_columnInfo : individual_submission_columnInfo;
     let columns = Object.keys(columnInfo).map((key) => {
         let isScore = columnInfo[key].isScore
-        let isBigint = key == "params" | key == "macs"
+        let isBigint = key == "paramShared" | key.includes("macs")
         return {
             Header: columnInfo[key].header,
             accessor: key,
@@ -609,7 +605,7 @@ function Profile(props) {
     else {
         data = shownData
     }
-    [trimmedColumns, trimmedShownData] = overall_metric_adder(["interpolation", "interpolation_p"], columns, data, subset, memoizedNumericSort)
+    [trimmedColumns, trimmedShownData] = overall_metric_adder(["interpolation"], columns, data, subset, memoizedNumericSort)
     const memoColumns = React.useMemo(() => trimmedColumns);
 
     const resetbtnstyle = {
@@ -672,6 +668,7 @@ function Profile(props) {
                     </Box>
                 </Box>
                 <Table columns={memoColumns} data={trimmedShownData} {...props} />
+                <span style={{"font-size": 24}}>* The four columns (1)~(4) correspond to the macs calculated with short, medium, long, longer bucket respectively</span>
                 {
                     auth.isAdmin &&
                     <Section>

@@ -97,3 +97,58 @@ ${task}_${metric}_${mode}: {
     type: "number",
 },
 ```
+
+## To add new fields
+
+### MySQL
+
+```sql
+ALTER TABLE superb.files
+ADD ${column_name} bigint unsigned default NULL; -- if required: remove "default NULL"
+```
+
+### Backend
+
+1. Modify `./backend/models/file.py`. Add a column like:
+
+    ```python
+    from sqlalchemy.dialects.mysql import BIGINT
+    ${column_name} = db.Column(BIGINT)
+    ```
+
+2. Modify `./backend/models/naive_models.py`. Add a column to `FileModel` class like:
+
+    ```python
+    from sqlalchemy.dialects.mysql import BIGINT
+    ${column_name} = db.Column(BIGINT)
+    ```
+
+3. Modify `./backend/configs.yaml`. Add your new task info to the `FILE` section of `INDIVIDUAL_SUBMISSION_INFO` and `LEADERBOARD_INFO`.
+
+4. (Optional) Add fields of your new task/metric for official models by modifying the `get_leaderboard_default()` function defined in `./backend/utils.py`.
+
+### Frontend
+
+1. Append the `individual_submission_columnInfo` array in `./frontend/src/Data.js` with:
+
+    ```js
+    ${column_name}: {
+        header: "${column_name}",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    ```
+
+2. Append the `leaderboard_columnInfo` array in `./frontend/src/Data.js` with:
+
+    ```js
+    ${column_name}: {
+        header: "${column_name}",
+        width: 100,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    ```
