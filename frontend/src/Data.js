@@ -945,9 +945,9 @@ const leaderboard_hidden_columnInfo = {
         type: "alphanumeric",
     },
     paramShared: {
-        header: "Shared parameters",
-        width: 100,
-        higherBetter: undefined,
+        header: "Params",
+        width: 130,
+        higherBetter: false,
         type: "number",
     },
     ...hidden_task_columnInfo,
@@ -1000,14 +1000,14 @@ const reference_points = {
 }
 
 const hidden_dev_set = [
-    "params", "macs", 
+    "macs", 
     "PR_per_hidden_dev", "SID_acc_hidden_dev", "ER_acc_hidden_dev", "ASR_wer_hidden_dev", "QbE_map_hidden_dev",
     "QbE_eer_hidden_dev", "SV_eer_hidden_dev", "SD_der_hidden_dev", "ST_bleu_hidden_dev",
     "SE_pesq_hidden_dev", "SE_stoi_hidden_dev", "SS_sisdri_hidden_dev",
 ]
 
 const hidden_test_set = [
-    "params", "macs", 
+    "macs", 
     "PR_per_hidden_test", "SID_acc_hidden_test", "ER_acc_hidden_test", "ASR_wer_hidden_test", "QbE_map_hidden_test",
     "QbE_eer_hidden_test", "SV_eer_hidden_test", "SD_der_hidden_test", "ST_bleu_hidden_test",
     "SE_pesq_hidden_test", "SE_stoi_hidden_test", "SS_sisdri_hidden_test",
