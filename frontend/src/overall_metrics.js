@@ -10,7 +10,7 @@ function score_normalizer(columns, data) {
             let value = data[i][accessor]
 
             if (
-                accessor.includes("params") ||
+                accessor.includes("param") ||
                 accessor.includes("macs") ||
                 accessor.includes("ERfold") ||
                 accessor.includes("ASR_LM")

@@ -22,6 +22,7 @@ import { NumericalSort, is_number_and_not_nan, CapitalizeLetter } from "./compon
 import { Box, Divider } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "./context/auth-context";
+import { ModelScatterChart } from "./components/Chart";
 
 const Styles = styled.div`
   .table {
@@ -322,14 +323,14 @@ function LeaderBoard(props) {
                             continue;
                         }
                         // TODO: here to control whether show name or not
-                        let userEmail = auth.email;
-                        for (let submission of submissions) {
-                            if (submission.email != userEmail) {
-                                submission.name = "-";
-                                submission.submitName = "-";
-                                submission.modelDesc = "-";
-                            }
-                        }
+                        // let userEmail = auth.email;
+                        // for (let submission of submissions) {
+                        //     if (submission.email != userEmail) {
+                        //         submission.name = "-";
+                        //         submission.submitName = "-";
+                        //         submission.modelDesc = "-";
+                        //     }
+                        // }
 
                         // let selected = submissions.reduce((a, b) => (a.showOnLeaderboard === "YES") || (b.showOnLeaderboard === "YES"), {
                         //     showOnLeaderboard: false,
@@ -459,12 +460,19 @@ function LeaderBoard(props) {
                     <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set", "Hidden Test Set"]} onChange={onSubsetChange} />
                 </Box>
             </Box>
-            <span style={{"font-size": 24}}>* The four columns (1)~(4) correspond to the macs calculated with short, medium, long, longer bucket respectively</span>
+            <Box margin={theme.spacing(1, "auto", 1)}>
+                <div>* The four columns (1)~(4) correspond to the macs calculated with short, medium, long, longer bucket respectively</div>
+                <div>* Params = Parameter shared without fine-tuning</div>
+            </Box>
             <Table
                 columns={memoColumns}
                 data={trimmedLeaderboardShownData}
                 {...props}
-                />
+            />
+            <ModelScatterChart
+                data={trimmedLeaderboardShownData}
+                columns={memoColumns}
+            />
         </>
     );
 }

@@ -664,7 +664,7 @@ function Profile(props) {
                     </Box>
                     <Divider style={{ width: "600px", maxWidth: "80%", margin: "auto" }} />
                     <Box margin={theme.spacing(0.2, "auto", 1)}>
-                        <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set", "Hidden Testm Set"]} onChange={onSubsetChange} />
+                        <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set", "Hidden Test Set"]} onChange={onSubsetChange} />
                     </Box>
                 </Box>
                 <Table columns={memoColumns} data={trimmedShownData} {...props} />

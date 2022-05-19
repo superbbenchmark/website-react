@@ -85,11 +85,11 @@ function App() {
                         <Rules />
                     </div>
                 </Route>
-                <Route path="/compare">
+                {/* <Route path="/compare">
                     <div className={`${classes.narrowViewport}`}>
                         <Compare />
                     </div>
-                </Route>
+                </Route> */}
                 <Route path="/leaderboard">
                     <Leaderboard
                         height={`${height - navbarHeight}px`}
