@@ -53,7 +53,7 @@ function ModelScatterChart(props) {
   const classes = useStyles();
   const [x, setX] = React.useState(0);
   const [y, setY] = React.useState(1);
-  const scores = props.columns.filter(value => value.isScore && value.Header != "MACs");
+  const scores = props.columns.filter(value => value.isScore && !value.Header.match(/MACs|\([1-4]\)/));
   const xOptions = ["Params", "MACs", "MACs (short)", "MACs (medium)", "MACs (long)", "MACs (longer)"];
   const xNames = ["paramShared", "macs", "macsShort", "macsMedium", "macsLong", "macsLonger"];
   const xTicks = [

@@ -470,8 +470,8 @@ function LeaderBoard(props) {
                 {...props}
             />
             <ModelScatterChart
-                data={trimmedLeaderboardShownData}
                 columns={memoColumns}
+                data={trimmedLeaderboardShownData}
             />
         </>
     );

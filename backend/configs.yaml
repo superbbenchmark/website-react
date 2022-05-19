@@ -120,8 +120,11 @@ INDIVIDUAL_HIDDEN_SUBMISSION_INFO:
         - stateInfo
         - submitUUID
     SCORE:
-        - params
         - macs
+        - macsShort
+        - macsMedium
+        - macsLong
+        - macsLonger
         - PR_per_hidden_dev
         - SID_acc_hidden_dev
         - ER_acc_hidden_dev
@@ -159,8 +162,11 @@ LEADERBOARD_HIDDEN_INFO:
         - showOnLeaderboard
         - email
     SCORE:
-        - params
         - macs
+        - macsShort
+        - macsMedium
+        - macsLong
+        - macsLonger
         - PR_per_hidden_dev
         - SID_acc_hidden_dev
         - ER_acc_hidden_dev

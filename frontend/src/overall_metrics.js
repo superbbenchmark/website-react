@@ -9,22 +9,11 @@ function score_normalizer(columns, data) {
             let accessor = columns[j].accessor
             let value = data[i][accessor]
 
-            if (
-                accessor.includes("param") ||
-                accessor.includes("macs") ||
-                accessor.includes("ERfold") ||
-                accessor.includes("ASR_LM")
-            ) {
+            if (accessor.match(/param|macs|ERfold|ASR_LM/)) {
                 continue
             }
 
-            if (
-                accessor.includes("_eer_") ||
-                accessor.includes("_per_") ||
-                accessor.includes("_wer_") ||
-                accessor.includes("_der_") ||
-                accessor.includes("_cer_")
-            ) {
+            if (accessor.match(/_[cdepw]er_/)) {
                 submission[accessor] = 100 - value
             }
             else {

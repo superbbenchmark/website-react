@@ -39,6 +39,10 @@ class HiddenScoreModel(db.Model):
     # profiling
     params = db.Column(BIGINT(unsigned=True))
     macs = db.Column(BIGINT(unsigned=True))
+    macsShort = db.Column(BIGINT(unsigned=True))
+    macsMedium = db.Column(BIGINT(unsigned=True))
+    macsLong = db.Column(BIGINT(unsigned=True))
+    macsLonger = db.Column(BIGINT(unsigned=True))
 
     @classmethod
     def find_by_fileId(cls, _id: int) -> "HiddenScoreModel":
