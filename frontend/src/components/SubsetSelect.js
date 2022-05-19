@@ -1,9 +1,7 @@
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { capitalizeFirstLetter } from "./Utilies";
 import { Typography, FormControl } from "@material-ui/core";
-import AdaptiveLink from "./AdaptiveLink";
 
 export default function SubsetSelect({ subset, selections, onChange }) {
     let get_shown_name = (originName) => {

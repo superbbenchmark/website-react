@@ -5,16 +5,24 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { 
-  ResponsiveContainer,
+import {
+  //Scatter Chart
   ScatterChart,
   CartesianGrid,
   XAxis,
   YAxis,
   ZAxis,
   Tooltip,
+  Scatter,
+  //Radar Chart
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  //General
   Legend,
-  Scatter
+  ResponsiveContainer,
 } from "recharts";
 import { Section } from "./Sections";
 
@@ -29,31 +37,31 @@ const useStyles = makeStyles((theme) => ({
 }
 ));
 
-function SelectVariants(props) {
+function SelectVariants({ name, value, setValue, options }) {
   const classes = useStyles();
   const handleChange = (event) => {
-    props.setValue(event.target.value);
+    setValue(event.target.value);
   };
 
   return (
     <FormControl variant="standard" className={classes.formControl}>
-      <InputLabel>{props.name}</InputLabel>
+      <InputLabel>{name}</InputLabel>
       <Select
-        value={props.value}
+        value={value}
         onChange={handleChange}
         label="test"
       >
-        {props.options.map((value, idx) => <MenuItem value={idx}>{value}</MenuItem>)}
+        {options.map((value, idx) => <MenuItem value={idx}>{value}</MenuItem>)}
       </Select>
     </FormControl>
   );
 }
 
-function ModelScatterChart(props) {
+function ModelScatterChart({ columns, data }) {
   const classes = useStyles();
   const [x, setX] = React.useState(0);
   const [y, setY] = React.useState(1);
-  const scores = props.columns.filter(value => value.isScore && !value.Header.match(/MACs|\([1-4]\)/));
+  const scores = columns.filter(value => value.isScore && !value.Header.match(/MACs|\([1-4]\)/));
   const xOptions = ["Params", "MACs", "MACs (short)", "MACs (medium)", "MACs (long)", "MACs (longer)"];
   const xNames = ["paramShared", "macs", "macsShort", "macsMedium", "macsLong", "macsLonger"];
   const xTicks = [
@@ -66,7 +74,7 @@ function ModelScatterChart(props) {
   ];
   const yOptions = scores.map(value => value.Header);
   const yAccess = scores[Object.keys(scores)[y]].accessor;
-  const presentData = props.data.filter(
+  const presentData = data.filter(
     value => value[xNames[x]] != "-" && value[yAccess] != "-"
     ).map(
       value => ({
@@ -145,4 +153,72 @@ function ModelScatterChart(props) {
   );
 }
 
-export { ModelScatterChart };
+function ModelRadarChart ( {columns, data} ) {
+  //TODO: not done
+  const classes = useStyles();
+  const [x, setX] = React.useState(0);
+  const [y, setY] = React.useState(1);
+  const scores = columns.filter(value => value.isScore && !value.Header.match(/MACs|\([1-4]\)/));
+  const xOptions = ["Params", "MACs", "MACs (short)", "MACs (medium)", "MACs (long)", "MACs (longer)"];
+  const xNames = ["paramShared", "macs", "macsShort", "macsMedium", "macsLong", "macsLonger"];
+  const xTicks = [
+    [0,100,200,300,400],
+    [0,1250,2500,3750,5000],
+    [0,125,250,375,500],
+    [0,250,500,750,1000],
+    [0,375,750,1125,1500],
+    [0,625,1250,1875,2500],
+  ];
+  const yOptions = scores.map(value => value.Header);
+  const yAccess = scores[Object.keys(scores)[y]].accessor;
+
+  return (
+    <Section>
+        <Grid container
+          alignItems="center"
+          justify="center"
+          className={classes.root}
+          spacing={2}
+        >
+          <Grid item md={3} lg={2}
+            direction="column"
+            alignItems="center"
+            justify="flex-start"
+            spacing={6}
+          >
+            <Grid item>
+              <SelectVariants
+                value={y}
+                setValue={setY}
+                name="Y-Axis"
+                options={yOptions}
+              />
+            </Grid>
+            <Grid item>
+              <SelectVariants
+                value={x}
+                setValue={setX}
+                name={"X-Axis"}
+                options={xOptions}
+              />
+            </Grid>
+          </Grid>
+          <Grid item xs={12} sm={12} md={9} lg={7} xl={6} >
+            <ResponsiveContainer width="100%" height={540}>
+              <RadarChart data={data}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="subject" />
+                <PolarRadiusAxis angle={30} domain={[0, 150]} />
+                <Radar name="Mike" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                <Radar name="Lily" dataKey="B" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
+                <Legend />
+              </RadarChart>
+            </ResponsiveContainer>
+          </Grid>
+          <Grid md={0} lg={2} />
+        </Grid>
+    </Section>
+  )
+}
+
+export { ModelScatterChart, ModelRadarChart };

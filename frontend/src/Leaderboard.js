@@ -16,13 +16,14 @@ import InsertLinkIcon from "@material-ui/icons/InsertLink";
 import { hidden_dev_set, hidden_test_set, leaderboard_columnInfo, leaderboard_hidden_columnInfo } from "./Data";
 import Model from "./components/Modal";
 import TrackSelect from "./components/TrackSelect";
+import ChartSelect from "./components/ChartSelect";
 import SubsetSelect from "./components/SubsetSelect";
 import { overall_metric_adder } from "./overall_metrics";
-import { NumericalSort, is_number_and_not_nan, CapitalizeLetter } from "./components/Utilies";
+import { NumericalSort, is_number_and_not_nan } from "./components/Utilies";
 import { Box, Divider } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "./context/auth-context";
-import { ModelScatterChart } from "./components/Chart";
+import { ModelRadarChart, ModelScatterChart } from "./components/Chart";
 
 const Styles = styled.div`
   .table {
@@ -272,6 +273,7 @@ function LeaderBoard(props) {
     const [LeaderboardHiddenShownData, setLeaderboardHiddenShownData] = useState([]);
     const [task, setTask] = useState(query.get("track") || "constrained");
     const [subset, setSubset] = useState(query.get("subset") || "Paper");
+    const [chart, setChart] = useState("Table");
     const track = subset.toLowerCase().includes("hidden") ? "hidden" : "public"
     const memoizedNumericSort = React.useCallback(NumericalSort);
 
@@ -301,6 +303,11 @@ function LeaderBoard(props) {
                 //FIXME: only consider hidden_dev_set
                 function all_not_nan(submission) {
                     for (let accessor of hidden_dev_set) {
+                        if(! is_number_and_not_nan(submission[accessor])) {
+                            return false;
+                        }
+                    }
+                    for (let accessor of hidden_test_set) {
                         if(! is_number_and_not_nan(submission[accessor])) {
                             return false;
                         }
@@ -448,6 +455,7 @@ function LeaderBoard(props) {
         columns, data, subset, memoizedNumericSort)
 
     const memoColumns = React.useMemo(() => trimmedColumns);
+    
 
     return (
         <>
@@ -459,20 +467,33 @@ function LeaderBoard(props) {
                 <Box margin={theme.spacing(0.2, "auto", 1)}>
                     <SubsetSelect subset={subset} selections={["Paper", "Public Set", "Hidden Dev Set", "Hidden Test Set"]} onChange={onSubsetChange} />
                 </Box>
+                <Divider style={{ width: "600px", maxWidth: "80%", margin: "auto" }} />
+                <Box margin={theme.spacing(0.2, "auto", 1)}>
+                    <ChartSelect chart={chart} selections={["Table", "Scatter Chart"]} onChange={e => setChart(e.target.value)} />
+                </Box>
             </Box>
-            <Box margin={theme.spacing(1, "auto", 1)}>
+            <Box margin={theme.spacing(1, "auto", 1)} style={chart == "Table" ? {} : {display:'none'}}>
                 <div>* The four columns (1)~(4) correspond to the macs calculated with short, medium, long, longer bucket respectively</div>
                 <div>* Params = Parameter shared without fine-tuning</div>
+                <Table
+                    columns={memoColumns}
+                    data={trimmedLeaderboardShownData}
+                    
+                    {...props}
+                />
             </Box>
-            <Table
-                columns={memoColumns}
-                data={trimmedLeaderboardShownData}
-                {...props}
-            />
-            <ModelScatterChart
-                columns={memoColumns}
-                data={trimmedLeaderboardShownData}
-            />
+            <Box margin={theme.spacing(1, "auto", 1)} style={chart == "Scatter Chart" ? {} : {display:'none'}}>
+                <ModelScatterChart
+                    columns={memoColumns}
+                    data={trimmedLeaderboardShownData}
+                />
+            </Box>
+            {/* <Box margin={theme.spacing(1, "auto", 1)} style={chart == "Radar Chart" ? {} : {display:'none'}}>
+                <ModelRadarChart
+                    columns={memoColumns}
+                    data={trimmedLeaderboardShownData}
+                />
+            </Box> */}
         </>
     );
 }
