@@ -365,7 +365,7 @@ $$
 
 #### MACs (number of Multiply-ACcumulate operations)
 
-For this metrics, we are focus on the algorithm-level, rather than software-level or hardware-level, so the cost yeild from the real implementation will not be taken into consideration. Take the torch.Tensor.__rdiv__ as an example, if its input is int or float, it will call reciprocal, __mul__, and __truediv__, respectively, but we still count it only once. Also, when a function is counted, those functions called in it will not be counted again.
+For this metrics, we are focus on the algorithm-level, rather than software-level or hardware-level, so the cost yeild from the real implementation will not be taken into consideration. Take the torch.Tensor.\_\_rdiv\_\_ as an example, if its input is int or float, it will call reciprocal, \_\_mul\_\_, and \_\_truediv\_\_, respectively, but we still count it only once. Also, when a function is counted, those functions called in it will not be counted again.
 
 ##### Estimated Rule
 
