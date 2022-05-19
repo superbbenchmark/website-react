@@ -365,7 +365,22 @@ $$
 
 #### MACs (number of Multiply-ACcumulate operations)
 
-$MACs=num(a\times b + c)\approx\max\{num(add)+num(sub),num(mul)+num(div)\}\approx FLOPs/2$
+For this metrics, we are focus on the algorithm-level, rather than software-level or hardware-level, so the cost yeild from the real implementation will not be taken into consideration. Take the torch.Tensor.__rdiv__ as an example, if its input is int or float, it will call reciprocal, __mul__, and __truediv__, respectively, but we still count it only once. Also, when a function is counted, those functions called in it will not be counted again.
+
+##### Estimated Rule
+
+The original defination of MACs should be a multiply operation followed by an add operation, as below:
+
+$MACs=num(a\times b + c)$
+
+But in the implementation of the profiling tool we used (most done by DeepSpeed, Microsoft), the value may be approximated by following formulas or something similar:
+
+$\approx\max\{num(add)+num(sub), num(mul)+num(div)\}$
+
+$\approx FLOPs/2$
+
+##### Ignored Modules
+
 For the modules below, it will not be taken into account and will raise a warning message when your model forwards a function in them.
 
 - torch.special
