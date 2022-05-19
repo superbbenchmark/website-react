@@ -32,7 +32,7 @@ const challenge_overview = String.raw`
         * We will use several different learning rates for each downstream task training while fixing all the other hyperparameters and present the best result on leaderboard
 * encourage innovative and aims to be less competitive:
     * Participants are free to choose whether present their submissions on leaderboard or not
-    * In addition to model accuracy, we will have metrics such as number of parameters and operations to capture computation efficiency of proposed approach. We encourage algorithm improvement in diverse perspectives.
+    * In addition to model accuracy, we will have metrics such as number of parameters and operations to capture computation efficiency of proposed approach. We encourage algorithm improvement from diverse perspectives.
 
 ## Participant Requirements
 
