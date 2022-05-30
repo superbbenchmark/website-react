@@ -140,6 +140,7 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
     }
     
     let new_data;
+    let task_inters_dict = {};
     if (data.length > 0) {
         let scores = score_normalizer(score_columns, data)
         let parameters = data.map(submission => parseFloat(submission.paramShared) / 1000000)
@@ -183,6 +184,7 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
             let inters = task_aggregate(task_inters)
             for (let i = 0; i < data.length; i++) {
                 data[i]["score"] = Math.round(inters[i])
+                task_inters_dict[data[i]["submitName"]] = task_inters[i]
             }
             score_columns.unshift({
                 Header: "Score",
@@ -233,7 +235,7 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
     }
 
     metadata_columns.push(...score_columns)
-    return [metadata_columns, data]
+    return [metadata_columns, data, task_inters_dict]
 }
 
 export { overall_metric_adder, is_number_and_not_nan }
