@@ -450,8 +450,8 @@ function LeaderBoard(props) {
     else {
         data = LeaderboardShownData;
     }
-    let trimmedColumns, trimmedLeaderboardShownData
-    [trimmedColumns, trimmedLeaderboardShownData] = overall_metric_adder(["rank", "interpolation"], // "rank_p", "interpolation_p"
+    let trimmedColumns, trimmedLeaderboardShownData, task_inters
+    [trimmedColumns, trimmedLeaderboardShownData, task_inters] = overall_metric_adder(["rank", "interpolation"], // "rank_p", "interpolation_p"
         columns, data, subset, memoizedNumericSort)
 
     const memoColumns = React.useMemo(() => trimmedColumns);
@@ -469,7 +469,7 @@ function LeaderBoard(props) {
                 </Box>
                 <Divider style={{ width: "600px", maxWidth: "80%", margin: "auto" }} />
                 <Box margin={theme.spacing(0.2, "auto", 1)}>
-                    <ChartSelect chart={chart} selections={["Table", "Scatter Chart"]} onChange={e => setChart(e.target.value)} />
+                    <ChartSelect chart={chart} selections={["Table", "Scatter Chart", "Radar Chart"]} onChange={e => setChart(e.target.value)} />
                 </Box>
             </Box>
             <Box margin={theme.spacing(1, "auto", 1)} style={chart == "Table" ? {} : {display:'none'}}>
@@ -488,12 +488,11 @@ function LeaderBoard(props) {
                     data={trimmedLeaderboardShownData}
                 />
             </Box>
-            {/* <Box margin={theme.spacing(1, "auto", 1)} style={chart == "Radar Chart" ? {} : {display:'none'}}>
+            <Box margin={theme.spacing(1, "auto", 1)} style={chart == "Radar Chart" ? {} : {display:'none'}}>
                 <ModelRadarChart
-                    columns={memoColumns}
-                    data={trimmedLeaderboardShownData}
+                    inters={task_inters}
                 />
-            </Box> */}
+            </Box>
         </>
     );
 }
