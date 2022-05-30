@@ -501,13 +501,6 @@ const hidden_task_columnInfo = {
         isScore: true,
         type: "number",
     },
-    SS_sisdri_hidden_dev: {
-        header: "SS",
-        width: 80,
-        higherBetter: true,
-        isScore: true,
-        type: "number",
-    },
     SE_stoi_hidden_dev: {
         header: "SE-STOI",
         width: 80,
@@ -517,6 +510,13 @@ const hidden_task_columnInfo = {
     },
     SE_pesq_hidden_dev: {
         header: "SE-PESQ",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    SS_sisdri_hidden_dev: {
+        header: "SS",
         width: 80,
         higherBetter: true,
         isScore: true,
@@ -586,13 +586,6 @@ const hidden_task_columnInfo = {
         isScore: true,
         type: "number",
     },
-    SS_sisdri_hidden_test: {
-        header: "SS",
-        width: 80,
-        higherBetter: true,
-        isScore: true,
-        type: "number",
-    },
     SE_stoi_hidden_test: {
         header: "SE-STOI",
         width: 80,
@@ -602,6 +595,13 @@ const hidden_task_columnInfo = {
     },
     SE_pesq_hidden_test: {
         header: "SE-PESQ",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    SS_sisdri_hidden_test: {
+        header: "SS",
         width: 80,
         higherBetter: true,
         isScore: true,
