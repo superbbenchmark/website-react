@@ -225,7 +225,8 @@ class HiddenSubmission(Resource):
             fileObj.scores.append(scoreObj)
             fileObj.save_to_db()
 
-            send_email(participant_email = user_mail, formData = formData)
+            # Google baned non official login since 2022/5/30, https://support.google.com/accounts/answer/6010255?hl=zh-Hant
+            # send_email(participant_email = user_mail, formData = formData)
 
             return {"message": "Submit successfully!"}, HTTPStatus.OK
 

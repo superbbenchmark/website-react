@@ -17,7 +17,7 @@ import { formVal } from "../utils/form-validator";
 import { tracks } from "../Data";
 import FormTextField from "./FormTextfield";
 import { SubSubSection } from "./Sections";
-import { capitalizeFirstLetter } from "./Utilies";
+import { capitalizeFirstLetter, Strong } from "./Utilies";
 import { HashLink } from "react-router-hash-link";
 import { Section } from "./Sections";
 
@@ -136,10 +136,17 @@ export default function PublicForm(){
                     </Typography>
                 </SubSubSection>
                 <SubSubSection>
-                    <Link href={"/api/download/example"} color="secondary">Sample submission file</Link>
+                    <Typography variant="body1" color="textSecondary">
+                        After your submission, the row of submission will <Strong>only</Strong> appear on the <HashLink to="/profile">Profile</HashLink> tab and will not appear in the leaderboard. You can select the "Show" button in the Profile tab to control whether to show it on leaderboard or not.
+                    </Typography>
                 </SubSubSection>
                 <SubSubSection>
-                    <HashLink to="/challenge-slt2022/submission#Profiling-Tool">Description of Profiling Tool</HashLink>
+                    <Typography variant="body1" color="textSecondary">
+                        If you don't know how to compute the "MACs" below, see the <HashLink to="/challenge-slt2022/submission#Profiling-Tool">Profiling Tool</HashLink>
+                    </Typography>
+                </SubSubSection>
+                <SubSubSection>
+                    <Link href={"/api/download/example"} color="secondary">Sample submission file</Link>
                 </SubSubSection>
                 <form
                     className={classes.root}

@@ -31,7 +31,7 @@ const challenge_overview = String.raw`
     * **Hidden-set**: Dataset is totally inaccessible, submit **model** (model definition & pre-trained weights)
         * We will use several different learning rates for each downstream task training while fixing all the other hyperparameters and present the best result on leaderboard
 * encourage innovative and aims to be less competitive:
-    * Participants are free to choose whether present their submissions on leaderboard or not
+    * Participants are free to choose whether present their submissions on leaderboard or not, and by default, it will not appear in learderboard
     * In addition to model accuracy, we will have metrics such as number of parameters and operations to capture computation efficiency of proposed approach. We encourage algorithm improvement from diverse perspectives.
 
 ## Participant Requirements
@@ -264,6 +264,8 @@ Since the full benchmarking on the public-set can take some time for the trainin
 The [public-set leaderboard](/leaderboard?subset=Public+Set&track=constrained) is online and [accepts submissions](/submit?type=public) (need login). There is no deadline for it. Since all the train/dev/test splits are public available, **the leaderboard accepts submissions with the inferenced prediction files on each task's testing split** which will be auto-generated if you follow the benchmarking steps in [S3PRL](https://github.com/s3prl/s3prl/blob/master/s3prl/downstream/docs/superb.md). And in this challenge, we only consider submissions submited to the **Constrained track** (see [Rules](/rules) for further information about track).
 
 ## Hidden-set
+
+We use Hugging Face as the platform for model submission, and here is the [submit tutorial]((https://huggingface.co/superb/superb-submission)).
 
 ### Fairness & prevent overfitting
 

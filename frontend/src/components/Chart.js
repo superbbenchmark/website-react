@@ -66,15 +66,15 @@ function ModelScatterChart({ columns, data }) {
   const [x, setX] = React.useState(0);
   const [y, setY] = React.useState(1);
   const scores = columns.filter(value => value.isScore && !value.Header.match(/MACs|\([1-4]\)/));
-  const xOptions = ["Params", "MACs", "MACs (short)", "MACs (medium)", "MACs (long)", "MACs (longer)"];
-  const xNames = ["paramShared", "macs", "macsShort", "macsMedium", "macsLong", "macsLonger"];
+  const xOptions = ["Params", "MACs"]; // , "MACs (short)", "MACs (medium)", "MACs (long)", "MACs (longer)"
+  const xNames = ["paramShared", "macs"]; // , "macsShort", "macsMedium", "macsLong", "macsLonger"
   const xTicks = [
     [0,100,200,300,400],
     [0,1250,2500,3750,5000],
-    [0,125,250,375,500],
-    [0,250,500,750,1000],
-    [0,375,750,1125,1500],
-    [0,625,1250,1875,2500],
+    // [0,125,250,375,500],
+    // [0,250,500,750,1000],
+    // [0,375,750,1125,1500],
+    // [0,625,1250,1875,2500],
   ];
   const yOptions = scores.map(value => value.Header);
   const yAccess = scores[Object.keys(scores)[y]].accessor;

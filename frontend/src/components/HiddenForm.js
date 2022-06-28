@@ -18,7 +18,7 @@ import { formVal } from "../utils/form-validator";
 import { tracks } from "../Data";
 import FormTextField from "./FormTextfield";
 import { Section, SubSubSection } from "./Sections";
-import { capitalizeFirstLetter } from "./Utilies";
+import { capitalizeFirstLetter, Strong } from "./Utilies";
 import { HashLink } from "react-router-hash-link";
 
 const useStyles = makeStyles((theme) => ({
@@ -105,8 +105,17 @@ export default function HiddenForm(){
             <Section>
                 <SubSubSection>
                     <Typography variant="body1" color="textSecondary">
-                        <p>Please <a target="_blank" href="https://huggingface.co/superb/superb-submission">Upload your model</a> before the submitting to the <HashLink to="/leaderboard?track=constrained&subset=Hidden+Dev+Set">SUPERB Challenge Hidden-set</HashLink>.</p>
-                        <p>If you wish to submit pre-trained models in non-PyTorch frameworks or are not feasible to submit the pre-trained model, please <HashLink to="/challenge-slt2022/challenge_overview#Contact">contact us</HashLink> for us to see how to help!</p>
+                        Please <a target="_blank" href="https://huggingface.co/superb/superb-submission">Upload your model</a> before the submitting to the <HashLink to="/leaderboard?track=constrained&subset=Hidden+Dev+Set">SUPERB Challenge Hidden-set</HashLink>.
+                    </Typography>
+                </SubSubSection>
+                <SubSubSection>
+                    <Typography variant="body1" color="textSecondary">
+                        After your submission, the row of submission will <Strong>only</Strong> appear on the <HashLink to="/profile">Profile</HashLink> tab and will not appear in the leaderboard. You can select the "Show" button in the Profile tab to control whether to show it on leaderboard or not.
+                    </Typography>
+                </SubSubSection>
+                <SubSubSection>
+                    <Typography variant="body1" color="textSecondary">
+                        If you wish to submit pre-trained models in non-PyTorch frameworks or are not feasible to submit the pre-trained model, please <HashLink to="/challenge-slt2022/challenge_overview#Contact">contact us</HashLink> for us to see how to help!
                     </Typography>
                 </SubSubSection>
                 <form
