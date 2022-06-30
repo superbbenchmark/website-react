@@ -253,13 +253,6 @@ const public_hidden_selections = [
 
 
 const public_task_columnInfo = {
-    PR_per_public: {
-        header: "PR",
-        width: 80,
-        higherBetter: false,
-        isScore: true,
-        type: "number",
-    },
     KS_acc_public: {
         header: "KS",
         width: 80,
@@ -274,10 +267,24 @@ const public_task_columnInfo = {
         isScore: true,
         type: "number",
     },
-    SID_acc_public: {
-        header: "SID",
+    PR_per_public: {
+        header: "PR",
         width: 80,
-        higherBetter: true,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    ASR_wer_public: {
+        header: "ASR",
+        width: 80,
+        higherBetter: false,
+        isScore: true,
+        type: "number",
+    },
+    ASR_LM_wer_public: {
+        header: "ASR-LM",
+        width: 80,
+        higherBetter: false,
         isScore: true,
         type: "number",
     },
@@ -323,20 +330,6 @@ const public_task_columnInfo = {
         isScore: true,
         type: "number",
     },
-    ASR_wer_public: {
-        header: "ASR",
-        width: 80,
-        higherBetter: false,
-        isScore: true,
-        type: "number",
-    },
-    ASR_LM_wer_public: {
-        header: "ASR-LM",
-        width: 80,
-        higherBetter: false,
-        isScore: true,
-        type: "number",
-    },
     QbE_mtwv_public: {
         header: "QbE",
         width: 80,
@@ -358,6 +351,13 @@ const public_task_columnInfo = {
         isScore: true,
         type: "number",
     },
+    SID_acc_public: {
+        header: "SID",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
     SV_eer_public: {
         header: "SV",
         width: 80,
@@ -372,8 +372,8 @@ const public_task_columnInfo = {
         isScore: true,
         type: "number",
     },
-    ST_bleu_public: {
-        header: "ST",
+    SE_stoi_public: {
+        header: "SE-STOI",
         width: 80,
         higherBetter: true,
         isScore: true,
@@ -386,15 +386,15 @@ const public_task_columnInfo = {
         isScore: true,
         type: "number",
     },
-    SE_stoi_public: {
-        header: "SE-STOI",
+    SS_sisdri_public: {
+        header: "SS",
         width: 80,
         higherBetter: true,
         isScore: true,
         type: "number",
     },
-    SS_sisdri_public: {
-        header: "SS",
+    ST_bleu_public: {
+        header: "ST",
         width: 80,
         higherBetter: true,
         isScore: true,
@@ -445,10 +445,10 @@ const hidden_task_columnInfo = {
         isScore: true,
         type: "number",
     },
-    SID_acc_hidden_dev: {
-        header: "SID",
+    ASR_wer_hidden_dev: {
+        header: "ASR",
         width: 80,
-        higherBetter: true,
+        higherBetter: false,
         isScore: true,
         type: "number",
     },
@@ -456,13 +456,6 @@ const hidden_task_columnInfo = {
         header: "ER",
         width: 80,
         higherBetter: true,
-        isScore: true,
-        type: "number",
-    },
-    ASR_wer_hidden_dev: {
-        header: "ASR",
-        width: 80,
-        higherBetter: false,
         isScore: true,
         type: "number",
     },
@@ -480,6 +473,13 @@ const hidden_task_columnInfo = {
         isScore: true,
         type: "number",
     },
+    SID_acc_hidden_dev: {
+        header: "SID",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
     SV_eer_hidden_dev: {
         header: "SV",
         width: 80,
@@ -491,13 +491,6 @@ const hidden_task_columnInfo = {
         header: "SD",
         width: 80,
         higherBetter: false,
-        isScore: true,
-        type: "number",
-    },
-    ST_bleu_hidden_dev: {
-        header: "ST",
-        width: 80,
-        higherBetter: true,
         isScore: true,
         type: "number",
     },
@@ -522,6 +515,13 @@ const hidden_task_columnInfo = {
         isScore: true,
         type: "number",
     },
+    ST_bleu_hidden_dev: {
+        header: "ST",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
     // test
     PR_per_hidden_test: {
         header: "PR",
@@ -530,10 +530,10 @@ const hidden_task_columnInfo = {
         isScore: true,
         type: "number",
     },
-    SID_acc_hidden_test: {
-        header: "SID",
+    ASR_wer_hidden_test: {
+        header: "ASR",
         width: 80,
-        higherBetter: true,
+        higherBetter: false,
         isScore: true,
         type: "number",
     },
@@ -541,13 +541,6 @@ const hidden_task_columnInfo = {
         header: "ER",
         width: 80,
         higherBetter: true,
-        isScore: true,
-        type: "number",
-    },
-    ASR_wer_hidden_test: {
-        header: "ASR",
-        width: 80,
-        higherBetter: false,
         isScore: true,
         type: "number",
     },
@@ -565,6 +558,13 @@ const hidden_task_columnInfo = {
         isScore: true,
         type: "number",
     },
+    SID_acc_hidden_test: {
+        header: "SID",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
     SV_eer_hidden_test: {
         header: "SV",
         width: 80,
@@ -576,13 +576,6 @@ const hidden_task_columnInfo = {
         header: "SD",
         width: 80,
         higherBetter: false,
-        isScore: true,
-        type: "number",
-    },
-    ST_bleu_hidden_test: {
-        header: "ST",
-        width: 80,
-        higherBetter: true,
         isScore: true,
         type: "number",
     },
@@ -602,6 +595,13 @@ const hidden_task_columnInfo = {
     },
     SS_sisdri_hidden_test: {
         header: "SS",
+        width: 80,
+        higherBetter: true,
+        isScore: true,
+        type: "number",
+    },
+    ST_bleu_hidden_test: {
+        header: "ST",
         width: 80,
         higherBetter: true,
         isScore: true,
