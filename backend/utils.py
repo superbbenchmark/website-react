@@ -661,6 +661,7 @@ def get_hidden_leaderboard_default():
         {
             "name":"paper",
             "task":"CONSTRAINED",
+            "paperId": 1,
             "submitName": "FBANK",
             "modelDesc": "-",
             "macsShort": 44770560,
@@ -740,6 +741,7 @@ def get_hidden_leaderboard_default():
             "name":"paper",
             "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
+            "paperId": 5,
             "submitName": "wav2vec 2.0 Base",
             "modelDesc": "M-C + VQ",
             "stride": 20,
@@ -781,6 +783,7 @@ def get_hidden_leaderboard_default():
             "name":"paper",
             "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
+            "paperId": 6,
             "submitName": "wav2vec 2.0 Large",
             "modelDesc": "M-C + VQ",
             "stride": 20,
@@ -822,6 +825,7 @@ def get_hidden_leaderboard_default():
             "name":"paper",
             "aoeTimeUpload":"Interspeech2021",
             "task":"CONSTRAINED",
+            "paperId": 3,
             "submitName": "HuBERT Base",
             "modelDesc": "M-P + VQ",
             "stride": 20,
@@ -862,6 +866,7 @@ def get_hidden_leaderboard_default():
         {
             "name":"strong baseline",
             "task":"CONSTRAINED",
+            "paperId": 4,
             "submitName": "HuBERT Large",
             "modelDesc": "M-P + VQ",
             "macsShort": 386052797568,
@@ -1022,6 +1027,7 @@ def get_hidden_leaderboard_default():
         {
             "name":"paper",
             "task":"CONSTRAINED",
+            "paperId": 7,
             "submitName": "WavLM Base",
             "modelDesc": "-",
             "macsShort": 149332591168,
@@ -1059,6 +1065,7 @@ def get_hidden_leaderboard_default():
         {
             "name":"paper",
             "task":"CONSTRAINED",
+            "paperId": 8,
             "submitName": "WavLM Base+",
             "modelDesc": "-",
             "macsShort": 149332591168,
@@ -1096,6 +1103,7 @@ def get_hidden_leaderboard_default():
         {
             "name":"paper",
             "task":"CONSTRAINED",
+            "paperId": 9,
             "submitName": "WavLM Large",
             "modelDesc": "-",
             "macsShort": 386259432576,
