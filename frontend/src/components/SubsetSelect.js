@@ -1,24 +1,21 @@
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { Typography, FormControl } from "@material-ui/core";
+import {
+    Radio,
+    RadioGroup,
+    FormControl,
+    FormControlLabel,
+    Typography
+} from "@material-ui/core";
 
 export default function SubsetSelect({ subset, selections, onChange }) {
     let get_shown_name = (originName) => {
         let name = originName.toLowerCase();
-        if (name === "paper") {
-            return "Paper";
+        switch(name) {
+            case "paper": return "Paper";
+            case "public set": return "Challenge Public";
+            case "hidden dev set": return "Challenge Hidden Dev";
+            case "hidden test set": return "Challenge Hidden Test";
+            default: return originName;
         }
-        else if (name === "public set") {
-            return "Challenge Public";
-        }
-        else if (name === "hidden dev set") {
-            return "Challenge Hidden Dev";
-        }
-        else if (name === "hidden test set") {
-            return "Challenge Hidden Test";
-        }
-        return originName;
     }
 
     return (

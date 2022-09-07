@@ -12,14 +12,11 @@ function score_normalizer(columns, data) {
             if (accessor.match(/param|macs|ERfold|ASR_LM/)) {
                 continue
             }
-
-            if (accessor.match(/_[cdepw]er_/)) {
-                submission[accessor] = 100 - value
-            }
             else {
                 submission[accessor] = value
             }
         }
+        // submission = columns.filter(value => ! accessor.match(/param|macs|ERfold|ASR_LM/)).map(value => )
         submissions.push(submission)
     }
     return submissions

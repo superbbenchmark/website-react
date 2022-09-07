@@ -4,13 +4,17 @@ import { useForm, Controller } from "react-hook-form";
 
 import swal from "sweetalert";
 import axios from "axios";
-import { Typography, Button, Link } from "@material-ui/core";
+import { 
+    Typography,
+    Button,
+    Link,
+    Radio,
+    RadioGroup,
+    FormLabel,
+    FormControl,
+    FormControlLabel,
+} from "@material-ui/core";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
 
 import { AuthContext } from "../context/auth-context";
 import { formVal } from "../utils/form-validator";
@@ -162,9 +166,7 @@ export default function PublicForm(){
                         the leaderboard. (Required)"
                         rules={formVal.submitName}
                         error={errors.submitName}
-                        helperText={
-                            errors.submitName && errors.submitName.message
-                        }
+                        helperText={errors.submitName && errors.submitName.message}
                     />
                     <FormTextField
                         control={control}
@@ -184,9 +186,7 @@ export default function PublicForm(){
                         description="A sentence or two describing your system. Make sure to mention any outside data you use. (Required)"
                         rules={formVal.modelDesc}
                         error={errors.modelDesc}
-                        helperText={
-                            errors.modelDesc && errors.modelDesc.message
-                        }
+                        helperText={errors.modelDesc && errors.modelDesc.message}
                     />
                     <FormTextField
                         control={control}
@@ -206,9 +206,7 @@ export default function PublicForm(){
                         description="The type of input format you use. e.g., waveform, FBANK. (Required) "
                         rules={formVal.inputFormat}
                         error={errors.inputFormat}
-                        helperText={
-                            errors.inputFormat && errors.inputFormat.message
-                        }
+                        helperText={errors.inputFormat && errors.inputFormat.message}
                     />
 
                     <FormTextField
@@ -230,9 +228,7 @@ export default function PublicForm(){
                         description="A sentence or explaining how you share parameters accross tasks (or stating that you don't share parameters). (Required)"
                         rules={formVal.paramDesc}
                         error={errors.paramDesc}
-                        helperText={
-                            errors.paramDesc && errors.paramDesc.message
-                        }
+                        helperText={errors.paramDesc && errors.paramDesc.message}
                     />
                     <FormTextField
                         control={control}
@@ -242,9 +238,7 @@ export default function PublicForm(){
                         description='The total number of multiply accumulate operations while forwarding your model computed by our profiling tool with bucket "all". (Required)'
                         rules={formVal.macs}
                         error={errors.macs}
-                        helperText={
-                            errors.macs && errors.macs.message
-                        }
+                        helperText={errors.macs && errors.macs.message}
                     />
                     <FormTextField
                         control={control}
@@ -254,9 +248,7 @@ export default function PublicForm(){
                         description='The total number of multiply accumulate operations while forwarding your model computed by our profiling tool with bucket "short". (Required)'
                         rules={formVal.macs}
                         error={errors.macsMedium}
-                        helperText={
-                            errors.macsShort && errors.macsShort.message
-                        }
+                        helperText={errors.macsShort && errors.macsShort.message}
                     />
                     <FormTextField
                         control={control}
@@ -266,9 +258,7 @@ export default function PublicForm(){
                         description='The total number of multiply accumulate operations while forwarding your model computed by our profiling tool with bucket "Medium". (Required)'
                         rules={formVal.macs}
                         error={errors.macsMedium}
-                        helperText={
-                            errors.macsMedium && errors.macsMedium.message
-                        }
+                        helperText={errors.macsMedium && errors.macsMedium.message}
                     />
                     <FormTextField
                         control={control}
@@ -278,9 +268,7 @@ export default function PublicForm(){
                         description='The total number of multiply accumulate operations while forwarding your model computed by our profiling tool with bucket "Long". (Required)'
                         rules={formVal.macs}
                         error={errors.macsLong}
-                        helperText={
-                            errors.macsLong && errors.macsLong.message
-                        }
+                        helperText={errors.macsLong && errors.macsLong.message}
                     />
                     <FormTextField
                         control={control}
@@ -290,9 +278,7 @@ export default function PublicForm(){
                         description='The total number of multiply accumulate operations while forwarding your model computed by our profiling tool with bucket "Longer". (Required)'
                         rules={formVal.macs}
                         error={errors.macsLonger}
-                        helperText={
-                            errors.macsLonger && errors.macsLonger.message
-                        }
+                        helperText={errors.macsLonger && errors.macsLonger.message}
                     />
                     <FormTextField
                         control={control}
@@ -302,9 +288,7 @@ export default function PublicForm(){
                         description="The total number of parameters in your model which don't require task spesific fine-tuning (only numeric numbers allowed). (Required)"
                         rules={formVal.paramShared}
                         error={errors.paramShared}
-                        helperText={
-                            errors.paramShared && errors.paramShared.message
-                        }
+                        helperText={errors.paramShared && errors.paramShared.message}
                     />
                     <FormTextField
                         control={control}
@@ -314,10 +298,7 @@ export default function PublicForm(){
                         description="The number of parameters in your model which are common but require task specific fine-tuning (only numeric numbers allowed). (Optional)"
                         rules={formVal.fineTunedParam}
                         error={errors.fineTunedParam}
-                        helperText={
-                            errors.fineTunedParam &&
-                            errors.fineTunedParam.message
-                        }
+                        helperText={errors.fineTunedParam && errors.fineTunedParam.message}
                     />
                     <FormTextField
                         control={control}
@@ -327,9 +308,7 @@ export default function PublicForm(){
                         description="The number of parameters in your model which are task specific and not used by any other tasks (only numeric numbers allowed). (Optional)"
                         rules={formVal.taskSpecParam}
                         error={errors.taskSpecParam}
-                        helperText={
-                            errors.taskSpecParam && errors.taskSpecParam.message
-                        }
+                        helperText={errors.taskSpecParam && errors.taskSpecParam.message}
                     />
 
                     <FormControl

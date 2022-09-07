@@ -1,5 +1,4 @@
 import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
-import { ThemeProvider } from "@material-ui/core/styles";
 import update from "immutability-helper";
 
 const mainTheme = {

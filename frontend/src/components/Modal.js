@@ -6,7 +6,6 @@ import {
   Fade,
   Paper,
   Switch,
-  FormGroup,
   FormControlLabel,
   Grid,
   Box,
@@ -14,7 +13,7 @@ import {
 } from "@material-ui/core";
 import { blueGrey, grey, red, orange, green } from "@material-ui/core/colors";
 
-import { Section, SubSection } from "./Sections";
+import { SubSection } from "./Sections";
 import { SubTitle } from "./Titles";
 
 const useStyles = makeStyles((theme) => ({

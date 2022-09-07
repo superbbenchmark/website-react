@@ -1,9 +1,5 @@
 import { public_hidden_selections } from "../Data";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { capitalizeFirstLetter } from "./Utilies";
-import { Typography } from "@material-ui/core";
+import { Radio, RadioGroup, Typography, FormControlLabel } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core/styles";
 
 export default function PubHidSelect({ type, onTypeChange }) {
@@ -28,9 +24,7 @@ export default function PubHidSelect({ type, onTypeChange }) {
                               control={<Radio color="primary" />}
                               label={
                                   <Typography color="primary">
-                                      {getName(
-                                          public_hidden_selection.name
-                                      )}
+                                      {getName(public_hidden_selection.name)}
                                   </Typography>
                               }
                               color="primary"

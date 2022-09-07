@@ -3,9 +3,8 @@ import { HashLink } from 'react-router-hash-link';
 import Clock from "react-live-clock";
 
 import { Typography } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
+import { useTheme, createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { useLocation } from "react-router-dom";
 
 import { submitFormTheme } from "./Theme";
 import { SubSubSection } from "./Sections";
@@ -44,10 +43,7 @@ export default function SubmitForm(props) {
             <>
                 <SubSubSection margin={theme.spacing(8, "auto", 1)}>
                     <SubTitle
-                        title={
-                            <span>
-                                <strong>Submission</strong>
-                            </span>
+                        title={<span><strong>Submission</strong></span>
                         }
                         description={
                             <Clock

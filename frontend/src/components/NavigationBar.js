@@ -17,13 +17,12 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  Grid,
+  Hidden,
+  withWidth,
 } from "@material-ui/core";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
-import withWidth from "@material-ui/core/withWidth";
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import Drawer from "./Drawer";
@@ -167,7 +166,6 @@ function NavigationBar({ width, tableControlRef, ...props }) {
     ["Code", "https://github.com/s3prl/s3prl"],
     ["Tasks", "/tasks"],
     ["Rules", "/rules"],
-    // ["Compare", "/compare"],
     ["Leaderboard", "/leaderboard"],
     ["Challenge", [
       ["Challenge Overview", "/challenge-slt2022/challenge_overview"],
@@ -179,7 +177,6 @@ function NavigationBar({ width, tableControlRef, ...props }) {
     ["Submit", "/submit"],
   ];
   if (auth.isLoggedIn) {
-    // items.push(["Submit", "/submit"]);
     items.push(["Profile", "/profile"]);
     items.push(["Logout", "/logout"]);
   } else {
