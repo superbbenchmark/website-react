@@ -976,17 +976,17 @@ const leaderboard_hidden_columnInfo = {
 
 const reference_points = {
     // public
-    "PR_per_public": [17.989999999999995, 96.47],
+    "PR_per_public": [82.01, 3.53],
     "KS_acc_public": [41.3826674, 96.66],
     "IC_acc_public": [9.649354219, 98.76],
-    "SID_acc_public": [20.058174, 9.03e+01],
+    "SID_acc_public": [20.058174, 90.3],
     "ER_acc_public": [48.23672168, 67.62],
-    "ASR_wer_public": [76.82, 96.38],
+    "ASR_wer_public": [23.18, 3.62],
     "QbE_mtwv_public": [0.58, 7.36],
     "SF_f1_public": [69.64, 89.81],
-    "SF_cer_public": [47.06, 78.24],
-    "SV_eer_public": [90.44, 94.89],
-    "SD_der_public": [89.95, 94.38],
+    "SF_cer_public": [52.94, 21.76],
+    "SV_eer_public": [9.56, 5.11],
+    "SD_der_public": [10.05, 5.62],
     "ST_bleu_public": [2.32, 20.01],
     "SE_pesq_public": [2.55, 2.64],
     "SE_stoi_public": [93.6, 94.2],
