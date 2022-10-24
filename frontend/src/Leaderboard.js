@@ -314,7 +314,8 @@ function LeaderBoard(props) {
                     }
                     return true;
                 }
-                leaderboardData = leaderboardData.filter(submission => all_not_nan(submission));
+                // Control whether to show results that only evaluate a subset of tasks.
+                // leaderboardData = leaderboardData.filter(submission => all_not_nan(submission));
 
                 if (leaderboardData.length > 0) {
                     let newShownData = []
