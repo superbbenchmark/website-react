@@ -213,9 +213,9 @@ function overall_metric_adder(metrics, columns, data, subset, memoizedNumericSor
 
         new_data = []
         for (let i = 0; i < data.length; i++) {
-            if (data[i].submitName == "FBANK") {
-                continue
-            }
+            // if (data[i].submitName == "FBANK") {
+            //     continue
+            // }
             let cloned_dict = { ...data[i] }
 
             // DEBUGGING
