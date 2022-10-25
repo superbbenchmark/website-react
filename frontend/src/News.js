@@ -30,6 +30,18 @@ const news = [
     //     ),
     // },
     {
+        title: "The 2022 SLT SUPERB Challenge overview paper is now available on arXiv",
+        date: new Date(2022, 4, 10),
+        content: (
+            <span align="left">
+                <br />
+                <div>
+                    After the JSALT workshop and SLT paper submission, there are a large number of fascinating models submitted to our hidden-set track, enriching the leaderboard with diverse perspectives. Our <a href="https://arxiv.org/abs/2210.08634" target="_blank" rel="noopener">challenge overview paper</a>
+                </div> introduces each model newly submit to us and presents the overall result in several ways. It is accepted by the SLT2022 workshop and available on arXiv now.
+            </span >
+        ),
+    },
+    {
         title: "The SUPERB challenge2022 is accepted as an ISCA endorsed activity!",
         date: new Date(2022, 4, 10),
         content: (

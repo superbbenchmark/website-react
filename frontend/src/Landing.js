@@ -57,7 +57,8 @@ export default function Landing(props) {
                     <strong>SLT2022 SUPERB Challenge Timeline</strong>
                 </Typography>
                 <span align="left">
-                <HashLink to="/challenge-slt2022/challenge_overview#top">Challenge Policy</HashLink>
+                <HashLink to="/challenge-slt2022/challenge_overview#top">Challenge Policy</HashLink>&nbsp;&nbsp;&nbsp;
+                <HashLink to="https://arxiv.org/abs/2210.08634">Overview Paper</HashLink>
                 <ul>
                     <li><span><Strong>Mar 2, 2022</Strong>: <HashLink to="/news#announcement2022">Challenge announcement</HashLink></span>
                     </li>
