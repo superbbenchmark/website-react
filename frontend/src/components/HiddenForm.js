@@ -108,12 +108,12 @@ export default function HiddenForm(){
             <Section>
                 <SubSubSection>
                     <Typography variant="body1" color="textSecondary">
-                        Please <a target="_blank" href="https://huggingface.co/superb/superb-submission">Upload your model</a> before the submitting to the <HashLink to="/leaderboard?track=constrained&subset=Hidden+Dev+Set">SUPERB Challenge Hidden-set</HashLink>.
+                        Please <a target="_blank" href="https://huggingface.co/superb/superb-submission">upload your model</a> before the submitting to the <HashLink to="/leaderboard?track=constrained&subset=Hidden+Dev+Set">SUPERB Challenge Hidden-set</HashLink>, and we encourage participants to <Strong>remove redundant computation and unused weights</Strong> cause it will affect the number of Params and MACs.
                     </Typography>
                 </SubSubSection>
                 <SubSubSection>
                     <Typography variant="body1" color="textSecondary">
-                        After your submission, the row of submission will <Strong>only</Strong> appear on the <HashLink to="/profile">Profile</HashLink> tab and will not appear in the leaderboard. You can select the "Show" button in the Profile tab to control whether to show it on leaderboard or not.
+                        After submitting your submission, the row of submission will <Strong>only</Strong> appear on the <HashLink to="/profile">Profile</HashLink> tab and will not appear in the leaderboard. You can select the "Show" button in the Profile tab to control whether to show it on the leaderboard or not.
                     </Typography>
                 </SubSubSection>
                 <SubSubSection>

@@ -403,13 +403,28 @@ The ranking metrics are the primary performance measures in this challenge and a
 
 #### Reference points
 
-If a task have multiple metrics, each metric is first tranformed into points or ranks as illustrated above. Then, points or ranks are first averaged in intra-task fashion before being averaged with other task.
+If a task have multiple metrics, each metric is tranformed into points or ranks first as illustrated above. Then, points or ranks are averaged in intra-task fashion first before being averaged with other task.
 
+##### Public-set track reference points
 Task|PR|SID|ER|ASR|QbE|ASV|SD|ST|SE|SE|SS
 -|-|-|-|-|-|-|-|-|-|-|-
 Metrics|PER|ACC|ACC|WER|MTWV|EER|DER|BLEU|PESQ|STOI|SS
-FBANK|82.01|41.38|48.24|23.18|0.58|9.56|10.05|2.32|2.55|0.9364|9.234
-SOTA|3.53|96.66|67.62|3.62|7.36|5.62|5.11|20.01|2.64|0.9418|10.45
+FBANK|82.01|41.38*|48.24*|23.18|0.58|9.56|10.05|2.32|2.55|0.9364|9.234
+SOTA|3.53|96.66|67.62|3.62|7.36|5.11|5.62|20.01|2.64|0.9418|10.45
+
+\* The results are different with those reported in the [SUPERB paper](https://arxiv.org/abs/2105.01051), because in the paper, we use CMVN (Cepstral Mean and Variance Normalization) at the end of our fbank feature extractor. However, for those tasks which average representations along with the time axis, the differences in mean and variance between samples are the most important information for the downstream model. Therefore, applying CMVN on those tasks lead to catastrophic decreases in the task performances.
+
+##### Hidden-set track reference points (test split)
+Task|PR|SID|ER|ASR|QbE|QBE|ASV|SD|ST|SE|SE|SS
+-|-|-|-|-|-|-|-|-|-|-|-|-
+Model|HL|WL|WL|HL|HB|HB|HL|HL|HL|HL|WL|HL
+Metrics|PER|ACC|ACC|WER|MAP|EER|EER|DER|BLEU|PESQ|STOI|SS
+FBANK|81.66|48.17|46.98|91.54|12.72|35.98|24.04|13.4|2.32|1.5300|84.4615|2.85
+SOTA|18.22|80.25|60.99|27.06|49.06|16.55|9.81|9.1|20.01|1.5694|85.2925|7.30
+
+\* HB: HuBERT Base, HL: HuBERT Large, WL: wav2vec 2.0 Large
+
+\*\* We found that for wav2vec 2.0 Large, doing layer norm before the weighted-sum of hidden states will extremely boost the its performance. But the 
 `
 
 export { challenge_overview, framework, upstream, submission, metrics }

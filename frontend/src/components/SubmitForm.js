@@ -61,11 +61,18 @@ export default function SubmitForm(props) {
                         <SwitchPart />
                     </>
                 ) : (
-                    <SubSubSection>
-                        <Typography variant="body1" color="textSecondary">
-                            <Strong>Please <HashLink to="/login">login</HashLink> first before submission</Strong>
-                        </Typography>
-                    </SubSubSection>
+                    <>
+                        <SubSubSection>
+                            <Typography variant="body1" color="textSecondary">
+                                <Strong>Please <HashLink to="/login">login</HashLink> first before submission</Strong>
+                            </Typography>
+                        </SubSubSection>
+                        <SubSubSection>
+                            <Typography variant="body1" color="textSecondary">
+                                After submitting your submission, the row of submission will <Strong>only</Strong> appear on the <HashLink to="/profile">Profile</HashLink> tab and will not appear in the leaderboard. You can select the "Show" button in the Profile tab to control whether to show it on the leaderboard or not.
+                            </Typography>
+                        </SubSubSection>
+                    </>
                 )}
             </>
         </ThemeProvider>
