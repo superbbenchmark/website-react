@@ -17,7 +17,6 @@ import Landing from "./Landing";
 import News from "./News";
 import Tasks from "./Tasks";
 import Rules from "./Rules";
-import Compare from "./Compare";
 import Leaderboard from "./Leaderboard";
 import Challenge from './Challenge';
 import NavigationBar from "./components/NavigationBar";

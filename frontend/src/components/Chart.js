@@ -18,12 +18,14 @@ import {
   ZAxis,
   Tooltip,
   Scatter,
+  LabelList,
   //Radar Chart
   RadarChart,
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
   Radar,
+  Polygon,
   //General
   Legend,
   ResponsiveContainer,
@@ -63,14 +65,14 @@ function SelectVariants({ name, value, setValue, options }) {
 
 function ModelScatterChart({ columns, data }) {
   const classes = useStyles();
-  const [x, setX] = React.useState(0);
+  const [x, setX] = React.useState(1);
   const [y, setY] = React.useState(1);
   const scores = columns.filter(value => value.isScore && !value.Header.match(/MACs|\([1-4]\)/));
   const xOptions = ["Params", "MACs"]; // , "MACs (short)", "MACs (medium)", "MACs (long)", "MACs (longer)"
   const xNames = ["paramShared", "macs"]; // , "macsShort", "macsMedium", "macsLong", "macsLonger"
   const xTicks = [
-    [0,100,200,300,400],
-    [0,1250,2500,3750,5000],
+    [0,100,200,300,400,500,600,650],
+    [200,500,1500,5000],
     // [0,125,250,375,500],
     // [0,250,500,750,1000],
     // [0,375,750,1125,1500],
@@ -78,14 +80,24 @@ function ModelScatterChart({ columns, data }) {
   ];
   const yOptions = scores.map(value => value.Header);
   const yAccess = scores[Object.keys(scores)[y]].accessor;
+  const paperIDmapping = {
+    "DistilHuBERT": 10,
+    "PASE+": 26,
+    "APC": 27,
+    "modified CPC": 28,
+    "TERA": 29
+  }
   const presentData = data.filter(
     value => value[xNames[x]] != "-" && value[yAccess] != "-"
     ).map(
       value => ({
-        "submitName": value.submitName,
+        "submitName": value.paperId ? value.paperId + ". " + value.submitName : (value.submitName in paperIDmapping ? paperIDmapping[value.submitName] + ". " + value.submitName : value.submitName),
         "xValue": Math.round(value[xNames[x]]/(x ? 1e6 : 1e3))/1e3,
-        "yValue": value[yAccess]})
-      );
+        "yValue": value[yAccess],
+        "paperId": value.paperId ? value.paperId : paperIDmapping[value.submitName]})
+      ).sort(
+        (a, b) => (typeof a.paperId !== 'string' ? a.paperId : 999) > (typeof b.paperId !== 'string' ? b.paperId : 999) ? 1 : -1
+      ).filter(value => value.yValue);
 
 
   return (
@@ -122,21 +134,26 @@ function ModelScatterChart({ columns, data }) {
           <Grid item xs={12} sm={12} md={9} lg={7} xl={6} >
             <ResponsiveContainer width="100%" height={540}>
               <ScatterChart>
-                <CartesianGrid strokeDasharray="5 5" />
+                <CartesianGrid strokeWidth={1} stroke={"#666666"} strokeDasharray="5 5" />
                 <XAxis 
                   dataKey="xValue"
                   name={xOptions[x]}
                   unit={x ? "GMACs" : "M"}
                   type="number"
                   ticks={xTicks[x]}
-                  interval={0}
-                  scale="linear"
+                  domain={["dataMin-10", "dataMax+1000"]}
+                  scale="log"
+                  allowDataOverflow={true}
+                  fontSize={20}
+                  strokeWidth={2}
                 />
                 <YAxis
                   dataKey="yValue"
                   name={yOptions[y]}
                   type="number"
                   domain={["dataMin", "auto"]}
+                  fontSize={20}
+                  strokeWidth={2}
                 />
                 <ZAxis dataKey="submitName" name="Name" />
                 <Tooltip cursor={{ strokeDasharray: '8 8' }} />
@@ -144,7 +161,7 @@ function ModelScatterChart({ columns, data }) {
                 {presentData.map((value, index) => 
                     <Scatter name={value.submitName}
                              data={[value]}
-                             fill={'hsla(' + (360 / presentData.length * index) + ', 80%, 50%, 0.8)'}
+                             fill={'hsla(' + (360 / presentData.length * index) + ', 80%, 40%, .8)'}
                     />
                   )
                 }
@@ -219,22 +236,23 @@ function ModelRadarChart ( {inters} ) {
           <Grid item md={12} >
             <ResponsiveContainer width="100%" height={720}>
               <RadarChart data={task_scores}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="task" />
-                <PolarRadiusAxis scale="linear" orientation="middle" angle={36} domain={[-500, 1500]} tickCount={5} />
+                <PolarGrid stroke={"#666666"}/>
+                <PolarAngleAxis stroke={"#666666"} dataKey="task" fontSize={28}/>
+                <PolarRadiusAxis stroke={"#666666"} scale="linear" orientation="middle" angle={36} domain={[-500, 1500]} tickCount={5} fontSize={20}/>
                 {model.map((value, index) => {
-                    const color = 'hsla(' + (360 / model.length * index) + ', 80%, 50%, 0.6)'
+                    const color = 'hsla(' + (360 / model.length * index + 20) + ', 80%, 40%, .6)'
                     return (
                       <Radar name={value}
                              dataKey={value}
                              stroke={color}
+                             shape={<Polygon strokeWidth={3}/>}
                              fill={color}
-                             fillOpacity={0.6}
+                             fillOpacity={.6}
                       />
                     )
                   })
                 }
-                <Legend />
+                <Legend iconSize={14} formatter={(value, entry) => (<span style={{"font-size":28}}>{" " + value}</span>)}/>
                 <Tooltip />
               </RadarChart>
             </ResponsiveContainer>
