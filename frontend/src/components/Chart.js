@@ -91,7 +91,8 @@ function ModelScatterChart({ columns, data }) {
     value => value[xNames[x]] != "-" && value[yAccess] != "-"
     ).map(
       value => ({
-        "submitName": value.paperId ? value.paperId + ". " + value.submitName : (value.submitName in paperIDmapping ? paperIDmapping[value.submitName] + ". " + value.submitName : value.submitName),
+        "submitName": value.submitName,
+        // "submitName": value.paperId ? value.paperId + ". " + value.submitName : (value.submitName in paperIDmapping ? paperIDmapping[value.submitName] + ". " + value.submitName : value.submitName),
         "xValue": Math.round(value[xNames[x]]/(x ? 1e6 : 1e3))/1e3,
         "yValue": value[yAccess],
         "paperId": value.paperId ? value.paperId : paperIDmapping[value.submitName]})
