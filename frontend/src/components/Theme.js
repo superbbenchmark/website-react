@@ -4,7 +4,7 @@ import update from "immutability-helper";
 const mainTheme = {
     palette: {
         primary: {
-            main: grey[100],
+            main: '#ffffff',
         },
         text: {
             primary: blueGrey[600],

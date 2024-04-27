@@ -307,7 +307,7 @@ def metric_calculate_pipeline(file_path, submitUUID):
                     with open(os.path.join(predict_dir, "score.out"), "r") as log:
                         logging = log.read()
                         mtwv = float(
-                            re.search("maxTWV: [+-]?([0-9]*[.])?[0-9]+", logging).group().split()[1])
+                            re.search("maxTWV: [+-]?[0-9.eE-]+ ", logging).group().split()[1])
 
                     print(f"QbE: mtwv {mtwv}", file=output_log_f)
                     score_model.QbE_mtwv_public = mtwv

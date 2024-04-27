@@ -71,7 +71,8 @@ function ModelScatterChart({ columns, data }) {
   const xOptions = ["Params", "MACs"]; // , "MACs (short)", "MACs (medium)", "MACs (long)", "MACs (longer)"
   const xNames = ["paramShared", "macs"]; // , "macsShort", "macsMedium", "macsLong", "macsLonger"
   const xTicks = [
-    [0,100,200,300,400,500,600,650],
+    undefined,
+    // [0,100,200,300,400, 500, 600],
     [200,500,1500,5000],
     // [0,125,250,375,500],
     // [0,250,500,750,1000],
@@ -98,7 +99,7 @@ function ModelScatterChart({ columns, data }) {
         "paperId": value.paperId ? value.paperId : paperIDmapping[value.submitName]})
       ).sort(
         (a, b) => (typeof a.paperId !== 'string' ? a.paperId : 999) > (typeof b.paperId !== 'string' ? b.paperId : 999) ? 1 : -1
-      ).filter(value => value.yValue);
+      ).filter(value => value.yValue && value.submitName !== 'FBANK');
 
 
   return (
@@ -142,8 +143,8 @@ function ModelScatterChart({ columns, data }) {
                   unit={x ? "GMACs" : "M"}
                   type="number"
                   ticks={xTicks[x]}
-                  domain={["dataMin-10", "dataMax+1000"]}
-                  scale="log"
+                  domain={x ? ["dataMin-10", "dataMax+1000"] : undefined}
+//                  scale={x ? "log" : "auto"}
                   allowDataOverflow={true}
                   fontSize={20}
                   strokeWidth={2}
